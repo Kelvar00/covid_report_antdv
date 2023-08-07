@@ -191,8 +191,7 @@ const footerStyle: CSSProperties = {
 
     <div class="section">
       <a-row>
-        <a-col :span="2"></a-col>
-        <a-col :span="8">
+        <a-col :span="8" :offset="2">
           <MapTimeline
             :width-height-ratio="0.6"
             :dates="dates"
@@ -202,15 +201,43 @@ const footerStyle: CSSProperties = {
             v-model:selected-index="selectedIndex"
           />
         </a-col>
-        <a-col :span="12" style="width: 800px"> </a-col>
       </a-row>
       <a-row>
-        <a-col :span="8" style="width: 10vw">
+        <a-col :span="4" style="width: 10vw;align-items: center;" :offset="4">
           <div>
-            <!-- timeline -->
-          </div>
+    <a-steps
+      v-model:current="selectedIndex"
+      :items="[
+        {
+          title: 'Finished',
+          description: '',
+        },
+        {
+          title: 'In Progress',
+          description: '',
+        },
+        {
+          title: 'Waiting',
+          description: '',
+        },
+        {
+          title: 'Waiting',
+          description: '',
+        },
+      ]"
+    >
+      <template #progressDot="{ index, status, prefixCls }">
+        <a-popover>
+          <template #content>
+            <span>step {{ index }} status: {{ status }}</span>
+          </template>
+          <span :class="`${prefixCls}-icon-dot`" />
+        </a-popover>
+      </template>
+    </a-steps>
+  </div>
         </a-col>
-        <a-col :span="16">
+        <a-col :span="10" :offset="12">
           <div>
             <TrendTimeline
               :width-height-ratio="0.5"
