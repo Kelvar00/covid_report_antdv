@@ -74,7 +74,7 @@ let countryChartInstance: echart.ECharts = null as any
 /// REGION CORE LOGIC
 function showCountryDetails(selectedCountry: string) {
   const optionHolder: echart.EChartsOption = {
-    legend: { orient: 'horizontal', padding: [50, 5] },
+    legend: { orient: 'horizontal', padding: [50, 5], textStyle: { color: '#f2f2f2' } },
     grid: makeGridSettings('10%'),
     tooltip: { trigger: 'axis' },
     dataZoom: [
@@ -131,7 +131,9 @@ getWorldAtTime(new Date(2022, 11, 14)).then((data) => {
   }
   worldMapInstance.hideLoading()
   worldMapInstance.setOption({ series: [{ data: seriesData }] })
-  worldMapInstance.dispatchAction({ type: 'select', seriesIndex: 0, dataIndex: 0 })
+
+  let dataIndex = seriesData.findIndex((it) => it.name == 'China')
+  worldMapInstance.dispatchAction({ type: 'select', seriesIndex: 0, dataIndex: dataIndex })
 })
 
 useEchartAutoResize(
@@ -144,7 +146,7 @@ onMounted(() => {
   worldMapInstance = echart.init(worldMap.value, 'dark')
   countryChartInstance = echart.init(countryChart.value, 'darklow')
   worldMapInstance.setOption(option)
-  showCountryDetails('China')
+  //showCountryDetails('China')
   worldMapInstance.showLoading(makeLoadingOptions())
 
   worldMapInstance.on('selectchanged', selectionHandler)
