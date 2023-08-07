@@ -12,6 +12,10 @@ const props = defineProps({
     type: Number,
     default: 0.72
   },
+  marginRatio: {
+    type: Number,
+    default: 1
+  },
   selectedDate: {
     type: Date,
     default: undefined
@@ -125,7 +129,7 @@ useEchartAutoResize(
   () => chartElement.value.parentElement!,
   [() => chartInstance],
   props.widthHeightRatio,
-  1
+  props.marginRatio
 )
 onMounted(() => {
   chartInstance = echart.init(chartElement.value, 'darklow')

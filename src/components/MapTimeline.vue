@@ -13,6 +13,10 @@ const props = defineProps({
     type: Number,
     default: 0.75
   },
+  marginRatio: {
+    type: Number,
+    default: 1
+  },
   selectedDate: {
     type: Date,
     default: undefined
@@ -132,7 +136,8 @@ function makeBaseOption(timelineDots: Date[]): echart.EChartsOption {
 useEchartAutoResize(
   () => chartElement.value.parentElement!,
   [() => chartInstance],
-  props.widthHeightRatio
+  props.widthHeightRatio,
+  props.marginRatio
 )
 onMounted(() => {
   chartInstance = echart.init(chartElement.value, 'darklow')
