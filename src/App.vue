@@ -7,7 +7,8 @@ import Image2 from '@/assets/img/T23.png'
 import Image3 from '@/assets/img/T24.png'
 import Image4 from '@/assets/img/T25.png'
 
-const dates = ref(keyMoments.map(item=>moment(item.Time,'yyyy-MM-DD').toDate()))
+const dates = ref(keyMoments.map(item => moment(item.Time, 'yyyy-MM-DD').toDate()))
+
 const selectedIndex = ref(0)
 const autoPlay = ref(true)
 
@@ -204,28 +205,13 @@ const footerStyle: CSSProperties = {
       </a-row>
       <a-row>
         <a-col :span="4" style="align-items: center" :offset="2">
-          <div>
+          <div class="scroll_event">
             <a-steps
               direction="vertical"
               v-model:current="selectedIndex"
-              :items="[
-                {
-                  title: 'Finished',
-                  description: ''
-                },
-                {
-                  title: 'In Progress',
-                  description: ''
-                },
-                {
-                  title: 'Waiting',
-                  description: ''
-                },
-                {
-                  title: 'Waiting',
-                  description: ''
-                }
-              ]"
+              :items="
+              keyMoments.map((item) => {return {title:item.event,description:item.Time+' '+item.comment}})
+              "
             >
               <template #progressDot="{ index, status, prefixCls }">
                 <a-popover style="margin-top: 40px">
@@ -314,5 +300,11 @@ const footerStyle: CSSProperties = {
 
 .scroll_content {
   overflow-x: hidden;
+}
+
+.scroll_event {
+  height:100%;
+  overflow-y: scroll;
+  max-height: 40vh;
 }
 </style>
