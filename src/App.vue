@@ -8,8 +8,8 @@ import Image3 from '@/assets/img/T24.png'
 import Image4 from '@/assets/img/T25.png'
 
 const dates = ref([new Date(2020, 1, 2), new Date(2020, 3, 26), new Date(2020, 5, 14)])
-const selectedDate = ref(dates.value[0])
 const selectedIndex = ref(0)
+const autoPlay = ref(true)
 
 const carouseData = [{ url: Image1 }, { url: Image2 }, { url: Image3 }, { url: Image4 }]
 const options = {
@@ -105,7 +105,11 @@ const footerStyle: CSSProperties = {
 </script>
 
 <template>
-  <a-carousel indicator-position="none" style="width: 100%; height: 100%; position: absolute" :autoplay="true">
+  <a-carousel
+    indicator-position="none"
+    style="width: 100%; height: 100%; position: absolute"
+    :autoplay="true"
+  >
     <div v-for="item in carouseData" :key="item">
       <img :src="item.url" alt="" style="object-fit: initial; height: 100%; width: 100%" />
     </div>
@@ -114,13 +118,15 @@ const footerStyle: CSSProperties = {
     <div class="section">
       <a-layout :style="transparentStyle">
         <a-layout-header :style="headerStyle">
-          <div style="
+          <div
+            style="
               text-align: center;
               font-size: 50px;
               color: aqua;
               font-family: 'Courier New', Courier, monospace;
               z-index: 2;
-            ">
+            "
+          >
             R . I . P
           </div>
         </a-layout-header>
@@ -184,35 +190,44 @@ const footerStyle: CSSProperties = {
     </div>
 
     <div class="section">
-      <a-row style="margin-bottom: 50px;">
+      <a-row style="margin-bottom: 50px">
         <a-col :span="8" :offset="2">
-          <MapTimeline :width-height-ratio="0.6" :dates="dates" :auto-play="true" :play-interval="10000"
-            v-model:selected-date="selectedDate" v-model:selected-index="selectedIndex" />
+          <MapTimeline
+            :width-height-ratio="0.6"
+            :dates="dates"
+            :play-interval="10000"
+            v-model:selected-index="selectedIndex"
+            v-model:auto-play="autoPlay"
+          />
         </a-col>
       </a-row>
       <a-row>
-        <a-col :span="4" style="align-items: center;" :offset="2">
+        <a-col :span="4" style="align-items: center" :offset="2">
           <div>
-            <a-steps direction="vertical" v-model:current="selectedIndex" :items="[
-              {
-                title: 'Finished',
-                description: '',
-              },
-              {
-                title: 'In Progress',
-                description: '',
-              },
-              {
-                title: 'Waiting',
-                description: '',
-              },
-              {
-                title: 'Waiting',
-                description: '',
-              },
-            ]">
-              <template #progressDot="{ index, status, prefixCls }" style="margin-top: 40px;">
-                <a-popover>
+            <a-steps
+              direction="vertical"
+              v-model:current="selectedIndex"
+              :items="[
+                {
+                  title: 'Finished',
+                  description: ''
+                },
+                {
+                  title: 'In Progress',
+                  description: ''
+                },
+                {
+                  title: 'Waiting',
+                  description: ''
+                },
+                {
+                  title: 'Waiting',
+                  description: ''
+                }
+              ]"
+            >
+              <template #progressDot="{ index, status, prefixCls }">
+                <a-popover style="margin-top: 40px">
                   <template #content>
                     <span>step {{ index }} status: {{ status }}</span>
                   </template>
@@ -224,8 +239,12 @@ const footerStyle: CSSProperties = {
         </a-col>
         <a-col :span="10" :offset="6">
           <div>
-            <TrendTimeline :width-height-ratio="0.5" :dates="dates" v-model:selected-date="selectedDate"
-              v-model:selected-index="selectedIndex" />
+            <TrendTimeline
+              :width-height-ratio="0.5"
+              :dates="dates"
+              v-model:selected-index="selectedIndex"
+              v-model:auto-play="autoPlay"
+            />
           </div>
         </a-col>
       </a-row>

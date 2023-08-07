@@ -17,10 +17,6 @@ const props = defineProps({
     type: Number,
     default: 1
   },
-  selectedDate: {
-    type: Date,
-    default: undefined
-  },
   selectedIndex: {
     type: Number,
     default: 0
@@ -34,7 +30,7 @@ const props = defineProps({
     default: 5000
   }
 })
-const emit = defineEmits(['update:selectedDate', 'update:selectedIndex'])
+const emit = defineEmits(['update:selectedIndex', 'update:autoPlay'])
 watch(
   () => props.dates,
   (newVal) => {
@@ -43,28 +39,27 @@ watch(
   { deep: true }
 )
 watch(
-  () => props.selectedDate,
+  () => props.selectedIndex,
   (newVal) => {
     setSelection(newVal)
   }
 )
 watch(
-  () => props.selectedIndex,
+  () => props.autoPlay,
   (newVal) => {
-    setSelection(newVal)
+    setAutoPlay(newVal)
   }
 )
 
 function setDatesList(dates: Date[]) {
   loadTimeData(dates).then((value) => applyTimeData(value))
 }
-function setSelection(arg: Date | number | undefined) {
+function setSelection(arg: number | undefined) {
   if (arg === undefined) return
-  if (arg instanceof Date) {
-    applySelectionByDate(arg)
-  } else {
-    applySelectionByIndex(arg)
-  }
+  applySelectionByIndex(arg)
+}
+function setAutoPlay(arg: boolean) {
+  applyAutoplay(arg)
 }
 
 /// REGION VIEW
@@ -85,17 +80,11 @@ let chartInstance: echart.ECharts = null as any
 function makeBaseOption(timelineDots: Date[]): echart.EChartsOption {
   return {
     timeline: {
-      axisType: 'time',
+      axisType: 'category',
       autoPlay: props.autoPlay,
       playInterval: props.playInterval,
-      data: timelineDots,
-      realtime: true,
-      label: {
-        formatter(value) {
-          const dat = new Date(value)
-          return moment(dat).format('yyyy-MM-DD')
-        }
-      }
+      data: timelineDots.map((item) => moment(item).format('yyyy-MM-DD')),
+      realtime: true
     },
     title: makeTitle('Covid-19 Confirmed Map Timeline'),
     tooltip: {
@@ -146,10 +135,12 @@ onMounted(() => {
   })
   chartInstance.showLoading(makeLoadingOptions())
   chartInstance.on('timelinechanged', (params) => {
-    let dates = (chartInstance.getOption() as any).timeline![0].data! as Date[]
-
-    emit('update:selectedDate', dates[(params as any).currentIndex])
     emit('update:selectedIndex', (params as any).currentIndex)
+  })
+  chartInstance.on('timelineplaychanged', (params) => {
+    const state = (params as any).playState
+    if(props.autoPlay!=state)
+      emit('update:autoPlay', state)
   })
 
   /// Action
@@ -175,27 +166,10 @@ function applyTimeData(dataset: DateData[]) {
   chartInstance.hideLoading()
   chartInstance.setOption(option)
 }
-function applySelectionByDate(date: Date) {
-  let option = chartInstance.getOption() as any
-  let currIndex = option.timeline[0].currentIndex!
-  let data = option.timeline[0].data as Date[]
-  if (date.valueOf() != data[currIndex].valueOf()) {
-    let newIndex = data.indexOf(date)
-    if (newIndex == -1) throw new RangeError('Date out of available list!')
-    chartInstance.setOption({
-      baseOption: {
-        timeline: {
-          currentIndex: newIndex
-        }
-      }
-    } as echart.EChartsOption)
-    emit('update:selectedIndex', newIndex)
-  }
-}
 function applySelectionByIndex(index: number) {
   let option = chartInstance.getOption() as any
   let currIndex = option.timeline[0].currentIndex!
-  let data = option.timeline[0].data as Date[]
+  let data = option.timeline[0].data as any[]
   if (currIndex != index) {
     if (index > data.length) throw new RangeError('Date out of available list!')
     chartInstance.setOption({
@@ -205,8 +179,10 @@ function applySelectionByIndex(index: number) {
         }
       }
     } as echart.EChartsOption)
-    emit('update:selectedDate', data[index])
   }
+}
+function applyAutoplay(play: boolean) {
+  chartInstance.dispatchAction({ type: 'timelinePlayChange', playState: play })
 }
 
 /// REGION MODEL
