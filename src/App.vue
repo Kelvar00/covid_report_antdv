@@ -226,7 +226,7 @@ const footerStyle: CSSProperties = {
         },
       ]"
     >
-      <template #progressDot="{ index, status, prefixCls }">
+      <template #progressDot="{ index, status, prefixCls }" style="margin-top: 40px;">
         <a-popover>
           <template #content>
             <span>step {{ index }} status: {{ status }}</span>
