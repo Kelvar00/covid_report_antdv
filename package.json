@@ -14,9 +14,9 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
     "@types/fullpage.js": "^2.9.3",
+    "ant-design-vue": "^4.0.0",
     "axios": "^1.4.0",
     "echarts": "^5.4.3",
-    "element-plus": "^2.3.9",
     "fullpage.js": "^4.0.20",
     "moment": "^2.29.4",
     "pnpm": "^8.6.12",
