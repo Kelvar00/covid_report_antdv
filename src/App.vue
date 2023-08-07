@@ -105,11 +105,7 @@ const footerStyle: CSSProperties = {
 </script>
 
 <template>
-  <a-carousel
-    indicator-position="none"
-    style="width: 100%; height: 100%; position: absolute"
-    :autoplay="true"
-  >
+  <a-carousel indicator-position="none" style="width: 100%; height: 100%; position: absolute" :autoplay="true">
     <div v-for="item in carouseData" :key="item">
       <img :src="item.url" alt="" style="object-fit: initial; height: 100%; width: 100%" />
     </div>
@@ -118,15 +114,13 @@ const footerStyle: CSSProperties = {
     <div class="section">
       <a-layout :style="transparentStyle">
         <a-layout-header :style="headerStyle">
-          <div
-            style="
+          <div style="
               text-align: center;
               font-size: 50px;
               color: aqua;
               font-family: 'Courier New', Courier, monospace;
               z-index: 2;
-            "
-          >
+            ">
             R . I . P
           </div>
         </a-layout-header>
@@ -190,61 +184,48 @@ const footerStyle: CSSProperties = {
     </div>
 
     <div class="section">
-      <a-row>
+      <a-row style="margin-bottom: 50px;">
         <a-col :span="8" :offset="2">
-          <MapTimeline
-            :width-height-ratio="0.6"
-            :dates="dates"
-            :auto-play="true"
-            :play-interval="10000"
-            v-model:selected-date="selectedDate"
-            v-model:selected-index="selectedIndex"
-          />
+          <MapTimeline :width-height-ratio="0.6" :dates="dates" :auto-play="true" :play-interval="10000"
+            v-model:selected-date="selectedDate" v-model:selected-index="selectedIndex" />
         </a-col>
       </a-row>
       <a-row>
-        <a-col :span="4" style="width: 10vw;align-items: center;" :offset="4">
+        <a-col :span="4" style="align-items: center;" :offset="2">
           <div>
-    <a-steps
-      v-model:current="selectedIndex"
-      :items="[
-        {
-          title: 'Finished',
-          description: '',
-        },
-        {
-          title: 'In Progress',
-          description: '',
-        },
-        {
-          title: 'Waiting',
-          description: '',
-        },
-        {
-          title: 'Waiting',
-          description: '',
-        },
-      ]"
-    >
-      <template #progressDot="{ index, status, prefixCls }" style="margin-top: 40px;">
-        <a-popover>
-          <template #content>
-            <span>step {{ index }} status: {{ status }}</span>
-          </template>
-          <span :class="`${prefixCls}-icon-dot`" />
-        </a-popover>
-      </template>
-    </a-steps>
-  </div>
+            <a-steps direction="vertical" v-model:current="selectedIndex" :items="[
+              {
+                title: 'Finished',
+                description: '',
+              },
+              {
+                title: 'In Progress',
+                description: '',
+              },
+              {
+                title: 'Waiting',
+                description: '',
+              },
+              {
+                title: 'Waiting',
+                description: '',
+              },
+            ]">
+              <template #progressDot="{ index, status, prefixCls }" style="margin-top: 40px;">
+                <a-popover>
+                  <template #content>
+                    <span>step {{ index }} status: {{ status }}</span>
+                  </template>
+                  <span :class="`${prefixCls}-icon-dot`" />
+                </a-popover>
+              </template>
+            </a-steps>
+          </div>
         </a-col>
-        <a-col :span="10" :offset="12">
+        <a-col :span="10" :offset="6">
           <div>
-            <TrendTimeline
-              :width-height-ratio="0.5"
-              :dates="dates"
-              v-model:selected-date="selectedDate"
-              v-model:selected-index="selectedIndex"
-            />
+            <TrendTimeline :width-height-ratio="0.5" :dates="dates" v-model:selected-date="selectedDate"
+              v-model:selected-index="selectedIndex" />
           </div>
         </a-col>
       </a-row>
@@ -262,6 +243,7 @@ const footerStyle: CSSProperties = {
 .transparent_content {
   color: 'transparent';
 }
+
 .grid-content {
   border-radius: 4px;
   min-height: 36px;
@@ -309,6 +291,7 @@ const footerStyle: CSSProperties = {
   width: 480px;
   border-radius: 0px;
 }
+
 .scroll_content {
   overflow-x: hidden;
 }

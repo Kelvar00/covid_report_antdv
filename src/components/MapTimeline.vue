@@ -108,12 +108,12 @@ function makeBaseOption(timelineDots: Date[]): echart.EChartsOption {
     },
     visualMap: {
       min: 0,
-      max: 1000000,
+      max: 100000,
       text: ['High', 'Low'],
       realtime: false,
       calculable: true,
       inRange: {
-        color: ['white', 'yellow', 'orangered'] // YOU CAN MODIFY THIS
+        color: ['grey', 'red', '#490505'] // YOU CAN MODIFY THIS
       }
     },
     series: [
@@ -122,8 +122,8 @@ function makeBaseOption(timelineDots: Date[]): echart.EChartsOption {
         type: 'map',
         map: 'world',
         roam: true,
-        emphasis: makeStateOption(false, 'red'),
-        select: makeStateOption(false, 'red'),
+        emphasis: makeStateOption(false, 'white'),
+        select: makeStateOption(false, 'white'),
         ...makeStateOption(false),
         data: [],
         animation: true,
