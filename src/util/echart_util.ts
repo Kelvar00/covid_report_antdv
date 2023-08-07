@@ -7,7 +7,9 @@ import {
   GridComponent,
   LegendComponent,
   DataZoomComponent,
-  DatasetComponent
+  DatasetComponent,
+  VisualMapComponent,
+  TransformComponent
 } from 'echarts/components'
 import type {
   TitleComponentOption,
@@ -16,7 +18,8 @@ import type {
   GridComponentOption,
   LegendComponentOption,
   DataZoomComponentOption,
-  DatasetComponentOption
+  DatasetComponentOption,
+  VisualMapComponentOption
 } from 'echarts/components'
 import { type LineSeriesOption, MapChart, LineChart } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -126,6 +129,7 @@ export type ECOption = ComposeOption<
   | LegendComponentOption
   | DataZoomComponentOption
   | DatasetComponentOption
+  | VisualMapComponentOption
 >
 
 const EChartUtils = {
@@ -138,6 +142,8 @@ const EChartUtils = {
       LegendComponent,
       DataZoomComponent,
       DatasetComponent,
+      VisualMapComponent,
+      TransformComponent,
       MapChart,
       LineChart,
       CanvasRenderer

@@ -74,23 +74,35 @@ import {
 import trendJson from '@/assets/multiTimeline.json'
 
 import moment from 'moment'
+import { Item } from 'ant-design-vue/es/menu';
 
 const chartElement: Ref<HTMLDivElement> = ref(null) as any
 let chartInstance: echart.ECharts = null as any
 
 function makeBaseOption(timelineDots: Date[]): ECOption {
-  let dataSets = []
+  let dataSets:any = [{
+      dimensions: ['Time', '新型冠狀病毒肺炎', 'CoronaVirus', 'COVID','Index'],
+      source: trendJson.map((item,index)=>{return {
+        ...item,Index:index
+      }})
+    }]
   for (const date of timelineDots) {
-    let dateString = moment(date).format('yyyy-MM-DD')
-    let index = trendJson.findIndex((item) => item.Time == dateString)
-    let dataSource = []
-    for (let i = index - 50; i <= index + 50; i++) {
-      if (i >= 0 && i < trendJson.length) dataSource.push(trendJson[i])
+    let values = trendJson.map(item=>Math.abs(moment(item.Time,'yyyy-MM-DD').unix()*1000-date.valueOf()))
+    let index = values.indexOf(Math.min(...values))
+    let mininumIndex = Math.max(0,index-30)
+    let maximumIndex = Math.min(trendJson.length-1,index+30)
+    let transform = {
+      transform:{
+        type: 'filter',
+        config: {
+          and:[
+          { dimension: 'Index', '>=': mininumIndex },
+          { dimension: 'Index', '<=': maximumIndex }
+          ]
+        }
+      }
     }
-    dataSets.push({
-      dimensions: ['Time', '新型冠狀病毒肺炎', 'CoronaVirus', 'COVID'],
-      source: dataSource
-    })
+    dataSets.push(transform)
   }
   return {
     timeline: {
@@ -149,10 +161,10 @@ function applyTimeData(dates: Date[]) {
             '新型冠狀病毒肺炎',
             undefined,
             undefined,
-            index
+            index+1
           ),
-          makeLineSeries('CoronaVirus', 'time', 'CoronaVirus', undefined, undefined, index),
-          makeLineSeries('COVID', 'time', 'COVID', undefined, undefined, index)
+          makeLineSeries('CoronaVirus', 'time', 'CoronaVirus', undefined, undefined, index+1),
+          makeLineSeries('COVID', 'time', 'COVID', undefined, undefined, index+1)
         ]
       }
     })

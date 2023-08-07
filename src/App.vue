@@ -1,5 +1,5 @@
 <script setup lang="ts">
-declare var require: any
+import keyMoments from '@/assets/keyMoments.json'
 import { ref, onMounted, type CSSProperties } from 'vue'
 import fullpage from 'fullpage.js'
 import Image1 from '@/assets/img/T22.png'
@@ -7,7 +7,7 @@ import Image2 from '@/assets/img/T23.png'
 import Image3 from '@/assets/img/T24.png'
 import Image4 from '@/assets/img/T25.png'
 
-const dates = ref([new Date(2020, 1, 2), new Date(2020, 3, 26), new Date(2020, 5, 14)])
+const dates = ref(keyMoments.map(item=>moment(item.Time,'yyyy-MM-DD').toDate()))
 const selectedIndex = ref(0)
 const autoPlay = ref(true)
 
@@ -70,6 +70,7 @@ onMounted(() => {
 import MapCharts from './components/MapCharts.vue'
 import MapTimeline from './components/MapTimeline.vue'
 import TrendTimeline from './components/TrendTimeline.vue'
+import moment from 'moment'
 //import { requiredNumber } from 'element-plus/es/components/table-v2/src/common.js';
 const transparentStyle: CSSProperties = {
   color: 'transoarent',
@@ -110,7 +111,7 @@ const footerStyle: CSSProperties = {
     style="width: 100%; height: 100%; position: absolute"
     :autoplay="true"
   >
-    <div v-for="item in carouseData" :key="item">
+    <div v-for="(item,index) in carouseData" :key="index">
       <img :src="item.url" alt="" style="object-fit: initial; height: 100%; width: 100%" />
     </div>
   </a-carousel>
