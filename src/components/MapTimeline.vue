@@ -70,9 +70,9 @@ import {
   makeLoadingOptions,
   useEchartAutoResize
 } from '@/util/echart_util'
-import worldJson from '@/assets/world.json'
 import moment from 'moment'
-echart.registerMap('world', JSON.stringify(worldJson))
+
+loadWorldJson()
 
 const chartElement: Ref<HTMLDivElement> = ref(null) as any
 let chartInstance: echart.ECharts = null as any
@@ -192,6 +192,7 @@ class DateData {
 }
 
 import { getWorldAtTime } from '@/util/data'
+import { loadWorldJson } from '@/util/echart_util';
 async function loadTimeData(dates: Date[]): Promise<DateData[]> {
   let promisesList = []
   async function queryData(date: Date) {

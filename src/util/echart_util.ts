@@ -1,8 +1,14 @@
 import * as echart from 'echarts'
-import { toValue, type WatchSource, onMounted, onBeforeUnmount } from 'vue'
+import { toValue, type App, type WatchSource, onMounted, onBeforeUnmount } from 'vue'
+import worldJson from '@/assets/world.json'
 
 export function makeTitle(text: string): echart.TitleComponentOption {
-  return { text: text, padding: 20, left: 'center',textStyle:{color:'#f1f1f1',fontWeight:'bolder'} }
+  return {
+    text: text,
+    padding: 20,
+    left: 'center',
+    textStyle: { color: '#f1f1f1', fontWeight: 'bolder' }
+  }
 }
 export function makeStateOption(
   showLabel: boolean,
@@ -89,4 +95,15 @@ export function useEchartAutoResize(
   })
   onMounted(() => widthObserver.observe(toValue(parentContainerSource)))
   onBeforeUnmount(() => widthObserver.disconnect())
+}
+export function loadWorldJson() {
+  if (!echart.getMap('world')) {
+    echart.registerMap('world', worldJson as any)
+  }
+}
+
+export default {
+  install: function (app: App<any>): App<any> {
+    return app
+  }
 }

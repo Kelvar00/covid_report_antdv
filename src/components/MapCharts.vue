@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue'
 import * as echart from 'echarts'
-import worldJson from '@/assets/world.json'
 import { getCountryWeekly, getWorldAtTime } from '@/util/data'
 import {
   makeTitle,
@@ -9,10 +8,11 @@ import {
   makeLineSeries,
   makeGridSettings,
   makeLoadingOptions,
-  useEchartAutoResize
+  useEchartAutoResize,
+  loadWorldJson
 } from '@/util/echart_util'
 
-echart.registerMap('world', JSON.stringify(worldJson))
+loadWorldJson()
 
 const option: echart.EChartsOption = {
   backgroundColor: '#000000',
