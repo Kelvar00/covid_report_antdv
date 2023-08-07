@@ -34,6 +34,7 @@ watch(
   () => props.dates,
   (newVal) => {
     setDatesList(newVal)
+    setDateTrendMap(newVal)
   },
   { deep: true }
 )
@@ -60,6 +61,18 @@ function setSelection(arg: number | undefined) {
 function setAutoPlay(arg: boolean) {
   applyAutoplay(arg)
 }
+function setDateTrendMap(dates:Date[])
+{
+  dateTrendMap.clear()
+  for(const date of dates)
+  {
+    let values = trendJson.map((item) =>
+      Math.abs(moment(item.Time, 'yyyy-MM-DD').unix() * 1000 - date.valueOf())
+    )
+    let index = values.indexOf(Math.min(...values))
+    dateTrendMap.set(date,index)
+  }
+}
 
 /// REGION VIEW
 import * as echart from 'echarts/core'
@@ -74,30 +87,34 @@ import {
 import trendJson from '@/assets/multiTimeline.json'
 
 import moment from 'moment'
-import { Item } from 'ant-design-vue/es/menu';
 
 const chartElement: Ref<HTMLDivElement> = ref(null) as any
 let chartInstance: echart.ECharts = null as any
+let dateTrendMap:Map<Date,number> = new Map()
 
 function makeBaseOption(timelineDots: Date[]): ECOption {
-  let dataSets:any = [{
-      dimensions: ['Time', '新型冠狀病毒肺炎', 'CoronaVirus', 'COVID','Index'],
-      source: trendJson.map((item,index)=>{return {
-        ...item,Index:index
-      }})
-    }]
+  let dataSets: any = [
+    {
+      dimensions: ['Time', '新型冠狀病毒肺炎', 'CoronaVirus', 'COVID', 'Index'],
+      source: trendJson.map((item, index) => {
+        return {
+          ...item,
+          Index: index
+        }
+      })
+    }
+  ]
   for (const date of timelineDots) {
-    let values = trendJson.map(item=>Math.abs(moment(item.Time,'yyyy-MM-DD').unix()*1000-date.valueOf()))
-    let index = values.indexOf(Math.min(...values))
-    let mininumIndex = Math.max(0,index-30)
-    let maximumIndex = Math.min(trendJson.length-1,index+30)
+    let index = dateTrendMap.get(date)!
+    let mininumIndex = Math.max(0, index - 8)
+    let maximumIndex = Math.min(trendJson.length - 1, index + 8)
     let transform = {
-      transform:{
+      transform: {
         type: 'filter',
         config: {
-          and:[
-          { dimension: 'Index', '>=': mininumIndex },
-          { dimension: 'Index', '<=': maximumIndex }
+          and: [
+            { dimension: 'Index', '>=': mininumIndex },
+            { dimension: 'Index', '<=': maximumIndex }
           ]
         }
       }
@@ -118,10 +135,12 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
       ...makeTitle('Covid-19 Trend Timeline')
     },
     tooltip: {
-      trigger: 'axis'
+      trigger:'axis'
     },
     dataset: dataSets,
-    xAxis: { type: 'time' },
+    xAxis: {
+      type: 'time'
+    },
     yAxis: {},
     series: []
   }
@@ -141,19 +160,33 @@ onMounted(() => {
   })
   chartInstance.on('timelineplaychanged', (params) => {
     const state = (params as any).playState
-    if(props.autoPlay!=state)
-      emit('update:autoPlay', state)
+    if (props.autoPlay != state) emit('update:autoPlay', state)
   })
 
   /// Action
+  setDateTrendMap(props.dates)
   setDatesList(props.dates)
   setSelection(0)
 })
 function applyTimeData(dates: Date[]) {
   let option: ECOption = {
     baseOption: makeBaseOption(dates),
-    options: dates.map((_, index) => {
+    options: dates.map((dateDot, index) => {
+      let closest = dateTrendMap.get(dateDot)!
       return {
+        xAxis: {
+          type: 'time',
+          axisPointer: {
+            value: trendJson[closest].Time,
+            show: true,
+            snap: true,
+            triggerEmphasis:true,
+            handle: {
+              show: true,
+              color: 'transparent'
+            }
+          }
+        },
         series: [
           makeLineSeries(
             '新型冠狀病毒肺炎',
@@ -161,10 +194,10 @@ function applyTimeData(dates: Date[]) {
             '新型冠狀病毒肺炎',
             undefined,
             undefined,
-            index+1
+            index + 1
           ),
-          makeLineSeries('CoronaVirus', 'time', 'CoronaVirus', undefined, undefined, index+1),
-          makeLineSeries('COVID', 'time', 'COVID', undefined, undefined, index+1)
+          makeLineSeries('CoronaVirus', 'time', 'CoronaVirus', undefined, undefined, index + 1),
+          makeLineSeries('COVID', 'time', 'COVID', undefined, undefined, index + 1)
         ]
       }
     })

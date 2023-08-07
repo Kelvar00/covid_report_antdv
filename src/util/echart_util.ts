@@ -21,7 +21,7 @@ import type {
   DatasetComponentOption,
   VisualMapComponentOption
 } from 'echarts/components'
-import { type LineSeriesOption, MapChart, LineChart } from 'echarts/charts'
+import { type LineSeriesOption, type MapSeriesOption, MapChart, LineChart } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
 import { toValue, type App, type WatchSource, onMounted, onBeforeUnmount } from 'vue'
 import worldJson from '@/assets/world.json'
@@ -130,6 +130,8 @@ export type ECOption = ComposeOption<
   | DataZoomComponentOption
   | DatasetComponentOption
   | VisualMapComponentOption
+  | LineSeriesOption
+  | MapSeriesOption
 >
 
 const EChartUtils = {
