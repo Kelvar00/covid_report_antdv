@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { watch, ref, type Ref, onMounted } from 'vue'
-import darklow from '@/assets/theme/darklow.json'
-echart.registerTheme('darklow', darklow.theme)
 /// REGION VIEWMODEL
 const props = defineProps({
   dates: {
@@ -63,21 +61,20 @@ function setAutoPlay(arg: boolean) {
 }
 
 /// REGION VIEW
-import * as echart from 'echarts'
+import * as echart from 'echarts/core'
 import {
   makeTitle,
   makeStateOption,
   makeLoadingOptions,
-  useEchartAutoResize
+  useEchartAutoResize,
+  type ECOption
 } from '@/util/echart_util'
 import moment from 'moment'
-
-loadWorldJson()
 
 const chartElement: Ref<HTMLDivElement> = ref(null) as any
 let chartInstance: echart.ECharts = null as any
 
-function makeBaseOption(timelineDots: Date[]): echart.EChartsOption {
+function makeBaseOption(timelineDots: Date[]): ECOption {
   return {
     timeline: {
       axisType: 'category',
@@ -148,7 +145,7 @@ onMounted(() => {
   setSelection(0)
 })
 function applyTimeData(dataset: DateData[]) {
-  let option: echart.EChartsOption = {
+  let option: ECOption = {
     baseOption: makeBaseOption(dataset.map((item) => item.date)),
     options: dataset.map((item) => {
       return {
@@ -178,7 +175,7 @@ function applySelectionByIndex(index: number) {
           currentIndex: index
         }
       }
-    } as echart.EChartsOption)
+    } as ECOption)
   }
 }
 function applyAutoplay(play: boolean) {
@@ -192,7 +189,6 @@ class DateData {
 }
 
 import { getWorldAtTime } from '@/util/data'
-import { loadWorldJson } from '@/util/echart_util';
 async function loadTimeData(dates: Date[]): Promise<DateData[]> {
   let promisesList = []
   async function queryData(date: Date) {

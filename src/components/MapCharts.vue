@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue'
-import * as echart from 'echarts'
+import * as echart from 'echarts/core'
 import { getCountryWeekly, getWorldAtTime } from '@/util/data'
 import {
   makeTitle,
@@ -9,12 +9,11 @@ import {
   makeGridSettings,
   makeLoadingOptions,
   useEchartAutoResize,
-  loadWorldJson
+  type ECOption
 } from '@/util/echart_util'
 
-loadWorldJson()
 
-const option: echart.EChartsOption = {
+const option: ECOption = {
   backgroundColor: '#000000',
   title: makeTitle('Covid-19 Confirmed Map(2022/12/14)'),
   tooltip: {
@@ -73,7 +72,7 @@ let countryChartInstance: echart.ECharts = null as any
 
 /// REGION CORE LOGIC
 function showCountryDetails(selectedCountry: string) {
-  const optionHolder: echart.EChartsOption = {
+  const optionHolder: ECOption = {
     legend: { orient: 'horizontal', padding: [50, 5], textStyle: { color: '#f2f2f2' } },
     grid: makeGridSettings('10%'),
     tooltip: { trigger: 'axis' },
@@ -107,7 +106,7 @@ function showCountryDetails(selectedCountry: string) {
         death: item.totalDeath
       })
     }
-    const newOption: echart.EChartsOption = {
+    const newOption: ECOption = {
       title: makeTitle('Covid-19 Statistics of ' + selectedCountry),
       dataset: { dimensions: ['time', 'confirmed', 'cured', 'death'], source: dataList },
       series: [

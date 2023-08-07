@@ -1,8 +1,30 @@
-import * as echart from 'echarts'
+import * as echart from 'echarts/core'
+import type { ComposeOption } from 'echarts/core'
+import {
+  TitleComponent,
+  TooltipComponent,
+  TimelineComponent,
+  GridComponent,
+  LegendComponent,
+  DataZoomComponent,
+  DatasetComponent
+} from 'echarts/components'
+import type {
+  TitleComponentOption,
+  TooltipComponentOption,
+  TimelineComponentOption,
+  GridComponentOption,
+  LegendComponentOption,
+  DataZoomComponentOption,
+  DatasetComponentOption
+} from 'echarts/components'
+import { type LineSeriesOption, MapChart, LineChart } from 'echarts/charts'
+import { CanvasRenderer } from 'echarts/renderers'
 import { toValue, type App, type WatchSource, onMounted, onBeforeUnmount } from 'vue'
 import worldJson from '@/assets/world.json'
+import darklow from '@/assets/theme/darklow.json'
 
-export function makeTitle(text: string): echart.TitleComponentOption {
+export function makeTitle(text: string): TitleComponentOption {
   return {
     text: text,
     padding: 20,
@@ -19,7 +41,7 @@ export function makeStateOption(
 export function makeGridSettings(
   paddingVertical: string,
   paddingHorizonal: string = '5%'
-): echart.GridComponentOption {
+): GridComponentOption {
   return {
     containLabel: true,
     left: paddingHorizonal,
@@ -35,7 +57,7 @@ export function makeLineSeries(
   color: echart.Color | undefined = undefined,
   tooltipDim: string | undefined = undefined,
   datasetIndex: number = 0
-): echart.SeriesOption {
+): LineSeriesOption {
   if (tooltipDim === undefined) tooltipDim = yDim
   return {
     name: displayName,
@@ -96,14 +118,33 @@ export function useEchartAutoResize(
   onMounted(() => widthObserver.observe(toValue(parentContainerSource)))
   onBeforeUnmount(() => widthObserver.disconnect())
 }
-export function loadWorldJson() {
-  if (!echart.getMap('world')) {
-    echart.registerMap('world', worldJson as any)
-  }
-}
+export type ECOption = ComposeOption<
+  | TitleComponentOption
+  | TooltipComponentOption
+  | TimelineComponentOption
+  | GridComponentOption
+  | LegendComponentOption
+  | DataZoomComponentOption
+  | DatasetComponentOption
+>
 
-export default {
+const EChartUtils = {
   install: function (app: App<any>): App<any> {
+    echart.use([
+      TitleComponent,
+      TooltipComponent,
+      TimelineComponent,
+      GridComponent,
+      LegendComponent,
+      DataZoomComponent,
+      DatasetComponent,
+      MapChart,
+      LineChart,
+      CanvasRenderer
+    ])
+    echart.registerTheme('darklow', darklow.theme)
+    echart.registerMap('world', worldJson as any)
     return app
   }
 }
+export default EChartUtils

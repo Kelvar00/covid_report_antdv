@@ -62,13 +62,14 @@ function setAutoPlay(arg: boolean) {
 }
 
 /// REGION VIEW
-import * as echart from 'echarts'
+import * as echart from 'echarts/core'
 import {
   makeTitle,
   makeLineSeries,
   makeGridSettings,
   makeLoadingOptions,
-  useEchartAutoResize
+  useEchartAutoResize,
+  type ECOption
 } from '@/util/echart_util'
 import trendJson from '@/assets/multiTimeline.json'
 
@@ -77,7 +78,7 @@ import moment from 'moment'
 const chartElement: Ref<HTMLDivElement> = ref(null) as any
 let chartInstance: echart.ECharts = null as any
 
-function makeBaseOption(timelineDots: Date[]): echart.EChartsOption {
+function makeBaseOption(timelineDots: Date[]): ECOption {
   let dataSets = []
   for (const date of timelineDots) {
     let dateString = moment(date).format('yyyy-MM-DD')
@@ -137,7 +138,7 @@ onMounted(() => {
   setSelection(0)
 })
 function applyTimeData(dates: Date[]) {
-  let option: echart.EChartsOption = {
+  let option: ECOption = {
     baseOption: makeBaseOption(dates),
     options: dates.map((_, index) => {
       return {
@@ -171,7 +172,7 @@ function applySelectionByIndex(index: number) {
           currentIndex: index
         }
       }
-    } as echart.EChartsOption)
+    } as ECOption)
   }
 }
 function applyAutoplay(play: boolean) {
