@@ -38,7 +38,7 @@ onMounted(() => {
     responsiveWidth: 800,
     sectionsColor: [
       'transparent',
-      '#666666ff',
+      '#EAB530',
       '#000000aa',
       '#000000',
       '#2b0909',
@@ -92,6 +92,13 @@ const footerStyle: CSSProperties = {
 </script>
 
 <template>
+  <a-config-provider
+    :theme="{
+      token: {
+        colorPrimary: '#6b3212'
+      }
+    }"
+  ></a-config-provider>
   <a-carousel
     indicator-position="none"
     style="width: 100%; height: 100%; position: absolute"
@@ -109,7 +116,7 @@ const footerStyle: CSSProperties = {
     </ul>
   </div>
   <div id="fullpage">
-    <div class="section">
+    <div class="section" style="padding: 20px">
       <a-layout :style="transparentStyle">
         <a-layout-header :style="headerStyle">
           <div
@@ -183,17 +190,9 @@ const footerStyle: CSSProperties = {
       </a-layout>
     </div>
 
-    <div class="section">
+    <div class="section" style="padding-top;: 20px">
       <a-row style="margin-bottom: 50px">
-        <a-col :span="8" :offset="2">
-          <MapTimeline
-            :width-height-ratio="0.6"
-            :dates="dates"
-            :play-interval="10000"
-            v-model:selected-index="selectedIndex"
-            v-model:auto-play="autoPlay"
-          />
-        </a-col>
+        <a-col :span="8" :offset="2"> </a-col>
       </a-row>
       <a-row>
         <a-col :span="6" style="align-items: center" :offset="4">
@@ -218,7 +217,20 @@ const footerStyle: CSSProperties = {
             </a-steps>
           </div>
         </a-col>
-        <a-col :span="10" :offset="2">
+        <a-col
+          style="display: flex; flex-direction: column; justify-content: space-between"
+          :span="10"
+          :offset="2"
+        >
+          <div>
+            <MapTimeline
+              :width-height-ratio="0.6"
+              :dates="dates"
+              :play-interval="10000"
+              v-model:selected-index="selectedIndex"
+              v-model:auto-play="autoPlay"
+            />
+          </div>
           <div>
             <TrendTimeline
               :width-height-ratio="0.5"
@@ -230,7 +242,7 @@ const footerStyle: CSSProperties = {
         </a-col>
       </a-row>
     </div>
-    <div class="section">
+    <div class="section" style="padding: 20px">
       <div class="chart-map">
         <MapCharts :width-height-ratio="0.72" :margin-ratio="0.9" />
       </div>
@@ -299,12 +311,12 @@ const footerStyle: CSSProperties = {
 .scroll_event {
   height: 100%;
   overflow-y: scroll;
-  max-height: 40vh;
+  max-height: 80vh;
 }
 .titlebox {
 }
 #menu {
-  background-color: rgb(0, 22, 48);
+  background-color: rgb(48, 22, 0);
   z-index: 100;
   display: flex;
   position: absolute;
