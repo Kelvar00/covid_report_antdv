@@ -32,7 +32,7 @@ onMounted(() => {
       '#003356',
       '#003a61'
     ],
-    anchors: ['page1', 'page2', 'page3']
+    anchors: ['page0', 'page1', 'page2', 'page3']
   })
 })
 
@@ -57,10 +57,17 @@ const headerStyle: CSSProperties = {
   lineHeight: '64px',
   backgroundColor: 'transparent'
 }
-const staticStyle: CSSProperties = {
+const staticStyleConfirmed: CSSProperties = {
   textAlign: 'center',
-  fontSize: '40px',
-  color: '#FDB2A3'
+  color: '#FF9897'
+}
+const staticStyleDead: CSSProperties = {
+  textAlign: 'center',
+  color: '#aaaaaa'
+}
+const staticStyleVaccine: CSSProperties = {
+  textAlign: 'center',
+  color: '#78afdf'
 }
 const contentStyle: CSSProperties = {
   textAlign: 'center',
@@ -96,74 +103,88 @@ const footerStyle: CSSProperties = {
     </a-carousel>
     <div>
       <ul id="menu">
-        <li><a href="#page1" class="hreftitle">First slide</a></li>
-        <li><a href="#page2" class="hreftitle">Second slide</a></li>
-        <li><a href="#page3" class="hreftitle">Third slide</a></li>
+        <li>
+          <h2 class="icontitle">Title Here</h2>
+        </li>
+        <li><a href="#page0" class="hreftitle">Index</a></li>
+        <li><a href="#page1" class="hreftitle">Statistics</a></li>
+        <li><a href="#page2" class="hreftitle">News Trend</a></li>
+        <li><a href="#page3" class="hreftitle">Map</a></li>
       </ul>
     </div>
     <div id="fullpage">
+      <div class="section" style="align-items: center;justify-items: center;">
+        <a-row>
+          <a-col :span="12" :offset="6">
+            <h1
+              style="font-weight: bold;margin-bottom: 10px;font-size: 120px;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif "
+              align="center">The Pandemic</h1>
+            <p style="font-size: 24px;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ">The
+              novel coronavirus, cases of which were first reported in <font color="#65C0FE">December 2019</font>, has
+              escalated into a pandemic
+              affecting <font color="#65C0FE">at least 200 countries and regions</font> so far. The rapid outbreak has
+              stoked fear and prejudice while
+              inspiring love and empathy. Its socio-economic, political and psychological impact is reshaping the global
+              landscape.</p>
+          </a-col>
+        </a-row>
+      </div>
       <div class="section" style="padding-top: 60px">
         <a-layout :style="transparentStyle">
-          <a-layout-header :style="headerStyle">
-            <div style="
-              text-align: center;
-              font-size: 50px;
-              color: rgb(0, 123, 255);
-              font-family: 'Courier New', Courier, monospace;
-              z-index: 2;
-            ">
-              R . I . P .
-            </div>
-          </a-layout-header>
-          <a-layout-content :style="contentStyle">
-            <div style="margin-bottom: 100px"><a-col :span="24"></a-col></div>
-          </a-layout-content>
           <a-layout-content :style="contentStyle">
             <div class="scroll_content">
-              <div class="content-padding-1">
-                <a-col :span="24"> </a-col>
-              </div>
               <a-row style="max-width: 100vw" :gutter="12">
-                <a-col :span="8">
-                  <div class="statistic-card">
-                    <a-statistic :value="168983095">
+                <a-col :span="10" :offset="2">
+                  <p style="color: azure;">
+                    At the turn of the year, few imagined a virus would rise up that modern medicine couldn't quickly
+                    cure. But the coronavirus has now infected over 2.4 million people, shut down nations and threatened
+                    to derail the global economy. As the situation in China tapers off and life slowly returns to normal,
+                    the focus is on preventing imported cases. Elsewhere, this dangerous and relentless virus continues to
+                    plague at least 200 countries and regions. The pandemic has evolved from a public health emergency to
+                    a socio-economic catastrophe.
+                    This is a time when a proliferation of disinformation about the disease is confusing many, when a
+                    blame game is riding on a roller coaster of politicization and xenophobia, when humankind is realizing
+                    its limitations and ignorance in the face of a new virus.
+                    CGTN made this interactive to document the developments of the pandemic as well as measures taken in
+                    China and other countries to counter it.
+                  </p>
+                </a-col>
+                <a-col :span="6" :offset="4">
+                  <div class="statistic-card" style="background-color:rgba(205, 9, 9, 0.69);">
+                    <a-statistic :value="168983095" :valueStyle="staticStyleConfirmed">
                       <template #title>
-                        <div style="display: inline-flex; align-items: center">confirmed cases</div>
+                        <div style="display: flex; align-items: center;color:#FF9897;">confirmed cases</div>
                       </template>
                     </a-statistic>
                     <div class="statistic-footer">
                       <div class="footer-item">
-                        <span>Lat update:2 August 2023 at 07:56 pm GMT+8</span>
+                        <span style="color:#FF9897;">Lat update:2 August 2023 at 07:56 pm GMT+8</span>
                       </div>
                     </div>
                   </div>
-                </a-col>
-                <a-col :span="8">
-                  <div class="statistic-card">
-                    <a-statistic :value="6953743">
+                  <div class="statistic-card" style="background-color:rgba(24, 23, 23, 0.69);">
+                    <a-statistic :value="6953743" :valueStyle="staticStyleDead">
                       <template #title>
-                        <div style="display: inline-flex; align-items: center">Confirmed deaths</div>
+                        <div style="display: flex;align-items: center;color:#aaaaaa">Confirmed deaths</div>
                       </template>
                     </a-statistic>
                     <div class="statistic-footer">
                       <div class="footer-item">
-                        <span>Lat update:2 August 2023 at 07:56 pm GMT+8</span>
+                        <span style="color:#aaaaaa">Lat update:2 August 2023 at 07:56 pm GMT+8</span>
                       </div>
                     </div>
                   </div>
-                </a-col>
-                <a-col :span="8">
-                  <div class="statistic-card">
-                    <a-statistic :value="13492099754" title="New transactions today">
+                  <div class="statistic-card" style="background-color:rgba(0, 105, 162, 0.768);">
+                    <a-statistic :value="13492099754" :valueStyle="staticStyleVaccine">
                       <template #title>
-                        <div style="display: inline-flex; align-items: center">
+                        <div style="display: flex; align-items: center;color:#78afdf">
                           Vaccine doses administrated
                         </div>
                       </template>
                     </a-statistic>
                     <div class="statistic-footer">
                       <div class="footer-item">
-                        <span>Last update: 30 July 2023</span>
+                        <span style="color:#78afdf">Last update: 30 July 2023</span>
                       </div>
                     </div>
                   </div>
@@ -191,17 +212,22 @@ const footerStyle: CSSProperties = {
             <div class="scroll_event">
               <a-config-provider :theme="{
                 token: {
-                  fontSize:16,
-                  colorPrimary: '#EA1B30',
-                  colorText:'#E84848',
-                  colorTextTertiary:'#FF696966',
-                  colorTextDisabled:'#FF696966',
-                  colorSplit:'#FF696966',
+                  fontSize: 16,
+                  // colorPrimary: '#EA1B30',
+                  // colorText: '#E84848',
+                  // colorTextTertiary: '#FF696966',
+                  // colorTextDisabled: '#FF696966',
+                  // colorSplit: '#FF696966',
+                  colorPrimary: '#B8B3AA',
+                  colorText: '#ffffff',
+                  colorTextTertiary: '#E8E6E3',
+                  colorTextDisabled: '#E8E6E3',
+                  colorSplit: '#E8E6E3',
                   sizeStep: 8,
                 }
               }">
                 <a-steps progress-dot @wheel="scrollHandler" direction="vertical" v-model:current="selectedIndex">
-                  <a-step v-for="(item,index) in keyMoments" :key="index" :description="item.Time + ' ' + item.comment">
+                  <a-step v-for="(item, index) in keyMoments" :key="index" :description="item.Time + ' ' + item.comment">
                     <template #title>
                       <span class="steptitle">{{ item.event }}</span>
                     </template>
@@ -217,7 +243,6 @@ const footerStyle: CSSProperties = {
           <MapCharts :width-height-ratio="0.72" :margin-ratio="0.9" />
         </div>
       </div>
-      <div class="section">Some section</div>
     </div>
   </a-config-provider>
 </template>
@@ -237,11 +262,10 @@ const footerStyle: CSSProperties = {
 }
 
 .statistic-card {
-  height: 100%;
-  min-height: 330px;
-  padding: 20px;
+  height: 150px;
+  padding: 15px;
   border-radius: 4px;
-  background-color: #ffffff;
+  color: #ffffff;
 }
 
 .statistic-footer {
@@ -297,6 +321,7 @@ const footerStyle: CSSProperties = {
   width: 100vw;
   list-style: none;
   right: 0px;
+  padding-right: 20px;
   display: flex;
   position: absolute;
   justify-content: right;
@@ -325,5 +350,16 @@ a {
 .steptitle {
   font-size: 24px;
   font-weight: bold;
+
+
 }
-</style>
+
+.icontitle {
+  display: inline-block;
+  position: absolute;
+  left: 20px;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+}</style>
