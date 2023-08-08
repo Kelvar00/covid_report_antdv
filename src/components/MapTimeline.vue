@@ -68,7 +68,8 @@ import {
   makeLoadingOptions,
   useEchartAutoResize,
   type ECOption,
-loadWorldJson
+  loadWorldJson,
+  makeTimelineStyle
 } from '@/util/echart_util'
 import moment from 'moment'
 
@@ -82,7 +83,8 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
       autoPlay: props.autoPlay,
       playInterval: props.playInterval,
       data: timelineDots.map((item) => moment(item).format('yyyy-MM-DD')),
-      realtime: true
+      realtime: true,
+      ...makeTimelineStyle()
     },
     title: makeTitle('Covid-19 Confirmed Map Timeline'),
     tooltip: {
@@ -139,8 +141,7 @@ onMounted(() => {
   })
 
   //Setup
-  Promise.all([loadTimeData(props.dates),loadWorldJson()])
-  .then((value)=>{
+  Promise.all([loadTimeData(props.dates), loadWorldJson()]).then((value) => {
     chartInstance.setOption({
       baseOption: makeBaseOption(props.dates)
     })
@@ -169,6 +170,9 @@ function applyTimeData(dataset: DateData[]) {
 }
 function applySelectionByIndex(index: number) {
   let option = chartInstance.getOption() as any
+  if (option == undefined) {
+    return
+  }
   let currIndex = option.timeline[0].currentIndex!
   let data = option.timeline[0].data as any[]
   if (currIndex != index) {
