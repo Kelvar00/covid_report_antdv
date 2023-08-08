@@ -31,22 +31,23 @@ export function makeTitle(text: string): TitleComponentOption {
     text: text,
     padding: 20,
     left: 'center',
-    textStyle: { color: '#f1f1f1', fontWeight: 'bolder' }
+    textStyle: { color: darklow.theme.titleColor, fontWeight: 'bolder' }
   }
 }
 export function makeStateOption(showLabel: boolean, areaColor?: echart.Color) {
   return { label: { show: showLabel }, itemStyle: { areaColor: areaColor } }
 }
 export function makeGridSettings(
-  paddingVertical: string,
+  paddingTop: string,
+  paddingBottom?: string,
   paddingHorizonal: string = '5%'
 ): GridComponentOption {
   return {
     containLabel: true,
     left: paddingHorizonal,
     right: paddingHorizonal,
-    top: paddingVertical,
-    bottom: paddingVertical
+    top: paddingTop,
+    bottom: paddingBottom ? paddingBottom : paddingTop
   }
 }
 export function makeLineSeries(
@@ -81,16 +82,39 @@ export function makeTimelineStyle(
 ): TimelineComponentOption {
   return {
     lineStyle: {
-      color: lineColor
+      color: lineColor ? lineColor : darklow.theme.timelineLineColor
     },
     itemStyle: {
-      color: itemColor
+      color: itemColor ? itemColor : darklow.theme.timelineItemColor
     },
     checkpointStyle: {
-      color: checkpointColor
+      color: checkpointColor ? checkpointColor : darklow.theme.timelineCheckColor,
+      borderColor: darklow.theme.timelineCheckBorderColor
     },
     controlStyle: {
-      color: controlColor
+      color: controlColor ? controlColor : darklow.theme.timelineCheckColor,
+      borderColor: darklow.theme.timelineControlBorderColor
+    },
+    progress: {
+      lineStyle: {
+        color: lineColor ? lineColor : darklow.theme.timelineLineColor
+      },
+      itemStyle: {
+        color: itemColor ? itemColor : darklow.theme.timelineItemColor
+      }
+    },
+    emphasis: {
+      itemStyle: {
+        color: itemColor ? itemColor : darklow.theme.timelineItemColor
+      },
+      checkpointStyle: {
+        color: checkpointColor ? checkpointColor : darklow.theme.timelineCheckColor,
+        borderColor: darklow.theme.timelineCheckBorderColor
+      },
+      controlStyle: {
+        color: controlColor ? controlColor : darklow.theme.timelineCheckColor,
+        borderColor: darklow.theme.timelineControlBorderColor
+      }
     }
   }
 }

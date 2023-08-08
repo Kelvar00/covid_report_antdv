@@ -14,7 +14,6 @@ import {
 } from '@/util/echart_util'
 
 const option: ECOption = {
-  backgroundColor: '#000000',
   title: makeTitle('Covid-19 Confirmed Map(2022/12/14)'),
   tooltip: {
     trigger: 'item',
@@ -44,9 +43,6 @@ const option: ECOption = {
       select: makeStateOption(false, 'white'),
       ...makeStateOption(false),
       data: [],
-      itemStyle: {
-        areaColor: '#000000'
-      },
       selectedMode: 'single'
     }
   ]
@@ -75,7 +71,7 @@ let countryChartInstance: echart.ECharts = null as any
 function showCountryDetails(selectedCountry: string) {
   const optionHolder: ECOption = {
     legend: { orient: 'horizontal', padding: [50, 5], textStyle: { color: '#f2f2f2' } },
-    grid: makeGridSettings('10%'),
+    grid: makeGridSettings('60','10%'),
     tooltip: { trigger: 'axis' },
     dataZoom: [
       {
@@ -93,8 +89,7 @@ function showCountryDetails(selectedCountry: string) {
     ],
     xAxis: { type: 'time' },
     yAxis: {},
-    color: ['#ff5b57', '#5f79ff', '#880000', '#ba9d7c', '#7ca694'],
-    backgroundColor: '#000000'
+    color: ['#ff5b57', '#5f79ff', '#880000', '#ba9d7c', '#7ca694']
   }
   countryChartInstance.setOption(optionHolder)
   getCountryWeekly(selectedCountry, new Date(2020, 1, 20), new Date(2022, 12, 14)).then((data) => {
@@ -132,7 +127,7 @@ useEchartAutoResize(
   props.marginRatio
 )
 onMounted(() => {
-  worldMapInstance = echart.init(worldMap.value, 'dark')
+  worldMapInstance = echart.init(worldMap.value, 'darklow')
   countryChartInstance = echart.init(countryChart.value, 'darklow')
   //showCountryDetails('China')
   worldMapInstance.showLoading(makeLoadingOptions())

@@ -132,7 +132,7 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
       ...makeTimelineStyle()
     },
     legend: { orient: 'horizontal', padding: [50, 5], textStyle: { color: '#f2f2f2' } },
-    grid: makeGridSettings('10%'),
+    grid: makeGridSettings('60','10%'),
     title: {
       ...makeTitle('Covid-19 Trend Timeline')
     },

@@ -48,7 +48,7 @@
         "mapBorderColorE": "#444",
         "mapBorderWidth": 0.5,
         "mapBorderWidthE": 1,
-        "mapAreaColor": "#eee",
+        "mapAreaColor": "transparent",
         "mapAreaColorE": "rgba(255,215,0,0.8)",
         "axes": [
             {
