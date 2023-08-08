@@ -3,7 +3,7 @@
     "themeName": "darklow",
     "theme": {
         "seriesCnt": "4",
-        "backgroundColor": "rgba(1,1,1,1)",
+        "backgroundColor": "transparent",
         "titleColor": "#ffffff",
         "subtitleColor": "#ffffff",
         "textColorShow": false,

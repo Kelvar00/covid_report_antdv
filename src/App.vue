@@ -176,7 +176,7 @@ const footerStyle: CSSProperties = {
 
       <div class="section" style="padding-top: 60px">
         <a-row>
-          <a-col style="display: flex; flex-direction: column; justify-content: space-between;max-height: 80vh;" :span="9"
+          <a-col style="display: flex; flex-direction: column; justify-content: space-between;max-height: 85vh;" :span="9"
             :offset="3">
             <div style="margin-bottom: 10px;">
               <MapTimeline :width-height-ratio="0.6" :dates="dates" :play-interval="10000"
@@ -187,7 +187,7 @@ const footerStyle: CSSProperties = {
                 v-model:auto-play="autoPlay" />
             </div>
           </a-col>
-          <a-col :span="7" style="align-items: center;max-height: 900px;" :offset="2">
+          <a-col :span="7" style="align-items: center;max-height: 85vh;" :offset="2">
             <div class="scroll_event">
               <a-config-provider :theme="{
                 token: {
@@ -200,9 +200,12 @@ const footerStyle: CSSProperties = {
                   sizeStep: 8,
                 }
               }">
-                <a-steps progress-dot @wheel="scrollHandler" direction="vertical" v-model:current="selectedIndex" :items="keyMoments.map((item) => {
-                  return { title: item.event, description: item.Time + ' ' + item.comment }
-                })">
+                <a-steps progress-dot @wheel="scrollHandler" direction="vertical" v-model:current="selectedIndex">
+                  <a-step v-for="(item,index) in keyMoments" :key="index" :description="item.Time + ' ' + item.comment">
+                    <template #title>
+                      <span class="steptitle">{{ item.event }}</span>
+                    </template>
+                  </a-step>
                 </a-steps>
               </a-config-provider>
             </div>
@@ -319,7 +322,8 @@ a {
   padding-right: 20px;
 }
 
-.titlebox {
-  color: #000000;
+.steptitle {
+  font-size: 24px;
+  font-weight: bold;
 }
 </style>
