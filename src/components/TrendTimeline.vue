@@ -82,6 +82,7 @@ import {
   makeGridSettings,
   makeLoadingOptions,
   useEchartAutoResize,
+  makeTimelineStyle,
   type ECOption
 } from '@/util/echart_util'
 import trendJson from '@/assets/multiTimeline.json'
@@ -127,7 +128,8 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
       autoPlay: props.autoPlay,
       playInterval: props.playInterval,
       data: timelineDots.map((dat) => moment(dat).format('yyyy-MM-DD')),
-      realtime: true
+      realtime: true,
+      ...makeTimelineStyle()
     },
     legend: { orient: 'horizontal', padding: [50, 5], textStyle: { color: '#f2f2f2' } },
     grid: makeGridSettings('10%'),
@@ -207,6 +209,9 @@ function applyTimeData(dates: Date[]) {
 }
 function applySelectionByIndex(index: number) {
   let option = chartInstance.getOption() as any
+  if (option == undefined) {
+    return
+  }
   let currIndex = option.timeline[0].currentIndex!
   let data = option.timeline[0].data as any[]
   if (currIndex != index) {

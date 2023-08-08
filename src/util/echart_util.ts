@@ -34,10 +34,7 @@ export function makeTitle(text: string): TitleComponentOption {
     textStyle: { color: '#f1f1f1', fontWeight: 'bolder' }
   }
 }
-export function makeStateOption(
-  showLabel: boolean,
-  areaColor: echart.Color | undefined = undefined
-) {
+export function makeStateOption(showLabel: boolean, areaColor?: echart.Color) {
   return { label: { show: showLabel }, itemStyle: { areaColor: areaColor } }
 }
 export function makeGridSettings(
@@ -56,8 +53,8 @@ export function makeLineSeries(
   displayName: string,
   xDim: string,
   yDim: string,
-  color: echart.Color | undefined = undefined,
-  tooltipDim: string | undefined = undefined,
+  color?: echart.Color,
+  tooltipDim?: string,
   datasetIndex: number = 0
 ): LineSeriesOption {
   if (tooltipDim === undefined) tooltipDim = yDim
@@ -73,6 +70,27 @@ export function makeLineSeries(
     },
     itemStyle: {
       color: color
+    }
+  }
+}
+export function makeTimelineStyle(
+  lineColor?: echart.Color,
+  itemColor?: echart.Color,
+  checkpointColor?: echart.Color,
+  controlColor?: echart.Color
+): TimelineComponentOption {
+  return {
+    lineStyle: {
+      color: lineColor
+    },
+    itemStyle: {
+      color: itemColor
+    },
+    checkpointStyle: {
+      color: checkpointColor
+    },
+    controlStyle: {
+      color: controlColor
     }
   }
 }
