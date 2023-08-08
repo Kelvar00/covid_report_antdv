@@ -53,7 +53,7 @@ onMounted(() => {
   })
 })
 
-const scrollHandler=(event:WheelEvent)=>{
+const scrollHandler = (event: WheelEvent) => {
   event.stopPropagation()
 }
 
@@ -194,14 +194,35 @@ const footerStyle: CSSProperties = {
       </a-layout>
     </div>
 
-    <div class="section" style="padding-top;: 20px">
-      <a-row style="margin-bottom: 50px">
-        <a-col :span="8" :offset="2"> </a-col>
-      </a-row>
-      <a-row>
-        <a-col :span="6" style="align-items: center" :offset="4">
+    <div class="section">
+      <a-row style="padding-top: 60px">
+        <a-col
+          style="display: flex; flex-direction: column; justify-content: space-around"
+          :span="11"
+          :offset="2"
+        >
+          <div style="margin-bottom: 10px">
+            <MapTimeline
+              :width-height-ratio="0.6"
+              :dates="dates"
+              :play-interval="10000"
+              v-model:selected-index="selectedIndex"
+              v-model:auto-play="autoPlay"
+            />
+          </div>
+          <div>
+            <TrendTimeline
+              :width-height-ratio="0.5"
+              :dates="dates"
+              v-model:selected-index="selectedIndex"
+              v-model:auto-play="autoPlay"
+            />
+          </div>
+        </a-col>
+        <a-col :span="7" style="align-items: center; padding-top: 20px" :offset="2">
           <div class="scroll_event">
-            <a-steps @wheel="scrollHandler"
+            <a-steps
+              @wheel="scrollHandler"
               direction="vertical"
               v-model:current="selectedIndex"
               :items="
@@ -219,29 +240,6 @@ const footerStyle: CSSProperties = {
                 </a-popover>
               </template>
             </a-steps>
-          </div>
-        </a-col>
-        <a-col
-          style="display: flex; flex-direction: column; justify-content: space-between"
-          :span="10"
-          :offset="2"
-        >
-          <div>
-            <MapTimeline
-              :width-height-ratio="0.6"
-              :dates="dates"
-              :play-interval="10000"
-              v-model:selected-index="selectedIndex"
-              v-model:auto-play="autoPlay"
-            />
-          </div>
-          <div>
-            <TrendTimeline
-              :width-height-ratio="0.5"
-              :dates="dates"
-              v-model:selected-index="selectedIndex"
-              v-model:auto-play="autoPlay"
-            />
           </div>
         </a-col>
       </a-row>
@@ -313,11 +311,10 @@ const footerStyle: CSSProperties = {
 }
 
 .scroll_event {
-  height: 100%;
-  overflow-y: scroll;
-  max-height: 80vh;
-}
-.titlebox {
+  scrollbar-width: thin;
+  height: 90%;
+  overflow-y: auto;
+  aspect-ratio: 10/19;
 }
 #menu {
   background-color: rgb(48, 22, 0);
@@ -336,7 +333,7 @@ const footerStyle: CSSProperties = {
 #menu > li,
 a {
   display: inline-block;
-  height: 100%;
+  height: 95%;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 20px;
   vertical-align: middle;

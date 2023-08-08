@@ -94,12 +94,12 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
     },
     visualMap: {
       min: 0,
-      max: 100000,
+      max: 10000000,
       text: ['High', 'Low'],
       realtime: false,
       calculable: true,
       inRange: {
-        color: ['grey', 'red', '#490505'] // YOU CAN MODIFY THIS
+        color: ['#FFDA00', '#DA00FF', '#330000'] // YOU CAN MODIFY THIS
       }
     },
     series: [
@@ -113,7 +113,8 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
         ...makeStateOption(false),
         data: [],
         animation: true,
-        universalTransition: true
+        universalTransition: true,
+        selectedMode: false
       }
     ]
   }
@@ -136,8 +137,7 @@ onMounted(() => {
   })
   chartInstance.on('timelineplaychanged', (params) => {
     const state = (params as any).playState
-    if(props.autoPlay!=state)
-      emit('update:autoPlay', state)
+    if (props.autoPlay != state) emit('update:autoPlay', state)
   })
 
   /// Action

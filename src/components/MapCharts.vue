@@ -12,7 +12,6 @@ import {
   type ECOption
 } from '@/util/echart_util'
 
-
 const option: ECOption = {
   backgroundColor: '#000000',
   title: makeTitle('Covid-19 Confirmed Map(2022/12/14)'),
@@ -31,7 +30,7 @@ const option: ECOption = {
     realtime: false,
     calculable: true,
     inRange: {
-      color: ['grey', 'red', '#490505']
+      color: ['#333300', 'red', '#490505']
     }
   },
   series: [
@@ -46,7 +45,8 @@ const option: ECOption = {
       data: [],
       itemStyle: {
         areaColor: '#000000'
-      }
+      },
+      selectedMode: 'single'
     }
   ]
 }
