@@ -176,7 +176,7 @@ const footerStyle: CSSProperties = {
 
       <div class="section" style="padding-top: 60px">
         <a-row>
-          <a-col style="display: flex; flex-direction: column; justify-content: space-between;max-height: 900px;" :span="9"
+          <a-col style="display: flex; flex-direction: column; justify-content: space-between;max-height: 80vh;" :span="9"
             :offset="3">
             <div style="margin-bottom: 10px;">
               <MapTimeline :width-height-ratio="0.6" :dates="dates" :play-interval="10000"
@@ -191,10 +191,12 @@ const footerStyle: CSSProperties = {
             <div class="scroll_event">
               <a-config-provider :theme="{
                 token: {
+                  fontSize:16,
                   colorPrimary: '#EA1B30',
                   colorText:'#E84848',
-                  colorTextTertiary:'#FF6969',
-                  colorIcon:'#FF6969',
+                  colorTextTertiary:'#FF696966',
+                  colorTextDisabled:'#FF696966',
+                  colorSplit:'#FF696966',
                   sizeStep: 8,
                 }
               }">
@@ -277,6 +279,7 @@ const footerStyle: CSSProperties = {
 
 .scroll_event {
   scrollbar-width: thin;
+  padding-left: 5px;
   height: 100%;
   width: 100%;
   overflow-y: auto;
