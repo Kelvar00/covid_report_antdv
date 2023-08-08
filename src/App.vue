@@ -53,6 +53,10 @@ onMounted(() => {
   })
 })
 
+const scrollHandler=(event:WheelEvent)=>{
+  event.stopPropagation()
+}
+
 import MapCharts from './components/MapCharts.vue'
 import MapTimeline from './components/MapTimeline.vue'
 import TrendTimeline from './components/TrendTimeline.vue'
@@ -197,7 +201,7 @@ const footerStyle: CSSProperties = {
       <a-row>
         <a-col :span="6" style="align-items: center" :offset="4">
           <div class="scroll_event">
-            <a-steps
+            <a-steps @wheel="scrollHandler"
               direction="vertical"
               v-model:current="selectedIndex"
               :items="
