@@ -9,7 +9,8 @@ import {
   DataZoomComponent,
   DatasetComponent,
   VisualMapComponent,
-  TransformComponent
+  TransformComponent,
+  AxisPointerComponent
 } from 'echarts/components'
 import type {
   TitleComponentOption,
@@ -19,9 +20,17 @@ import type {
   LegendComponentOption,
   DataZoomComponentOption,
   DatasetComponentOption,
-  VisualMapComponentOption
+  VisualMapComponentOption,
+  AxisPointerComponentOption
 } from 'echarts/components'
-import { type LineSeriesOption, type MapSeriesOption, MapChart, LineChart } from 'echarts/charts'
+import {
+  type LineSeriesOption,
+  type MapSeriesOption,
+  type BarSeriesOption,
+  MapChart,
+  LineChart,
+  BarChart
+} from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
 import { toValue, type App, type WatchSource, onMounted, onBeforeUnmount } from 'vue'
 import darklow from '@/assets/theme/darklow.json'
@@ -40,10 +49,11 @@ export function makeStateOption(showLabel: boolean, areaColor?: echart.Color) {
 export function makeGridSettings(
   paddingTop: string,
   paddingBottom?: string,
-  paddingHorizonal: string = '5%'
+  paddingHorizonal: string = '5%',
+  containLabel: boolean = true
 ): GridComponentOption {
   return {
-    containLabel: true,
+    containLabel: containLabel,
     left: paddingHorizonal,
     right: paddingHorizonal,
     top: paddingTop,
@@ -64,6 +74,29 @@ export function makeLineSeries(
     type: 'line',
     datasetIndex: datasetIndex,
     showSymbol: false,
+    encode: {
+      x: xDim,
+      y: yDim,
+      tooltip: tooltipDim
+    },
+    itemStyle: {
+      color: color
+    }
+  }
+}
+export function makeBarSeries(
+  displayName: string,
+  xDim: string,
+  yDim: string,
+  color?: echart.Color,
+  tooltipDim?: string,
+  datasetIndex: number = 0
+): BarSeriesOption {
+  if (tooltipDim === undefined) tooltipDim = yDim
+  return {
+    name: displayName,
+    type: 'bar',
+    datasetIndex: datasetIndex,
     encode: {
       x: xDim,
       y: yDim,
@@ -145,14 +178,18 @@ export function makeLoadingOptions(
 export function useEchartAutoResize(
   parentContainerSource: WatchSource<Element>,
   echartInstances: WatchSource<echart.ECharts>[],
-  widthHeightRatio: number,
-  marginRatio: number = 0.9
+  heightParameter: number,
+  marginRatio: number = 0.9,
+  useAsStaticHeight: boolean = false
 ) {
   const widthObserver = new ResizeObserver((entries) => {
     if (entries[0].contentBoxSize) {
       const preMarginWidth = entries[0].contentBoxSize[0].inlineSize / echartInstances.length
       const width = preMarginWidth * marginRatio
-      const height = width * widthHeightRatio
+      let height: number
+      if (!useAsStaticHeight) height = width * heightParameter
+      else height = heightParameter
+
       for (const item of echartInstances) {
         const chartInstance = toValue(item)
         chartInstance.resize({ width: width, height: height })
@@ -171,8 +208,10 @@ export type ECOption = ComposeOption<
   | DataZoomComponentOption
   | DatasetComponentOption
   | VisualMapComponentOption
+  | AxisPointerComponentOption
   | LineSeriesOption
   | MapSeriesOption
+  | BarSeriesOption
 >
 
 let worldJsonTask: Promise<void>
@@ -192,8 +231,10 @@ const EChartUtils = {
       DatasetComponent,
       VisualMapComponent,
       TransformComponent,
+      AxisPointerComponent,
       MapChart,
       LineChart,
+      BarChart,
       CanvasRenderer
     ])
     echart.registerTheme('darklow', darklow.theme)

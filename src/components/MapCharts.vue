@@ -5,7 +5,7 @@ import { getCountryWeekly, getWorldAtTime } from '@/util/data'
 import {
   makeTitle,
   makeStateOption,
-  makeLineSeries,
+  makeBarSeries,
   makeGridSettings,
   makeLoadingOptions,
   useEchartAutoResize,
@@ -38,7 +38,7 @@ const option: ECOption = {
       name: 'Covid - 19 Confirms',
       type: 'map',
       map: 'world',
-      roam: true,
+      roam: 'move',
       emphasis: makeStateOption(false, 'white'),
       select: makeStateOption(false, 'white'),
       ...makeStateOption(false),
@@ -71,24 +71,43 @@ let countryChartInstance: echart.ECharts = null as any
 function showCountryDetails(selectedCountry: string) {
   const optionHolder: ECOption = {
     legend: { orient: 'horizontal', padding: [50, 5], textStyle: { color: '#f2f2f2' } },
-    grid: makeGridSettings('60','10%'),
-    tooltip: { trigger: 'axis' },
+    grid: [
+      makeGridSettings('80', '560',"10%",false),
+      makeGridSettings('320', '320',"10%",false),
+      makeGridSettings('560', '80',"10%",false)
+    ],
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'cross'
+      }
+    },
+    axisPointer:{
+      link:[{
+        xAxisIndex:'all'
+      },{
+        yAxisIndex:'all'
+      }]
+    },
     dataZoom: [
       {
-        id: 'DataZoomX',
         type: 'slider',
-        xAxisIndex: [0],
-        filterMode: 'empty'
+        xAxisIndex: [0, 1, 2],
+        filterMode: 'none',
+        minSpan:5
       },
       {
-        id: 'DataZoomY',
         type: 'inside',
-        yAxisIndex: [0],
-        filterMode: 'empty'
+        yAxisIndex: [0, 1, 2],
+        filterMode: 'none'
       }
     ],
-    xAxis: { type: 'time' },
-    yAxis: {},
+    xAxis: [
+      { type: 'time', gridIndex: 0 },
+      { type: 'time', gridIndex: 1 },
+      { type: 'time', gridIndex: 2 }
+    ],
+    yAxis: [{ gridIndex: 0 }, { gridIndex: 1 }, { gridIndex: 2 }],
     color: ['#ff5b57', '#5f79ff', '#880000', '#ba9d7c', '#7ca694']
   }
   countryChartInstance.setOption(optionHolder)
@@ -106,32 +125,49 @@ function showCountryDetails(selectedCountry: string) {
       title: makeTitle('Covid-19 Statistics of ' + selectedCountry),
       dataset: { dimensions: ['time', 'confirmed', 'cured', 'death'], source: dataList },
       series: [
-        makeLineSeries('Confirmed', 'time', 'confirmed'),
-        makeLineSeries('Cured', 'time', 'cured'),
-        makeLineSeries('Death', 'time', 'death')
+        {
+          ...makeBarSeries('Confirmed', 'time', 'confirmed'),
+          xAxisIndex:0,
+          yAxisIndex:0
+        },
+        {
+          ...makeBarSeries('Cured', 'time', 'cured'),
+          xAxisIndex:1,
+          yAxisIndex:1
+        },
+        {
+          ...makeBarSeries('Death', 'time', 'death'),
+          xAxisIndex:2,
+          yAxisIndex:2
+        }
       ]
     }
     countryChartInstance.setOption(newOption)
   })
 }
-function loadMapData()
-{
-  return Promise.all([ getWorldAtTime(new Date(2022, 11, 14)),loadWorldJson()])
+function loadMapData() {
+  return Promise.all([getWorldAtTime(new Date(2022, 11, 14)), loadWorldJson()])
 }
-
 
 useEchartAutoResize(
   () => chartContainer.value.parentElement!,
-  [() => worldMapInstance, () => countryChartInstance],
+  [() => worldMapInstance],
   props.widthHeightRatio,
   props.marginRatio
+)
+useEchartAutoResize(
+  () => chartContainer.value.parentElement!,
+  [() => countryChartInstance],
+  800,
+  props.marginRatio,
+  true
 )
 onMounted(() => {
   worldMapInstance = echart.init(worldMap.value, 'darklow')
   countryChartInstance = echart.init(countryChart.value, 'darklow')
   //showCountryDetails('China')
   worldMapInstance.showLoading(makeLoadingOptions())
-  loadMapData().then(value=>{
+  loadMapData().then((value) => {
     let data = value[0]
     let seriesData = []
     for (const item of data) {
@@ -172,7 +208,10 @@ function selectionHandler(params: any) {
 </template>
 <style scoped>
 .container {
+  width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
+  align-items: center;
 }
 </style>
