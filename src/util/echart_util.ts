@@ -24,7 +24,6 @@ import type {
 import { type LineSeriesOption, type MapSeriesOption, MapChart, LineChart } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
 import { toValue, type App, type WatchSource, onMounted, onBeforeUnmount } from 'vue'
-import worldJson from '@/assets/world.json'
 import darklow from '@/assets/theme/darklow.json'
 
 export function makeTitle(text: string): TitleComponentOption {
@@ -134,6 +133,11 @@ export type ECOption = ComposeOption<
   | MapSeriesOption
 >
 
+let worldJsonTask: Promise<void>
+export function loadWorldJson() {
+  return worldJsonTask
+}
+
 const EChartUtils = {
   install: function (app: App<any>): App<any> {
     echart.use([
@@ -151,7 +155,9 @@ const EChartUtils = {
       CanvasRenderer
     ])
     echart.registerTheme('darklow', darklow.theme)
-    echart.registerMap('world', worldJson as any)
+    worldJsonTask = import('@/assets/world.json').then((worldJson) => {
+      echart.registerMap('world', worldJson as any)
+    })
     return app
   }
 }

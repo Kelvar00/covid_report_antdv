@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import keyMoments from '@/assets/keyMoments.json'
 import { h, ref, onMounted, type CSSProperties } from 'vue'
+//@ts-ignore(2306)
 import fullpage from 'fullpage.js'
 import Image1 from '@/assets/img/1126952445_16099187127001n.jpeg'
 import Image2 from '@/assets/img/1126952445_16099187127151n.jpeg'
@@ -101,7 +102,7 @@ const footerStyle: CSSProperties = {
       </ul>
     </div>
     <div id="fullpage">
-      <div class="section" style="padding: 20px">
+      <div class="section" style="padding-top: 60px">
         <a-layout :style="transparentStyle">
           <a-layout-header :style="headerStyle">
             <div style="
@@ -139,7 +140,7 @@ const footerStyle: CSSProperties = {
                 </a-col>
                 <a-col :span="8">
                   <div class="statistic-card">
-                    <a-statistic :value="6953743" valueStyle="">
+                    <a-statistic :value="6953743">
                       <template #title>
                         <div style="display: inline-flex; align-items: center">Confirmed deaths</div>
                       </template>
@@ -173,9 +174,9 @@ const footerStyle: CSSProperties = {
         </a-layout>
       </div>
 
-      <div class="section">
-        <a-row style="padding-top: 60px">
-          <a-col style="display: flex; flex-direction: column; justify-content: space-around;max-height: 900px;" :span="9"
+      <div class="section" style="padding-top: 60px">
+        <a-row>
+          <a-col style="display: flex; flex-direction: column; justify-content: space-between;max-height: 900px;" :span="9"
             :offset="3">
             <div style="margin-bottom: 10px;">
               <MapTimeline :width-height-ratio="0.6" :dates="dates" :play-interval="10000"
@@ -186,7 +187,7 @@ const footerStyle: CSSProperties = {
                 v-model:auto-play="autoPlay" />
             </div>
           </a-col>
-          <a-col :span="7" style="align-items: center; padding-top: 20px;max-height: 900px;" :offset="2">
+          <a-col :span="7" style="align-items: center;max-height: 900px;" :offset="2">
             <div class="scroll_event">
               <a-config-provider :theme="{
                 token: {
@@ -206,7 +207,7 @@ const footerStyle: CSSProperties = {
           </a-col>
         </a-row>
       </div>
-      <div class="section" style="padding: 20px">
+      <div class="section" style="padding-top: 60px">
         <div class="chart-map">
           <MapCharts :width-height-ratio="0.72" :margin-ratio="0.9" />
         </div>
@@ -279,7 +280,7 @@ const footerStyle: CSSProperties = {
   height: 100%;
   width: 100%;
   overflow-y: auto;
-  aspect-ratio: 10/19;
+  aspect-ratio: 2/3;
 }
 
 #menu {

@@ -9,6 +9,7 @@ import {
   makeGridSettings,
   makeLoadingOptions,
   useEchartAutoResize,
+  loadWorldJson,
   type ECOption
 } from '@/util/echart_util'
 
@@ -118,22 +119,11 @@ function showCountryDetails(selectedCountry: string) {
     countryChartInstance.setOption(newOption)
   })
 }
+function loadMapData()
+{
+  return Promise.all([ getWorldAtTime(new Date(2022, 11, 14)),loadWorldJson()])
+}
 
-getWorldAtTime(new Date(2022, 11, 14)).then((data) => {
-  //console.log(data)
-  let seriesData = []
-  for (const item of data) {
-    seriesData.push({
-      name: item.countryName,
-      value: item.totalConfirmed
-    })
-  }
-  worldMapInstance.hideLoading()
-  worldMapInstance.setOption({ series: [{ data: seriesData }] })
-
-  let dataIndex = seriesData.findIndex((it) => it.name == 'China')
-  worldMapInstance.dispatchAction({ type: 'select', seriesIndex: 0, dataIndex: dataIndex })
-})
 
 useEchartAutoResize(
   () => chartContainer.value.parentElement!,
@@ -144,9 +134,24 @@ useEchartAutoResize(
 onMounted(() => {
   worldMapInstance = echart.init(worldMap.value, 'dark')
   countryChartInstance = echart.init(countryChart.value, 'darklow')
-  worldMapInstance.setOption(option)
   //showCountryDetails('China')
   worldMapInstance.showLoading(makeLoadingOptions())
+  loadMapData().then(value=>{
+    let data = value[0]
+    let seriesData = []
+    for (const item of data) {
+      seriesData.push({
+        name: item.countryName,
+        value: item.totalConfirmed
+      })
+    }
+    worldMapInstance.hideLoading()
+    worldMapInstance.setOption(option)
+    worldMapInstance.setOption({ series: [{ data: seriesData }] })
+
+    let dataIndex = seriesData.findIndex((it) => it.name == 'China')
+    worldMapInstance.dispatchAction({ type: 'select', seriesIndex: 0, dataIndex: dataIndex })
+  })
 
   worldMapInstance.on('selectchanged', selectionHandler)
 })

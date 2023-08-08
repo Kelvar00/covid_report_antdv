@@ -67,7 +67,8 @@ import {
   makeStateOption,
   makeLoadingOptions,
   useEchartAutoResize,
-  type ECOption
+  type ECOption,
+loadWorldJson
 } from '@/util/echart_util'
 import moment from 'moment'
 
@@ -128,9 +129,6 @@ useEchartAutoResize(
 )
 onMounted(() => {
   chartInstance = echart.init(chartElement.value, 'darklow')
-  chartInstance.setOption({
-    baseOption: makeBaseOption(props.dates)
-  })
   chartInstance.showLoading(makeLoadingOptions())
   chartInstance.on('timelinechanged', (params) => {
     emit('update:selectedIndex', (params as any).currentIndex)
@@ -140,9 +138,15 @@ onMounted(() => {
     if (props.autoPlay != state) emit('update:autoPlay', state)
   })
 
-  /// Action
-  setDatesList(props.dates)
-  setSelection(0)
+  //Setup
+  Promise.all([loadTimeData(props.dates),loadWorldJson()])
+  .then((value)=>{
+    chartInstance.setOption({
+      baseOption: makeBaseOption(props.dates)
+    })
+    applyTimeData(value[0])
+    setSelection(0)
+  })
 })
 function applyTimeData(dataset: DateData[]) {
   let option: ECOption = {
