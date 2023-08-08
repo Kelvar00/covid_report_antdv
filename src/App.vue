@@ -2,10 +2,10 @@
 import keyMoments from '@/assets/keyMoments.json'
 import { h, ref, onMounted, type CSSProperties } from 'vue'
 import fullpage from 'fullpage.js'
-import Image1 from '@/assets/img/T22.png'
-import Image2 from '@/assets/img/T23.png'
-import Image3 from '@/assets/img/T24.png'
-import Image4 from '@/assets/img/T25.png'
+import Image1 from '@/assets/img/1126952445_16099187127001n.jpeg'
+import Image2 from '@/assets/img/1126952445_16099187127151n.jpeg'
+import Image3 from '@/assets/img/aj4qi-9wdbl.png'
+import Image4 from '@/assets/img/us_covid19_mortality.jpg'
 import { type MenuProps } from 'ant-design-vue'
 const dates = ref(keyMoments.map((item) => moment(item.Time, 'yyyy-MM-DD').toDate()))
 
@@ -13,34 +13,16 @@ const selectedIndex = ref(0)
 const autoPlay = ref(true)
 
 const carouseData = [{ url: Image1 }, { url: Image2 }, { url: Image3 }, { url: Image4 }]
-const pages = ref<string[]>(['page1'])
-const page_items = ref<MenuProps['items']>([
-  {
-    key: 'page1',
-    label: h('a', { href: '#page1' }, 'page1'),
-    title: 'page1'
-  },
-  {
-    key: 'page2',
-    label: h('a', { href: '#page2' }, 'page2'),
-    title: 'page1'
-  },
-  {
-    key: 'page3',
-    label: h('a', { href: '#page3' }, 'page3'),
-    title: 'page3'
-  }
-])
 onMounted(() => {
   let fullPageInstance = new fullpage('#fullpage', {
     licenseKey: 'GPLv3',
     navigation: true,
     responsiveWidth: 800,
     sectionsColor: [
-      'transparent',
-      '#EAB530',
       '#000000aa',
-      '#000000',
+      '#181a1c',
+      '#181a1c',
+      '#181a1c',
       '#2b0909',
       '#0d0000',
       '#001a2c',
@@ -74,7 +56,11 @@ const headerStyle: CSSProperties = {
   lineHeight: '64px',
   backgroundColor: 'transparent'
 }
-
+const staticStyle: CSSProperties = {
+  textAlign: 'center',
+  fontSize: '40px',
+  color: '#FDB2A3'
+}
 const contentStyle: CSSProperties = {
   textAlign: 'center',
   color: '#00000000',
@@ -96,161 +82,138 @@ const footerStyle: CSSProperties = {
 </script>
 
 <template>
-  <a-config-provider
-    :theme="{
-      token: {
-        colorPrimary: '#6b3212'
-      }
-    }"
-  ></a-config-provider>
-  <a-carousel
-    indicator-position="none"
-    style="width: 100%; height: 100%; position: absolute"
-    :autoplay="true"
-  >
-    <div v-for="(item, index) in carouseData" :key="index">
-      <img :src="item.url" alt="" style="object-fit: initial; height: 100%; width: 100%" />
+  <a-config-provider :theme="{
+    token: {
+      colorPrimary: '#3271A0',
+      sizeStep: 8,
+    }
+  }">
+    <a-carousel indicator-position="none" style="width: 100%; height: 100%; position: absolute" :autoplay="true">
+      <div v-for="(item, index) in carouseData" :key="index">
+        <img :src="item.url" alt="" style="object-fit: initial; height: 100%; width: 100%" />
+      </div>
+    </a-carousel>
+    <div>
+      <ul id="menu">
+        <li><a href="#page1" class="hreftitle">First slide</a></li>
+        <li><a href="#page2" class="hreftitle">Second slide</a></li>
+        <li><a href="#page3" class="hreftitle">Third slide</a></li>
+      </ul>
     </div>
-  </a-carousel>
-  <div class="titlebox">
-    <ul id="menu">
-      <li><a href="#page1" class="hreftitle">First slide</a></li>
-      <li><a href="#page2" class="hreftitle">Second slide</a></li>
-      <li><a href="#page3" class="hreftitle">Third slide</a></li>
-    </ul>
-  </div>
-  <div id="fullpage">
-    <div class="section" style="padding: 20px">
-      <a-layout :style="transparentStyle">
-        <a-layout-header :style="headerStyle">
-          <div
-            style="
+    <div id="fullpage">
+      <div class="section" style="padding: 20px">
+        <a-layout :style="transparentStyle">
+          <a-layout-header :style="headerStyle">
+            <div style="
               text-align: center;
               font-size: 50px;
-              color: aqua;
+              color: rgb(0, 123, 255);
               font-family: 'Courier New', Courier, monospace;
               z-index: 2;
-            "
-          >
-            R . I . P
-          </div>
-        </a-layout-header>
-        <a-layout-content :style="contentStyle">
-          <div style="margin-bottom: 200px"><a-col :span="24"></a-col></div>
-        </a-layout-content>
-        <a-layout-content :style="contentStyle">
-          <div class="scroll_content">
-            <div class="content-padding-1">
-              <a-col :span="24"> </a-col>
+            ">
+              R . I . P .
             </div>
-            <a-row style="max-width: 100vw" :gutter="12">
-              <a-col :span="8">
-                <div class="statistic-card">
-                  <a-statistic :value="168983095">
-                    <template #title>
-                      <div style="display: inline-flex; align-items: center">confirmed cases</div>
-                    </template>
-                  </a-statistic>
-                  <div class="statistic-footer">
-                    <div class="footer-item">
-                      <span>Lat update:2 August 2023 at 07:56 pm GMT+8</span>
-                    </div>
-                  </div>
-                </div>
-              </a-col>
-              <a-col :span="8">
-                <div class="statistic-card">
-                  <a-statistic :value="6953743">
-                    <template #title>
-                      <div style="display: inline-flex; align-items: center">Confirmed deaths</div>
-                    </template>
-                  </a-statistic>
-                  <div class="statistic-footer">
-                    <div class="footer-item">
-                      <span>Lat update:2 August 2023 at 07:56 pm GMT+8</span>
-                    </div>
-                  </div>
-                </div>
-              </a-col>
-              <a-col :span="8">
-                <div class="statistic-card">
-                  <a-statistic :value="13492099754" title="New transactions today">
-                    <template #title>
-                      <div style="display: inline-flex; align-items: center">
-                        Vaccine doses administrated
+          </a-layout-header>
+          <a-layout-content :style="contentStyle">
+            <div style="margin-bottom: 100px"><a-col :span="24"></a-col></div>
+          </a-layout-content>
+          <a-layout-content :style="contentStyle">
+            <div class="scroll_content">
+              <div class="content-padding-1">
+                <a-col :span="24"> </a-col>
+              </div>
+              <a-row style="max-width: 100vw" :gutter="12">
+                <a-col :span="8">
+                  <div class="statistic-card">
+                    <a-statistic :value="168983095">
+                      <template #title>
+                        <div style="display: inline-flex; align-items: center">confirmed cases</div>
+                      </template>
+                    </a-statistic>
+                    <div class="statistic-footer">
+                      <div class="footer-item">
+                        <span>Lat update:2 August 2023 at 07:56 pm GMT+8</span>
                       </div>
-                    </template>
-                  </a-statistic>
-                  <div class="statistic-footer">
-                    <div class="footer-item">
-                      <span>Last update: 30 July 2023</span>
                     </div>
                   </div>
-                </div>
-              </a-col>
-            </a-row>
-          </div>
-        </a-layout-content>
-      </a-layout>
-    </div>
-
-    <div class="section">
-      <a-row style="padding-top: 60px">
-        <a-col
-          style="display: flex; flex-direction: column; justify-content: space-around"
-          :span="11"
-          :offset="2"
-        >
-          <div style="margin-bottom: 10px">
-            <MapTimeline
-              :width-height-ratio="0.6"
-              :dates="dates"
-              :play-interval="10000"
-              v-model:selected-index="selectedIndex"
-              v-model:auto-play="autoPlay"
-            />
-          </div>
-          <div>
-            <TrendTimeline
-              :width-height-ratio="0.5"
-              :dates="dates"
-              v-model:selected-index="selectedIndex"
-              v-model:auto-play="autoPlay"
-            />
-          </div>
-        </a-col>
-        <a-col :span="7" style="align-items: center; padding-top: 20px" :offset="2">
-          <div class="scroll_event">
-            <a-steps
-              @wheel="scrollHandler"
-              direction="vertical"
-              v-model:current="selectedIndex"
-              :items="
-                keyMoments.map((item) => {
-                  return { title: item.event, description: item.Time + ' ' + item.comment }
-                })
-              "
-            >
-              <template #progressDot="{ index, status, prefixCls }">
-                <a-popover style="margin-top: 40px">
-                  <template #content>
-                    <span>step {{ index }} status: {{ status }}</span>
-                  </template>
-                  <span :class="`${prefixCls}-icon-dot`" />
-                </a-popover>
-              </template>
-            </a-steps>
-          </div>
-        </a-col>
-      </a-row>
-    </div>
-    <div class="section" style="padding: 20px">
-      <div class="chart-map">
-        <MapCharts :width-height-ratio="0.72" :margin-ratio="0.9" />
+                </a-col>
+                <a-col :span="8">
+                  <div class="statistic-card">
+                    <a-statistic :value="6953743" valueStyle="">
+                      <template #title>
+                        <div style="display: inline-flex; align-items: center">Confirmed deaths</div>
+                      </template>
+                    </a-statistic>
+                    <div class="statistic-footer">
+                      <div class="footer-item">
+                        <span>Lat update:2 August 2023 at 07:56 pm GMT+8</span>
+                      </div>
+                    </div>
+                  </div>
+                </a-col>
+                <a-col :span="8">
+                  <div class="statistic-card">
+                    <a-statistic :value="13492099754" title="New transactions today">
+                      <template #title>
+                        <div style="display: inline-flex; align-items: center">
+                          Vaccine doses administrated
+                        </div>
+                      </template>
+                    </a-statistic>
+                    <div class="statistic-footer">
+                      <div class="footer-item">
+                        <span>Last update: 30 July 2023</span>
+                      </div>
+                    </div>
+                  </div>
+                </a-col>
+              </a-row>
+            </div>
+          </a-layout-content>
+        </a-layout>
       </div>
+
+      <div class="section">
+        <a-row style="padding-top: 60px">
+          <a-col style="display: flex; flex-direction: column; justify-content: space-around;max-height: 900px;" :span="9"
+            :offset="3">
+            <div style="margin-bottom: 10px;">
+              <MapTimeline :width-height-ratio="0.6" :dates="dates" :play-interval="10000"
+                v-model:selected-index="selectedIndex" v-model:auto-play="autoPlay" />
+            </div>
+            <div>
+              <TrendTimeline :width-height-ratio="0.5" :dates="dates" v-model:selected-index="selectedIndex"
+                v-model:auto-play="autoPlay" />
+            </div>
+          </a-col>
+          <a-col :span="7" style="align-items: center; padding-top: 20px;max-height: 900px;" :offset="2">
+            <div class="scroll_event">
+              <a-config-provider :theme="{
+                token: {
+                  colorPrimary: '#EA1B30',
+                  colorText:'#E84848',
+                  colorTextTertiary:'#FF6969',
+                  colorIcon:'#FF6969',
+                  sizeStep: 8,
+                }
+              }">
+                <a-steps progress-dot @wheel="scrollHandler" direction="vertical" v-model:current="selectedIndex" :items="keyMoments.map((item) => {
+                  return { title: item.event, description: item.Time + ' ' + item.comment }
+                })">
+                </a-steps>
+              </a-config-provider>
+            </div>
+          </a-col>
+        </a-row>
+      </div>
+      <div class="section" style="padding: 20px">
+        <div class="chart-map">
+          <MapCharts :width-height-ratio="0.72" :margin-ratio="0.9" />
+        </div>
+      </div>
+      <div class="section">Some section</div>
     </div>
-    <div class="section">Some section</div>
-  </div>
+  </a-config-provider>
 </template>
 
 <style lang="scss">
@@ -269,6 +232,7 @@ const footerStyle: CSSProperties = {
 
 .statistic-card {
   height: 100%;
+  min-height: 330px;
   padding: 20px;
   border-radius: 4px;
   background-color: #ffffff;
@@ -312,12 +276,14 @@ const footerStyle: CSSProperties = {
 
 .scroll_event {
   scrollbar-width: thin;
-  height: 90%;
+  height: 100%;
+  width: 100%;
   overflow-y: auto;
   aspect-ratio: 10/19;
 }
+
 #menu {
-  background-color: rgb(48, 22, 0);
+  background-color: rgb(0, 0, 0);
   z-index: 100;
   display: flex;
   position: absolute;
@@ -330,7 +296,8 @@ const footerStyle: CSSProperties = {
   align-content: center;
   height: 60px;
 }
-#menu > li,
+
+#menu>li,
 a {
   display: inline-block;
   height: 95%;
@@ -340,10 +307,15 @@ a {
   align-items: center;
   justify-items: center;
 }
+
 .hreftitle {
   color: #ffffff;
   display: flex;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.titlebox {
+  color: #000000;
 }
 </style>
