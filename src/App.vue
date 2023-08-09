@@ -90,13 +90,19 @@ const footerStyle: CSSProperties = {
 </script>
 
 <template>
-  <a-config-provider :theme="{
-    token: {
-      colorPrimary: '#3271A0',
-      sizeStep: 8,
-    }
-  }">
-    <a-carousel indicator-position="none" style="width: 100%; height: 100%; position: absolute" :autoplay="true">
+  <a-config-provider
+    :theme="{
+      token: {
+        colorPrimary: '#3271A0',
+        sizeStep: 8
+      }
+    }"
+  >
+    <a-carousel
+      indicator-position="none"
+      style="width: 100%; height: 100%; position: absolute"
+      :autoplay="true"
+    >
       <div v-for="(item, index) in carouseData" :key="index">
         <img :src="item.url" alt="" style="object-fit: initial; height: 100%; width: 100%" />
       </div>
@@ -113,19 +119,38 @@ const footerStyle: CSSProperties = {
       </ul>
     </div>
     <div id="fullpage">
-      <div class="section" style="align-items: center;justify-items: center;">
+      <div class="section" style="align-items: center; justify-items: center">
         <a-row>
-          <a-col :span="12" :offset="6">
-            <h1
-              style="font-weight: bold;margin-bottom: 10px;font-size: 120px;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif "
-              align="center">The Pandemic</h1>
-            <p style="font-size: 24px;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ">The
-              novel coronavirus, cases of which were first reported in <font color="#65C0FE">December 2019</font>, has
-              escalated into a pandemic
-              affecting <font color="#65C0FE">at least 200 countries and regions</font> so far. The rapid outbreak has
-              stoked fear and prejudice while
-              inspiring love and empathy. Its socio-economic, political and psychological impact is reshaping the global
-              landscape.</p>
+          <a-col :span="16" :offset="4">
+            <div>
+              <h1
+                style="
+                  font-weight: bold;
+                  margin-bottom: 10px;
+                  font-size: 120px;
+                  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+                    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                "
+                align="center"
+              >
+                The Pandemic
+              </h1>
+            </div>
+            <div>
+              <p
+                style="
+                  font-size: 24px;
+                  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                "
+              >
+                The novel coronavirus, cases of which were first reported in
+                <font color="#65C0FE">December 2019</font>, has escalated into a pandemic affecting
+                <font color="#65C0FE">at least 200 countries and regions</font> so far. The rapid
+                outbreak has stoked fear and prejudice while inspiring love and empathy. Its
+                socio-economic, political and psychological impact is reshaping the global
+                landscape.
+              </p>
+            </div>
           </a-col>
         </a-row>
       </div>
@@ -134,57 +159,76 @@ const footerStyle: CSSProperties = {
           <a-layout-content :style="contentStyle">
             <div class="scroll_content">
               <a-row style="max-width: 100vw" :gutter="12">
-                <a-col :span="10" :offset="2">
-                  <p style="color: azure;">
-                    At the turn of the year, few imagined a virus would rise up that modern medicine couldn't quickly
-                    cure. But the coronavirus has now infected over 2.4 million people, shut down nations and threatened
-                    to derail the global economy. As the situation in China tapers off and life slowly returns to normal,
-                    the focus is on preventing imported cases. Elsewhere, this dangerous and relentless virus continues to
-                    plague at least 200 countries and regions. The pandemic has evolved from a public health emergency to
-                    a socio-economic catastrophe.
-                    This is a time when a proliferation of disinformation about the disease is confusing many, when a
-                    blame game is riding on a roller coaster of politicization and xenophobia, when humankind is realizing
-                    its limitations and ignorance in the face of a new virus.
-                    CGTN made this interactive to document the developments of the pandemic as well as measures taken in
-                    China and other countries to counter it.
+                <a-col :span="10" :offset="3">
+                  <p
+                    style="
+                      color: azure;
+                      font-size: 20px;
+                      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                    "
+                    align="left"
+                  >
+                    At the turn of the year, few imagined a virus would rise up that modern medicine
+                    couldn't quickly cure. But the coronavirus has now infected over
+                    <font color="#DC143C">2.4 million</font>
+                    people, shut down nations and threatened to derail the global economy. As the
+                    situation in China tapers off and life slowly returns to normal, the focus is on
+                    preventing imported cases. Elsewhere, this
+                    <font color="#DC143C">dangerous and relentless</font> virus continues to plague
+                    at least 200 countries and regions. The pandemic has evolved from a public
+                    health emergency to a socio-economic catastrophe. This is a time when
+                    <font color="#DC143C">a proliferation of disinformation</font> about the disease
+                    is confusing many, when a blame game is riding on a roller coaster of
+                    politicization and xenophobia, when humankind is realizing its limitations and
+                    ignorance in the face of a new virus. CGTN made this interactive to document the
+                    developments of the pandemic as well as measures taken in China and other
+                    countries to counter it.
                   </p>
                 </a-col>
-                <a-col :span="6" :offset="4">
-                  <div class="statistic-card" style="background-color:rgba(205, 9, 9, 0.69);">
+                <a-col :span="6" :offset="2">
+                  <div class="statistic-card" style="background-color: rgba(205, 9, 9, 0.69)">
                     <a-statistic :value="168983095" :valueStyle="staticStyleConfirmed">
                       <template #title>
-                        <div style="display: flex; align-items: center;color:#FF9897;">confirmed cases</div>
+                        <div style="display: flex; align-items: center; color: #ff9897">
+                          confirmed cases
+                        </div>
                       </template>
                     </a-statistic>
                     <div class="statistic-footer">
                       <div class="footer-item">
-                        <span style="color:#FF9897;">Lat update:2 August 2023 at 07:56 pm GMT+8</span>
+                        <span style="color: #ff9897"
+                          >Lat update:2 August 2023 at 07:56 pm GMT+8</span
+                        >
                       </div>
                     </div>
                   </div>
-                  <div class="statistic-card" style="background-color:rgba(24, 23, 23, 0.69);">
+                  <div class="statistic-card" style="background-color: rgba(24, 23, 23, 0.69)">
                     <a-statistic :value="6953743" :valueStyle="staticStyleDead">
                       <template #title>
-                        <div style="display: flex;align-items: center;color:#aaaaaa">Confirmed deaths</div>
+                        <div style="display: flex; align-items: center; color: #aaaaaa">
+                          Confirmed deaths
+                        </div>
                       </template>
                     </a-statistic>
                     <div class="statistic-footer">
                       <div class="footer-item">
-                        <span style="color:#aaaaaa">Lat update:2 August 2023 at 07:56 pm GMT+8</span>
+                        <span style="color: #aaaaaa"
+                          >Lat update:2 August 2023 at 07:56 pm GMT+8</span
+                        >
                       </div>
                     </div>
                   </div>
-                  <div class="statistic-card" style="background-color:rgba(0, 105, 162, 0.768);">
+                  <div class="statistic-card" style="background-color: rgba(0, 105, 162, 0.768)">
                     <a-statistic :value="13492099754" :valueStyle="staticStyleVaccine">
                       <template #title>
-                        <div style="display: flex; align-items: center;color:#78afdf">
+                        <div style="display: flex; align-items: center; color: #78afdf">
                           Vaccine doses administrated
                         </div>
                       </template>
                     </a-statistic>
                     <div class="statistic-footer">
                       <div class="footer-item">
-                        <span style="color:#78afdf">Last update: 30 July 2023</span>
+                        <span style="color: #78afdf">Last update: 30 July 2023</span>
                       </div>
                     </div>
                   </div>
@@ -197,37 +241,65 @@ const footerStyle: CSSProperties = {
 
       <div class="section" style="padding-top: 60px">
         <a-row>
-          <a-col style="display: flex; flex-direction: column; justify-content: space-between;max-height: 85vh;" :span="9"
-            :offset="3">
-            <div style="margin-bottom: 10px;">
-              <MapTimeline :width-height-ratio="0.6" :dates="dates" :play-interval="10000"
-                v-model:selected-index="selectedIndex" v-model:auto-play="autoPlay" />
+          <a-col
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              max-height: 85vh;
+            "
+            :span="9"
+            :offset="3"
+          >
+            <div style="margin-bottom: 10px">
+              <MapTimeline
+                :width-height-ratio="0.6"
+                :dates="dates"
+                :play-interval="10000"
+                v-model:selected-index="selectedIndex"
+                v-model:auto-play="autoPlay"
+              />
             </div>
             <div>
-              <TrendTimeline :width-height-ratio="0.5" :dates="dates" v-model:selected-index="selectedIndex"
-                v-model:auto-play="autoPlay" />
+              <TrendTimeline
+                :width-height-ratio="0.5"
+                :dates="dates"
+                v-model:selected-index="selectedIndex"
+                v-model:auto-play="autoPlay"
+              />
             </div>
           </a-col>
-          <a-col :span="7" style="align-items: center;max-height: 85vh;" :offset="2">
+          <a-col :span="7" style="align-items: center; max-height: 85vh" :offset="2">
             <div class="scroll_event">
-              <a-config-provider :theme="{
-                token: {
-                  fontSize: 16,
-                  // colorPrimary: '#EA1B30',
-                  // colorText: '#E84848',
-                  // colorTextTertiary: '#FF696966',
-                  // colorTextDisabled: '#FF696966',
-                  // colorSplit: '#FF696966',
-                  colorPrimary: '#B8B3AA',
-                  colorText: '#ffffff',
-                  colorTextTertiary: '#E8E6E3',
-                  colorTextDisabled: '#E8E6E3',
-                  colorSplit: '#E8E6E3',
-                  sizeStep: 8,
-                }
-              }">
-                <a-steps progress-dot @wheel="scrollHandler" direction="vertical" v-model:current="selectedIndex">
-                  <a-step v-for="(item, index) in keyMoments" :key="index" :description="item.Time + ' ' + item.comment">
+              <a-config-provider
+                :theme="{
+                  token: {
+                    fontSize: 16,
+                    // colorPrimary: '#EA1B30',
+                    // colorText: '#E84848',
+                    // colorTextTertiary: '#FF696966',
+                    // colorTextDisabled: '#FF696966',
+                    // colorSplit: '#FF696966',
+                    colorPrimary: '#B8B3AA',
+                    colorText: '#ffffff',
+                    colorTextTertiary: '#E8E6E3',
+                    colorTextDisabled: '#E8E6E3',
+                    colorSplit: '#E8E6E3',
+                    sizeStep: 8
+                  }
+                }"
+              >
+                <a-steps
+                  progress-dot
+                  @wheel="scrollHandler"
+                  direction="vertical"
+                  v-model:current="selectedIndex"
+                >
+                  <a-step
+                    v-for="(item, index) in keyMoments"
+                    :key="index"
+                    :description="item.Time + ' ' + item.comment"
+                  >
                     <template #title>
                       <span class="steptitle">{{ item.event }}</span>
                     </template>
@@ -329,7 +401,7 @@ const footerStyle: CSSProperties = {
   height: 60px;
 }
 
-#menu>li,
+#menu > li,
 a {
   display: inline-block;
   height: 95%;
@@ -350,8 +422,6 @@ a {
 .steptitle {
   font-size: 24px;
   font-weight: bold;
-
-
 }
 
 .icontitle {
@@ -362,4 +432,5 @@ a {
   align-content: center;
   align-items: center;
   justify-items: center;
-}</style>
+}
+</style>
