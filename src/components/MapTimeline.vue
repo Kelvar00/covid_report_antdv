@@ -15,7 +15,11 @@ const props = defineProps({
     type: Number,
     default: 1
   },
-  selectedIndex: {
+  selectedCountry:{
+    type: String,
+    default: ''
+  },
+  selectedTimelineIndex: {
     type: Number,
     default: 0
   },
@@ -28,7 +32,7 @@ const props = defineProps({
     default: 5000
   }
 })
-const emit = defineEmits(['update:selectedIndex', 'update:autoPlay'])
+const emit = defineEmits(['update:selectedTimelineIndex', 'update:autoPlay','update:selectedCountry'])
 watch(
   () => props.dates,
   (newVal) => {
@@ -37,27 +41,46 @@ watch(
   { deep: true }
 )
 watch(
-  () => props.selectedIndex,
+  () => props.selectedTimelineIndex,
   (newVal) => {
-    setSelection(newVal)
+    setTimelineSelection(newVal,true)
   }
 )
 watch(
   () => props.autoPlay,
   (newVal) => {
-    setAutoPlay(newVal)
+    setAutoPlay(newVal,true)
+  }
+)
+watch(
+  ()=>props.selectedCountry,
+  (newVal,oldVal)=>{
+    //value changed from parent so we keep silent
+    setCountrySelection(newVal,oldVal,true)
   }
 )
 
 function setDatesList(dates: Date[]) {
   loadTimeData(dates).then((value) => applyTimeData(value))
 }
-function setSelection(arg: number | undefined) {
+function setTimelineSelection(arg: number,silent:boolean = false) {
   if (arg === undefined) return
-  applySelectionByIndex(arg)
+  applyTimelineSelectionByIndex(arg,silent)
 }
-function setAutoPlay(arg: boolean) {
-  applyAutoplay(arg)
+function setCountrySelection(name:string,oldName:string='',silent:boolean = false){
+  if(!name)
+  {
+    if(oldName)
+    {
+      //Unselect all
+      applyUnselect(oldName,silent)
+    }
+  }
+  else
+    applyCountrySelection(name,silent)
+}
+function setAutoPlay(arg: boolean,silent:boolean = false) {
+  applyAutoplay(arg,silent)
 }
 
 /// REGION VIEW
@@ -91,7 +114,7 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
       trigger: 'item',
       valueFormatter(value) {
         if (Number.isNaN(value)) {
-          return 'Unknown'
+          return 'None or Unknown'
         } else return value.toString()
       }
     },
@@ -117,7 +140,7 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
         data: [],
         animation: true,
         universalTransition: true,
-        selectedMode: false
+        selectedMode: 'single'
       }
     ]
   }
@@ -133,11 +156,21 @@ onMounted(() => {
   chartInstance = echart.init(chartElement.value, 'darklow')
   chartInstance.showLoading(makeLoadingOptions())
   chartInstance.on('timelinechanged', (params) => {
-    emit('update:selectedIndex', (params as any).currentIndex)
+    emit('update:selectedTimelineIndex', (params as any).currentIndex)
   })
   chartInstance.on('timelineplaychanged', (params) => {
     const state = (params as any).playState
-    if (props.autoPlay != state) emit('update:autoPlay', state)
+    emit('update:autoPlay', state)
+  })
+  chartInstance.on('selectchanged',(params:any)=>{
+    if(params.selected.length == 1&&params.selected[0].dataIndex.length==1){
+      const data = (chartInstance.getOption() as any).series[0].data
+      const item = data[params.selected[0].dataIndex[0]]
+      emit('update:selectedCountry',item.name)
+    }
+    else{
+      emit('update:selectedCountry','')
+    }
   })
 
   //Setup
@@ -146,7 +179,8 @@ onMounted(() => {
       baseOption: makeBaseOption(props.dates)
     })
     applyTimeData(value[0])
-    setSelection(0)
+    setCountrySelection(props.selectedCountry)
+    setTimelineSelection(0)
   })
 })
 function applyTimeData(dataset: DateData[]) {
@@ -168,26 +202,19 @@ function applyTimeData(dataset: DateData[]) {
   chartInstance.hideLoading()
   chartInstance.setOption(option)
 }
-function applySelectionByIndex(index: number) {
-  let option = chartInstance.getOption() as any
-  if (option == undefined) {
-    return
-  }
-  let currIndex = option.timeline[0].currentIndex!
-  let data = option.timeline[0].data as any[]
-  if (currIndex != index) {
-    if (index > data.length) throw new RangeError('Date out of available list!')
-    chartInstance.setOption({
-      baseOption: {
-        timeline: {
-          currentIndex: index
-        }
-      }
-    } as ECOption)
-  }
+function applyTimelineSelectionByIndex(index: number,silent:boolean = false) {
+  chartInstance.dispatchAction({type:'timelineChange',currentIndex:index},{silent:silent})
 }
-function applyAutoplay(play: boolean) {
-  chartInstance.dispatchAction({ type: 'timelinePlayChange', playState: play })
+function applyAutoplay(play: boolean,silent:boolean =false) {
+  chartInstance.dispatchAction({ type: 'timelinePlayChange', playState: play },{silent:silent})
+}
+function applyCountrySelection(name:string,silent:boolean=false)
+{
+  chartInstance.dispatchAction({ type: 'select', seriesIndex: 0, name: name },{silent:silent})
+}
+function applyUnselect(name:string,silent:boolean=false)
+{
+  chartInstance.dispatchAction({ type: 'unselect', seriesIndex: 0, name: name },{silent:silent})
 }
 
 /// REGION MODEL
@@ -205,7 +232,7 @@ async function loadTimeData(dates: Date[]): Promise<DateData[]> {
     for (const data of raw) {
       seriesData.push({
         name: data.countryName,
-        value: data.totalConfirmed
+        value: data.totalConfirmed == 0? NaN:data.totalConfirmed
       })
     }
     return {
