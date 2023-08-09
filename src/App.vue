@@ -240,7 +240,7 @@ const footerStyle: CSSProperties = {
       </div>
       <div class="section" style="padding-top: 60px">
         <div class="chart-map">
-          <MapCharts :width-height-ratio="0.72" :margin-ratio="0.9" />
+          <MapCharts :width-height-ratio="0.5" :margin-ratio="0.9" />
         </div>
       </div>
     </div>
