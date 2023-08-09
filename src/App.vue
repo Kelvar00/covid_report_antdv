@@ -281,10 +281,10 @@ const footerStyle: CSSProperties = {
                     // colorTextDisabled: '#FF696966',
                     // colorSplit: '#FF696966',
                     colorPrimary: '#B8B3AA',
-                    colorText: '#ffffff',
-                    colorTextTertiary: '#E8E6E3',
-                    colorTextDisabled: '#E8E6E3',
-                    colorSplit: '#E8E6E3',
+                    colorText: '#EAEBEC',
+                    colorTextTertiary: '#B8B3AA99',
+                    colorTextDisabled: '#B8B3AA99',
+                    colorSplit: '#B8B3AA99',
                     sizeStep: 8
                   }
                 }"
