@@ -99,9 +99,9 @@ const footerStyle: CSSProperties = {
     }"
   >
     <a-carousel
-      indicator-position="none"
       style="width: 100%; height: 100%; position: absolute"
       :autoplay="true"
+      :dots="false"
     >
       <div v-for="(item, index) in carouseData" :key="index">
         <img :src="item.url" alt="" style="object-fit: initial; height: 100%; width: 100%" />
@@ -251,7 +251,7 @@ const footerStyle: CSSProperties = {
               <a-config-provider
                 :theme="{
                   token: {
-                    fontSize: 16,
+                    fontSize: 14,
                     // colorPrimary: '#EA1B30',
                     // colorText: '#E84848',
                     // colorTextTertiary: '#FF696966',
@@ -262,7 +262,7 @@ const footerStyle: CSSProperties = {
                     colorTextTertiary: '#B8B3AA99',
                     colorTextDisabled: '#B8B3AA99',
                     colorSplit: '#B8B3AA99',
-                    sizeStep: 8
+                    sizeStep: 6
                   }
                 }"
               >
@@ -290,13 +290,31 @@ const footerStyle: CSSProperties = {
               display: flex;
               flex-direction: column;
               justify-content: space-between;
-              max-height: 85vh;
+              height: 75vh;
             "
             :span="9"
           >
             <div>
               <TrendTimeline
-                :width-height-ratio="0.25"
+                :width-height-ratio="0.4"
+                :dates="dates"
+                v-model:selected-index="selectedIndex"
+                v-model:auto-play="autoPlay"
+              />
+            </div>
+
+            <div>
+              <TrendTimeline
+                :width-height-ratio="0.4"
+                :dates="dates"
+                v-model:selected-index="selectedIndex"
+                v-model:auto-play="autoPlay"
+              />
+            </div>
+
+            <div>
+              <TrendTimeline
+                :width-height-ratio="0.4"
                 :dates="dates"
                 v-model:selected-index="selectedIndex"
                 v-model:auto-play="autoPlay"
@@ -312,7 +330,7 @@ const footerStyle: CSSProperties = {
             "
             :span="9"
           >
-            <div style="margin-bottom: 10px">
+            <div style="margin-bottom: 10px; margin-top: 20px">
               <MapTimeline
                 :width-height-ratio="0.6"
                 :dates="dates"
@@ -321,6 +339,22 @@ const footerStyle: CSSProperties = {
                 v-model:auto-play="autoPlay"
               />
             </div>
+            <a-layout style="background-color: transparent">
+              <a-layout-content
+                style="
+                  background-color: transparent;
+                  align-items: center;
+                  /* justify-items: center; */
+                  /* align-content: center;*/
+                  justify-content: center;
+                  display: flex;
+                "
+              >
+                <div>
+                  <h1>what you want to put here</h1>
+                </div>
+              </a-layout-content>
+            </a-layout>
           </a-col>
         </a-row>
       </div>
@@ -434,8 +468,8 @@ a {
 }
 
 .steptitle {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .icontitle {
