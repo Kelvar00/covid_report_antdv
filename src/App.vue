@@ -41,7 +41,7 @@ const selectValue = ref<string | undefined>(undefined);
 const dates = ref(keyMoments.map((item) => moment(item.Time, 'yyyy-MM-DD').toDate()))
 
 const selectedIndex = ref(0)
-const autoPlay = ref(true)
+const autoPlay = ref(false)
 const selectedCountry = ref('')
 const selectContainer = ref(null)
 
@@ -75,6 +75,7 @@ const scrollHandler = (event: WheelEvent) => {
 import MapCharts from './components/MapCharts.vue'
 import MapTimeline from './components/MapTimeline.vue'
 import TrendTimeline from './components/TrendTimeline.vue'
+import CountrySelect from './components/CountrySelect.vue'
 import moment from 'moment'
 //import { requiredNumber } from 'element-plus/es/components/table-v2/src/common.js';
 const transparentStyle: CSSProperties = {
@@ -313,11 +314,7 @@ const footerStyle: CSSProperties = {
                   justify-content: start; 
                   display: flex;
                 ">
-                <div ref="selectContainer">
-                  <a-select :getPopupContainer="()=>selectContainer" v-model:value="selectValue" :open="true" show-search placeholder="Select a person" style="width: 36vw;"
-                    :options="selectOptions" placement="bottomLeft" :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur"
-                    @change="handleChange"></a-select>
-                </div>
+                <CountrySelect style="aspect-ratio: 5/3;"/>
               </a-layout-content>
             </a-layout>
           </a-col>
