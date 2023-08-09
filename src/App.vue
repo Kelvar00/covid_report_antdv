@@ -79,7 +79,7 @@ import CountrySelect from './components/CountrySelect.vue'
 import moment from 'moment'
 //import { requiredNumber } from 'element-plus/es/components/table-v2/src/common.js';
 const transparentStyle: CSSProperties = {
-  color: 'transoarent',
+  color: 'transparent',
   backgroundColor: 'transparent'
 }
 const headerStyle: CSSProperties = {
@@ -257,7 +257,7 @@ const footerStyle: CSSProperties = {
 
       <div class="section" style="padding-top: 60px">
         <a-row>
-          <a-col :span="4" :offset="1" style="align-items: center; max-height: 85vh">
+          <a-col :span="4" :offset="1" style="align-items: center; max-height: 85vh;">
             <div class="scroll_event">
               <a-config-provider :theme="{
                 token: {
@@ -267,7 +267,7 @@ const footerStyle: CSSProperties = {
                   colorTextTertiary: '#B8B3AA99',
                   colorTextDisabled: '#B8B3AA99',
                   colorSplit: '#B8B3AA99',
-                  sizeStep: 6
+                  sizeStep: 6,
                 }
               }">
                 <a-steps progress-dot @wheel="scrollHandler" direction="vertical" v-model:current="selectedIndex">
@@ -392,7 +392,12 @@ const footerStyle: CSSProperties = {
   height: 100%;
   width: 100%;
   overflow-y: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
   aspect-ratio: 2/3;
+}
+.scroll_event::-webkit-scrollbar{
+  display: none;
 }
 
 #menu {

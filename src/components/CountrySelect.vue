@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SupportedCountries from '@/assets/countries.json'
-import { computed } from 'vue';
+import { computed ,type CSSProperties} from 'vue';
 import { ref } from 'vue';
 import { debounce } from 'lodash'
 
@@ -15,7 +15,7 @@ const doSearch = debounce(function(key:string){
     filteredItems.value = itemsList.filter(item=>{
         return item.key.toLowerCase().indexOf(key)>-1
     })
-},300)
+}, 300)
 function onSearch(e:any)
 {
     doSearch(filterKey.value)
@@ -36,10 +36,9 @@ const filterKey = ref('')
             v-model:selected-keys="selectedCountries"
             mode="inline"
             :items="filteredItems"
-            style="overflow-y: auto;flex: 1;"
+            style="overflow-y: auto;flex: 1;border-radius: 4px;background-color: #1f1f1faa;color: #B8B3AA;"
             @wheel.stop="()=>{ }"
         >
-
         </a-menu>
     </div>
 </template>
