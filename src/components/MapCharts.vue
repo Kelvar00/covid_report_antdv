@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref, watch, type Ref } from 'vue'
 import * as echart from 'echarts/core'
-import { TotalStatistics, WorldStatistics, getCountryWeekly, getTotalWeekly } from '@/util/data'
+import { TotalStatistics, getCountryWeekly, getTotalWeekly } from '@/util/data'
 import {
   makeTitle,
-  makeStateOption,
   makeBarSeries,
   makeGridSettings,
   makeLoadingOptions,
@@ -14,6 +13,9 @@ import {
 } from '@/util/echart_util'
 import trendJson from '@/assets/multiTimeline.json'
 import moment from 'moment'
+
+const startDate = new Date(2019, 11, 1)
+const endDate = new Date(2022, 11, 14)
 
 /// REGION COMPONENT INTERACTION
 const props = defineProps({
@@ -28,26 +30,40 @@ const props = defineProps({
   selectedCountry: {
     type: String,
     default: ''
+  },
+  dates:{
+    type:Array<Date>,
+    required:true
+  },
+  selectedTimelineIndex:{
+    type:Number,
+    default: 0
   }
 })
+const emit = defineEmits(['update:selectedTimelineIndex'])
 watch(
   () => props.selectedCountry,
   (newVal) => {
     showCountryDetails(newVal)
   }
 )
-
+watch(
+  ()=>props.selectedTimelineIndex,
+  (newVal)=>{
+    setDatazoomAround(props.dates[newVal])
+  }
+)
 /// REGION SETUP
 const chartElement: Ref<HTMLSpanElement> = ref(null) as any
 let chartInstance: echart.ECharts = null as any
 
 /// REGION CORE LOGIC
-function getTrendDataset(tsStart:number,tsStop:number) {
+function getTrendDataset(tsStart: number, tsStop: number) {
   return {
     dimensions: ['Time', '新型冠狀病毒肺炎', 'CoronaVirus', 'COVID'],
-    source: trendJson.filter(item=>{
-      const value = moment(item.Time,'yyyy-MM-DD').valueOf()
-      return value>=tsStart&&value<=tsStop
+    source: trendJson.filter((item) => {
+      const value = moment(item.Time, 'yyyy-MM-DD').valueOf()
+      return value >= tsStart && value <= tsStop
     })
   }
 }
@@ -55,8 +71,8 @@ async function showCountryDetails(selectedCountry: string) {
   let dataList = []
   let data: TotalStatistics[]
   if (selectedCountry)
-    data = await getCountryWeekly(selectedCountry, new Date(2019, 11, 1), new Date(2022, 11, 14))
-  else data = await getTotalWeekly(new Date(2019, 11, 1), new Date(2022, 11, 14))
+    data = await getCountryWeekly(selectedCountry,startDate ,endDate )
+  else data = await getTotalWeekly(startDate ,endDate)
   for (const item of data) {
     dataList.push({
       time: new Date(item.timestamp * 1000),
@@ -68,47 +84,52 @@ async function showCountryDetails(selectedCountry: string) {
   const newOption: ECOption = {
     title: makeTitle('Covid-19 Statistics of ' + selectedCountry),
     dataset: [
-      getTrendDataset(new Date(2019, 11, 1).valueOf(), new Date(2022, 11, 14).valueOf()),
+      getTrendDataset(startDate.valueOf(), endDate.valueOf()),
       { dimensions: ['time', 'confirmed', 'cured', 'death'], source: dataList }
     ],
     series: [
+      makeLineSeries('新型冠狀病毒肺炎', 'time', '新型冠狀病毒肺炎', undefined, undefined, 0),
+      makeLineSeries('CoronaVirus', 'time', 'CoronaVirus', undefined, undefined, 0),
+      makeLineSeries('COVID', 'time', 'COVID', undefined, undefined, 0),
       {
         ...makeBarSeries('Confirmed', 'time', 'confirmed'),
-        xAxisIndex: 0,
-        yAxisIndex: 0,
+        stack: 'total',
+        xAxisIndex: 1,
+        yAxisIndex: 1,
         datasetIndex: 1
       },
       {
         ...makeBarSeries('Cured', 'time', 'cured'),
-        xAxisIndex: 0,
-        yAxisIndex: 0,
+        stack: 'total',
+        xAxisIndex: 1,
+        yAxisIndex: 1,
         datasetIndex: 1
       },
       {
         ...makeBarSeries('Death', 'time', 'death'),
-        xAxisIndex: 0,
-        yAxisIndex: 0,
+        stack: 'total',
+        xAxisIndex: 1,
+        yAxisIndex: 1,
         datasetIndex: 1
-      },
-      {
-        ...makeLineSeries('新型冠狀病毒肺炎', 'time', '新型冠狀病毒肺炎', undefined, undefined, 0),
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      },
-      {
-        ...makeLineSeries('CoronaVirus', 'time', 'CoronaVirus', undefined, undefined, 0),
-        xAxisIndex: 1,
-        yAxisIndex: 1
-      },
-      {
-        ...makeLineSeries('COVID', 'time', 'COVID', undefined, undefined, 0),
-        xAxisIndex: 1,
-        yAxisIndex: 1
       }
     ]
   }
   chartInstance.hideLoading()
   chartInstance.setOption(newOption)
+}
+function setDatazoomAround(date:Date)
+{
+  let start = moment(date).add(-12,'week').add(-date.getDay(),'d').toDate()
+  let end = moment(date).add(12,'week').add(7-date.getDay(),'d').toDate()
+  chartInstance.setOption({
+    dataZoom:[{startValue:start,endValue:end}]
+  }as ECOption)
+}
+function resumeDatazoom()
+{
+  chartInstance.setOption({
+    dataZoom:[{startValue:startDate,endValue:endDate}]
+  }as ECOption)
 }
 
 useEchartAutoResize(
@@ -169,6 +190,32 @@ onMounted(() => {
   chartInstance.setOption(optionHolder)
   chartInstance.showLoading(makeLoadingOptions())
   showCountryDetails(props.selectedCountry)
+
+  chartInstance.on('click', (params) => {
+    let seriesType = (params as any).seriesType
+    let data = (params as any).data
+    let date:Date
+    if(seriesType == 'line')// trend chart
+    {
+      date = moment((data as any).Time, 'yyyy-MM-DD').toDate()
+    }
+    else{
+      date = (data as any).time
+    }
+    let valueList = props.dates.map(item=>Math.abs(item.valueOf()-date.valueOf()))
+    let closest = valueList.indexOf(Math.min(...valueList))
+
+    emit('update:selectedTimelineIndex',closest)
+  })
+  chartInstance.getZr().on('dblclick',(event)=>{
+    if(!event.target)
+    {
+      resumeDatazoom()
+    }
+  })
+  /*chartInstance.on('datazoom', (params) => {
+    const { startValue, endValue } =  (chartInstance.getOption() as any).dataZoom[0]
+  })*/
 })
 </script>
 <template>

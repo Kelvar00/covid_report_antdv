@@ -42,6 +42,8 @@ const dates = ref(keyMoments.map((item) => moment(item.Time, 'yyyy-MM-DD').toDat
 
 const selectedIndex = ref(0)
 const autoPlay = ref(true)
+const selectedCountry = ref('')
+const selectContainer = ref(null)
 
 const carouseData = [{ url: Image1 }, { url: Image2 }, { url: Image3 }, { url: Image4 }]
 onMounted(() => {
@@ -301,7 +303,8 @@ const footerStyle: CSSProperties = {
             " :span="9">
             <div style="margin-bottom: 10px; margin-top: 20px">
               <MapTimeline :width-height-ratio="0.6" :dates="dates" :play-interval="10000"
-                v-model:selected-index="selectedIndex" v-model:auto-play="autoPlay" />
+                v-model:selected-timeline-index="selectedIndex" v-model:auto-play="autoPlay"
+                v-model:selected-country="selectedCountry" />
             </div>
             <a-layout id="layoutOutside" style="background-color: transparent">
               <a-layout-content style="
@@ -310,9 +313,9 @@ const footerStyle: CSSProperties = {
                   justify-content: start; 
                   display: flex;
                 ">
-                <div>
-                  <a-select v-model:value="selectValue" show-search placeholder="Select a person" style="width: 36vw;"
-                    :options="selectOptions" :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur"
+                <div ref="selectContainer">
+                  <a-select :getPopupContainer="()=>selectContainer" v-model:value="selectValue" :open="true" show-search placeholder="Select a person" style="width: 36vw;"
+                    :options="selectOptions" placement="bottomLeft" :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur"
                     @change="handleChange"></a-select>
                 </div>
               </a-layout-content>
@@ -322,7 +325,7 @@ const footerStyle: CSSProperties = {
       </div>
       <div class="section" style="padding-top: 60px">
         <div class="chart-map">
-          <MapCharts :width-height-ratio="0.5" :margin-ratio="0.9" />
+          <MapCharts :dates="dates" v-model:selected-timeline-index="selectedIndex" :width-height-ratio="0.5" :margin-ratio="0.9" />
         </div>
       </div>
     </div>
@@ -442,5 +445,8 @@ a {
   align-content: center;
   align-items: center;
   justify-items: center;
+}
+.selectpopup{
+  position: relative;
 }
 </style>
