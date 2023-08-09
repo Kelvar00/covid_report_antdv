@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:5132'
+const url = 'http://localhost:5000'
 
 export class WorldStatistics {
   timestamp: number = 0

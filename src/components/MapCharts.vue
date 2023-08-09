@@ -13,6 +13,7 @@ import {
 } from '@/util/echart_util'
 import trendJson from '@/assets/multiTimeline.json'
 import moment from 'moment'
+import {$eventBus} from '@/util/mitt_util'
 
 const startDate = new Date(2019, 11, 1)
 const endDate = new Date(2022, 11, 14)
@@ -31,12 +32,12 @@ const props = defineProps({
     type: String,
     default: ''
   },
-  dates:{
-    type:Array<Date>,
-    required:true
+  dates: {
+    type: Array<Date>,
+    required: true
   },
-  selectedTimelineIndex:{
-    type:Number,
+  selectedTimelineIndex: {
+    type: Number,
     default: 0
   }
 })
@@ -47,15 +48,15 @@ watch(
     showCountryDetails(newVal)
   }
 )
-watch(
-  ()=>props.selectedTimelineIndex,
-  (newVal)=>{
-    setDatazoomAround(props.dates[newVal])
-  }
-)
+
+$eventBus.on('clickUpdate:selectedIndex',(index)=>{
+  setDatazoomAround(props.dates[index])
+})
+
 /// REGION SETUP
 const chartElement: Ref<HTMLSpanElement> = ref(null) as any
 let chartInstance: echart.ECharts = null as any
+let isZoomed:boolean = false
 
 /// REGION CORE LOGIC
 function getTrendDataset(tsStart: number, tsStop: number) {
@@ -70,9 +71,8 @@ function getTrendDataset(tsStart: number, tsStop: number) {
 async function showCountryDetails(selectedCountry: string) {
   let dataList = []
   let data: TotalStatistics[]
-  if (selectedCountry)
-    data = await getCountryWeekly(selectedCountry,startDate ,endDate )
-  else data = await getTotalWeekly(startDate ,endDate)
+  if (selectedCountry) data = await getCountryWeekly(selectedCountry, startDate, endDate)
+  else data = await getTotalWeekly(startDate, endDate)
   for (const item of data) {
     dataList.push({
       time: new Date(item.timestamp * 1000),
@@ -117,19 +117,18 @@ async function showCountryDetails(selectedCountry: string) {
   chartInstance.hideLoading()
   chartInstance.setOption(newOption)
 }
-function setDatazoomAround(date:Date)
-{
-  let start = moment(date).add(-12,'week').add(-date.getDay(),'d').toDate()
-  let end = moment(date).add(12,'week').add(7-date.getDay(),'d').toDate()
-  chartInstance.setOption({
-    dataZoom:[{startValue:start,endValue:end}]
-  }as ECOption)
+function setDatazoomAround(date: Date) {
+  isZoomed = true
+  let length = endDate.valueOf() - startDate.valueOf()
+  let startValue = moment(date).add(-12, 'week').add(-date.getDay(), 'd').valueOf()
+  let start = (startValue - startDate.valueOf()) / length
+  let endValue = moment(date).add(12, 'week').add(7 - date.getDay(), 'd').valueOf()
+  let end = (endValue - startDate.valueOf()) / length
+  chartInstance.dispatchAction({ type: 'dataZoom', dataZoomIndex:0, start: start * 100, end: end * 100 })
 }
-function resumeDatazoom()
-{
-  chartInstance.setOption({
-    dataZoom:[{startValue:startDate,endValue:endDate}]
-  }as ECOption)
+function resumeDatazoom() {
+  isZoomed = false
+  chartInstance.dispatchAction({ type: 'dataZoom', dataZoomIndex:0, start: 0, end: 100 })
 }
 
 useEchartAutoResize(
@@ -171,13 +170,13 @@ onMounted(() => {
       {
         type: 'slider',
         xAxisIndex: [0, 1],
-        filterMode: 'none',
+        filterMode: 'filter',
         minSpan: 5
       },
       {
         type: 'inside',
         yAxisIndex: [0, 1],
-        filterMode: 'none'
+        filterMode: 'empty'
       }
     ],
     xAxis: [
@@ -194,28 +193,28 @@ onMounted(() => {
   chartInstance.on('click', (params) => {
     let seriesType = (params as any).seriesType
     let data = (params as any).data
-    let date:Date
-    if(seriesType == 'line')// trend chart
-    {
+    let date: Date
+    if (seriesType == 'line') {
+      // trend chart
       date = moment((data as any).Time, 'yyyy-MM-DD').toDate()
-    }
-    else{
+    } else {
       date = (data as any).time
     }
-    let valueList = props.dates.map(item=>Math.abs(item.valueOf()-date.valueOf()))
+    let valueList = props.dates.map((item) => Math.abs(item.valueOf() - date.valueOf()))
     let closest = valueList.indexOf(Math.min(...valueList))
 
-    emit('update:selectedTimelineIndex',closest)
+    emit('update:selectedTimelineIndex', closest)
+    $eventBus.emit('clickUpdate:selectedIndex',closest)
   })
-  chartInstance.getZr().on('dblclick',(event)=>{
-    if(!event.target)
-    {
+  chartInstance.getZr().on('dblclick', (event) => {
+    if (!event.target) {
       resumeDatazoom()
     }
   })
-  /*chartInstance.on('datazoom', (params) => {
-    const { startValue, endValue } =  (chartInstance.getOption() as any).dataZoom[0]
-  })*/
+  chartInstance.on('datazoom', (params) => {
+    console.log(params)
+    const { startValue, endValue } = (chartInstance.getOption() as any).dataZoom[0]
+  })
 })
 </script>
 <template>
