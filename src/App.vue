@@ -121,13 +121,18 @@ const footerStyle: CSSProperties = {
     <div id="fullpage">
       <div class="section" style="align-items: center; justify-items: center">
         <a-row>
-          <a-col :span="16" :offset="4">
+          <a-col
+            style="align-items: center; justify-items: center; flex-direction: column"
+            :span="16"
+            :offset="4"
+          >
             <div>
               <h1
                 style="
                   font-weight: bold;
                   margin-bottom: 10px;
-                  font-size: 120px;
+                  aspect-ratio: 6/1;
+                  font-size: 100px;
                   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
                     'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
                 "
@@ -144,11 +149,11 @@ const footerStyle: CSSProperties = {
                 "
               >
                 The novel coronavirus, cases of which were first reported in
-                <font color="#65C0FE">December 2019</font>, has escalated into a pandemic affecting
-                <font color="#65C0FE">at least 200 countries and regions</font> so far. The rapid
-                outbreak has stoked fear and prejudice while inspiring love and empathy. Its
-                socio-economic, political and psychological impact is reshaping the global
-                landscape.
+                <span style="color: #dc143c">December 2019</span>, has escalated into a pandemic
+                affecting <span style="color: #dc143c">at least 200 countries and regions</span> so
+                far. The rapid outbreak has stoked fear and prejudice while inspiring love and
+                empathy. Its socio-economic, political and psychological impact is reshaping the
+                global landscape.
               </p>
             </div>
           </a-col>
@@ -170,15 +175,15 @@ const footerStyle: CSSProperties = {
                   >
                     At the turn of the year, few imagined a virus would rise up that modern medicine
                     couldn't quickly cure. But the coronavirus has now infected over
-                    <font color="#DC143C">2.4 million</font>
+                    <span style="color: #dc143c">2.4 million</span>
                     people, shut down nations and threatened to derail the global economy. As the
                     situation in China tapers off and life slowly returns to normal, the focus is on
                     preventing imported cases. Elsewhere, this
-                    <font color="#DC143C">dangerous and relentless</font> virus continues to plague
-                    at least 200 countries and regions. The pandemic has evolved from a public
-                    health emergency to a socio-economic catastrophe. This is a time when
-                    <font color="#DC143C">a proliferation of disinformation</font> about the disease
-                    is confusing many, when a blame game is riding on a roller coaster of
+                    <span style="color: #dc143c">dangerous and relentless</span> virus continues to
+                    plague at least 200 countries and regions. The pandemic has evolved from a
+                    public health emergency to a socio-economic catastrophe. This is a time when
+                    <span style="color: #dc143c">a proliferation of disinformation</span> about the
+                    disease is confusing many, when a blame game is riding on a roller coaster of
                     politicization and xenophobia, when humankind is realizing its limitations and
                     ignorance in the face of a new virus. CGTN made this interactive to document the
                     developments of the pandemic as well as measures taken in China and other
@@ -241,35 +246,7 @@ const footerStyle: CSSProperties = {
 
       <div class="section" style="padding-top: 60px">
         <a-row>
-          <a-col
-            style="
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              max-height: 85vh;
-            "
-            :span="9"
-            :offset="3"
-          >
-            <div style="margin-bottom: 10px">
-              <MapTimeline
-                :width-height-ratio="0.6"
-                :dates="dates"
-                :play-interval="10000"
-                v-model:selected-index="selectedIndex"
-                v-model:auto-play="autoPlay"
-              />
-            </div>
-            <div>
-              <TrendTimeline
-                :width-height-ratio="0.5"
-                :dates="dates"
-                v-model:selected-index="selectedIndex"
-                v-model:auto-play="autoPlay"
-              />
-            </div>
-          </a-col>
-          <a-col :span="7" style="align-items: center; max-height: 85vh" :offset="2">
+          <a-col :span="4" :offset="1" style="align-items: center; max-height: 85vh">
             <div class="scroll_event">
               <a-config-provider
                 :theme="{
@@ -306,6 +283,43 @@ const footerStyle: CSSProperties = {
                   </a-step>
                 </a-steps>
               </a-config-provider>
+            </div>
+          </a-col>
+          <a-col
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              max-height: 85vh;
+            "
+            :span="9"
+          >
+            <div>
+              <TrendTimeline
+                :width-height-ratio="0.25"
+                :dates="dates"
+                v-model:selected-index="selectedIndex"
+                v-model:auto-play="autoPlay"
+              />
+            </div>
+          </a-col>
+          <a-col
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              max-height: 85vh;
+            "
+            :span="9"
+          >
+            <div style="margin-bottom: 10px">
+              <MapTimeline
+                :width-height-ratio="0.6"
+                :dates="dates"
+                :play-interval="10000"
+                v-model:selected-index="selectedIndex"
+                v-model:auto-play="autoPlay"
+              />
             </div>
           </a-col>
         </a-row>
