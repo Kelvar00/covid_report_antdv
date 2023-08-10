@@ -3,12 +3,12 @@ import { watch, ref, type Ref, onMounted } from 'vue'
 /// REGION VIEWMODEL
 interface Props{
   dates: Date[]
-  heightParameter: number|string
-  marginRatio: number
-  selectedCountry:string
-  selectedTimelineIndex: number
-  autoPlay: boolean
-  playInterval: number
+  heightParameter?: number|string
+  marginRatio?: number
+  selectedCountry?:string
+  selectedTimelineIndex?: number
+  autoPlay?: boolean
+  playInterval?: number
 }
 const props = withDefaults(defineProps<Props>(),{
   heightParameter:0.75,
