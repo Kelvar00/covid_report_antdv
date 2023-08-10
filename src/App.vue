@@ -305,7 +305,7 @@ const footerStyle: CSSProperties = {
                 :dates="dates"
                 :selected-country="selectedCountry"
                 v-model:selected-timeline-index="selectedIndex"
-                :width-height-ratio="1.4"
+                height-parameter="75vh"
               />
             </div>
           </a-col>
@@ -318,9 +318,9 @@ const footerStyle: CSSProperties = {
             "
             :span="7"
           >
-            <div style="margin-bottom: 10px; margin-top: 20px">
+            <div style="height: 45vh;display: flex;flex-direction: column;justify-content: center;">
               <MapTimeline
-                :width-height-ratio="0.6"
+                height-parameter="43vh"
                 :dates="dates"
                 :play-interval="10000"
                 v-model:selected-timeline-index="selectedIndex"
@@ -335,6 +335,7 @@ const footerStyle: CSSProperties = {
                   align-items: start;
                   justify-content: start;
                   display: flex;
+                  height: 30vh;
                 "
               >
                 <a-config-provider

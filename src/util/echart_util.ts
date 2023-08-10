@@ -183,21 +183,36 @@ export function makeLoadingOptions(
 export function useEchartAutoResize(
   parentContainerSource: WatchSource<Element>,
   echartInstances: WatchSource<echart.ECharts>[],
-  heightParameter: number,
+  heightParameter: number | string,
   marginRatio: number = 0.9,
-  useAsStaticHeight: boolean = false
+  useAsStaticHeight: boolean = false,
+  resizedCallback?: (instance: echart.ECharts) => void
 ) {
   const widthObserver = new ResizeObserver((entries) => {
     if (entries[0].contentBoxSize) {
       const preMarginWidth = entries[0].contentBoxSize[0].inlineSize / echartInstances.length
+      const preMarginHeight = entries[0].contentBoxSize[0].blockSize
       const width = preMarginWidth * marginRatio
       let height: number
-      if (!useAsStaticHeight) height = width * heightParameter
-      else height = heightParameter
-
+      if (typeof heightParameter == 'number') {
+        if (!useAsStaticHeight) height = width * heightParameter
+        else height = heightParameter
+      } else {
+        if (heightParameter.endsWith('px')) {
+          height = Number.parseFloat(heightParameter.slice(0, -2))
+        } else if (heightParameter.endsWith('vh')) {
+          height =
+            (Number.parseFloat(heightParameter.slice(0, -2)) * document.body.clientHeight) / 100
+        } else if (heightParameter.endsWith('%')) {
+          height = (Number.parseFloat(heightParameter.slice(0, -1)) / 100) * preMarginHeight
+        } else {
+          height = 0
+        }
+      }
       for (const item of echartInstances) {
         const chartInstance = toValue(item)
         chartInstance.resize({ width: width, height: height })
+        if (resizedCallback) resizedCallback(chartInstance)
       }
     }
   })

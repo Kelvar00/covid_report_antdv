@@ -1,36 +1,22 @@
 <script setup lang="ts">
 import { watch, ref, type Ref, onMounted } from 'vue'
 /// REGION VIEWMODEL
-const props = defineProps({
-  dates: {
-    required: true,
-    type: Array<Date>,
-    default: () => []
-  },
-  widthHeightRatio: {
-    type: Number,
-    default: 0.75
-  },
-  marginRatio: {
-    type: Number,
-    default: 1
-  },
-  selectedCountry:{
-    type: String,
-    default: ''
-  },
-  selectedTimelineIndex: {
-    type: Number,
-    default: 0
-  },
-  autoPlay: {
-    type: Boolean,
-    default: false
-  },
-  playInterval: {
-    type: Number,
-    default: 5000
-  }
+interface Props{
+  dates: Date[]
+  heightParameter: number|string
+  marginRatio: number
+  selectedCountry:string
+  selectedTimelineIndex: number
+  autoPlay: boolean
+  playInterval: number
+}
+const props = withDefaults(defineProps<Props>(),{
+  heightParameter:0.75,
+  marginRatio:1,
+  selectedCountry:'',
+  selectedTimelineIndex:0,
+  autoPlay:false,
+  playInterval:5000
 })
 const emit = defineEmits(['update:selectedTimelineIndex', 'update:autoPlay','update:selectedCountry'])
 watch(
@@ -90,6 +76,7 @@ import {
   makeStateOption,
   makeLoadingOptions,
   useEchartAutoResize,
+  useDisableContextMenuIn,
   type ECOption,
   loadWorldJson,
   makeTimelineStyle
@@ -152,9 +139,12 @@ let timelineChanged:boolean = false
 useEchartAutoResize(
   () => chartElement.value.parentElement!,
   [() => chartInstance],
-  props.widthHeightRatio,
-  props.marginRatio
+  props.heightParameter,
+  props.marginRatio,
+  false,
+  onResized
 )
+useDisableContextMenuIn(chartElement)
 onMounted(() => {
   chartInstance = echart.init(chartElement.value, 'darklow')
   chartInstance.showLoading(makeLoadingOptions())
@@ -188,6 +178,9 @@ onMounted(() => {
       emit('update:selectedCountry','')
     }
   })
+  chartInstance.getZr().on('contextmenu',()=>{
+    applyUnselect(props.selectedCountry)
+  })
 
   //Setup
   Promise.all([loadTimeData(props.dates), loadWorldJson()]).then((value) => {
@@ -199,6 +192,11 @@ onMounted(() => {
     setTimelineSelection(props.selectedTimelineIndex,true)
   })
 })
+function onResized(){
+  const visualMapHeight = chartInstance.getHeight()*0.32
+  chartInstance.setOption({visualMap:{itemHeight:visualMapHeight}}as ECOption)
+}
+
 function applyTimeData(dataset: DateData[]) {
   let option: ECOption = {
     baseOption: {

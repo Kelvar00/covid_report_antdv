@@ -19,33 +19,24 @@ import { $eventBus } from '@/util/mitt_util'
 const startDate = new Date(2019, 11, 1)
 const endDate = new Date(2022, 11, 14)
 
+
 /// REGION COMPONENT INTERACTION
-const props = defineProps({
-  widthHeightRatio: {
-    type: Number,
-    default: 0.72
-  },
-  marginRatio: {
-    type: Number,
-    default: 0.9
-  },
-  selectedCountry: {
-    type: String,
-    default: ''
-  },
-  dates: {
-    type: Array<Date>,
-    required: true
-  },
-  selectedTimelineIndex: {
-    type: Number,
-    default: 0
-  },
-  timeLineAutoplayed: {
-    type: Boolean,
-    default: false
-  }
+interface Props{
+  heightParameter:number|string
+  marginRatio:number
+  selectedCountry:string
+  dates:Date[]
+  selectedTimelineIndex:number
+  timeLineAutoplayed:boolean
+}
+const props = withDefaults( defineProps<Props>(),{
+  heightParameter:0.72,
+  marginRatio:0.9,
+  selectedCountry:'',
+  selectedTimelineIndex:0,
+  timeLineAutoplayed:false
 })
+
 const emit = defineEmits(['update:selectedTimelineIndex'])
 watch(
   () => props.selectedCountry,
@@ -185,7 +176,7 @@ function resumeDatazoom() {
 useEchartAutoResize(
   () => chartElement.value.parentElement!,
   [() => chartInstance],
-  props.widthHeightRatio,
+  props.heightParameter,
   props.marginRatio
 )
 useDisableContextMenuIn(chartElement)
