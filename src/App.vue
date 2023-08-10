@@ -168,6 +168,7 @@ const footerStyle: CSSProperties = {
                   font-size: 100px;
                   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
                     'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                  color: #ffffffaa;
                 "
                 align="center"
               >
@@ -179,6 +180,7 @@ const footerStyle: CSSProperties = {
                 style="
                   font-size: 24px;
                   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                  color: #ffffffaa;
                 "
               >
                 The novel coronavirus, cases of which were first reported in
@@ -200,7 +202,7 @@ const footerStyle: CSSProperties = {
                 <a-col :span="10" :offset="3">
                   <p
                     style="
-                      color: azure;
+                      color: #ffffffaa;
                       font-size: 20px;
                       font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
                     "
@@ -208,18 +210,18 @@ const footerStyle: CSSProperties = {
                   >
                     At the turn of the year, few imagined a virus would rise up that modern medicine
                     couldn't quickly cure. But the coronavirus has now infected over
-                    <span style="color: #dc143c">2.4 million</span>
+                    <span style="color: #dc143cbb">2.4 million</span>
                     people, shut down nations and threatened to derail the global economy. As the
                     situation in China tapers off and life slowly returns to normal, the focus is on
                     preventing imported cases. Elsewhere, this
-                    <span style="color: #dc143c">dangerous and relentless</span> virus continues to
-                    plague at least 200 countries and regions. The pandemic has evolved from a
+                    <span style="color: #dc143cbb">dangerous and relentless</span> virus continues
+                    to plague at least 200 countries and regions. The pandemic has evolved from a
                     public health emergency to a socio-economic catastrophe. This is a time when
-                    <span style="color: #dc143c">a proliferation of disinformation</span> about the
-                    disease is confusing many, when a blame game is riding on a roller coaster of
-                    politicization and xenophobia, when humankind is realizing its limitations and
-                    ignorance in the face of a new virus. CGTN made this interactive to document the
-                    developments of the pandemic as well as measures taken in China and other
+                    <span style="color: #dc143cbb">a proliferation of disinformation</span> about
+                    the disease is confusing many, when a blame game is riding on a roller coaster
+                    of politicization and xenophobia, when humankind is realizing its limitations
+                    and ignorance in the face of a new virus. CGTN made this interactive to document
+                    the developments of the pandemic as well as measures taken in China and other
                     countries to counter it.
                   </p>
                 </a-col>
@@ -297,6 +299,7 @@ const footerStyle: CSSProperties = {
                 <a-steps
                   progress-dot
                   @wheel="scrollHandler"
+                  @change="scrollToIndex"
                   direction="vertical"
                   v-model:current="selectedIndex"
                 >
@@ -320,23 +323,15 @@ const footerStyle: CSSProperties = {
               justify-content: space-between;
               height: 75vh;
             "
-            :span="9"
+            :span="10"
           >
-            <div>
-              <TrendTimeline
-                :width-height-ratio="0.4"
+            <div class="chart-map">
+              <MapCharts
                 :dates="dates"
-                v-model:selected-index="selectedIndex"
-                v-model:auto-play="autoPlay"
-              />
-            </div>
-
-            <div>
-              <TrendTimeline
-                :width-height-ratio="0.4"
-                :dates="dates"
-                v-model:selected-index="selectedIndex"
-                v-model:auto-play="autoPlay"
+                :selected-country="selectedCountry"
+                v-model:selected-timeline-index="selectedIndex"
+                :width-height-ratio="1.2"
+                :margin-ratio="0.9"
               />
             </div>
           </a-col>
@@ -347,7 +342,7 @@ const footerStyle: CSSProperties = {
               justify-content: space-between;
               max-height: 85vh;
             "
-            :span="9"
+            :span="8"
           >
             <div style="margin-bottom: 10px; margin-top: 20px">
               <MapTimeline
@@ -388,17 +383,6 @@ const footerStyle: CSSProperties = {
             </a-layout>
           </a-col>
         </a-row>
-      </div>
-      <div class="section" style="padding-top: 60px">
-        <div class="chart-map">
-          <MapCharts
-            :dates="dates"
-            :selected-country="selectedCountry"
-            v-model:selected-timeline-index="selectedIndex"
-            :width-height-ratio="0.5"
-            :margin-ratio="0.9"
-          />
-        </div>
       </div>
     </div>
   </a-config-provider>
@@ -525,5 +509,9 @@ a {
 }
 .selectpopup {
   position: relative;
+}
+.chart-map {
+  padding-right: -20px;
+  align-items: center;
 }
 </style>
