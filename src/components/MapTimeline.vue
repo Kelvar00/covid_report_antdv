@@ -137,7 +137,6 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
         emphasis: makeStateOption(false, 'white'),
         select: makeStateOption(false, 'white'),
         ...makeStateOption(false),
-        data: [],
         animation: true,
         universalTransition: true,
         selectedMode: 'single'
@@ -145,6 +144,8 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
     ]
   }
 }
+
+let timelineChanged:boolean = false
 
 useEchartAutoResize(
   () => chartElement.value.parentElement!,
@@ -156,6 +157,7 @@ onMounted(() => {
   chartInstance = echart.init(chartElement.value, 'darklow')
   chartInstance.showLoading(makeLoadingOptions())
   chartInstance.on('timelinechanged', (params) => {
+    timelineChanged = true
     emit('update:selectedTimelineIndex', (params as any).currentIndex)
   })
   chartInstance.on('timelineplaychanged', (params) => {
@@ -166,7 +168,19 @@ onMounted(() => {
     if(params.selected.length == 1&&params.selected[0].dataIndex.length==1){
       const data = (chartInstance.getOption() as any).series[0].data
       const item = data[params.selected[0].dataIndex[0]]
-      emit('update:selectedCountry',item.name)
+      if(timelineChanged)
+      {
+        timelineChanged = false
+        let curr = (chartInstance.getOption() as any).timeline[0].currentIndex
+        if(params.selected[0].dataIndex[0] == curr)
+        {
+          // THIS MUST BE WRONG,IGNORE IT
+          setCountrySelection(props.selectedCountry,item.name,true)
+          return
+        }
+      }
+      if(props.selectedCountry!=item.name)
+        emit('update:selectedCountry',item.name)
     }
     else{
       emit('update:selectedCountry','')
@@ -179,13 +193,15 @@ onMounted(() => {
       baseOption: makeBaseOption(props.dates)
     })
     applyTimeData(value[0])
-    setCountrySelection(props.selectedCountry)
-    setTimelineSelection(0)
+    setCountrySelection(props.selectedCountry,'',true)
+    setTimelineSelection(props.selectedTimelineIndex,true)
   })
 })
 function applyTimeData(dataset: DateData[]) {
   let option: ECOption = {
-    baseOption: makeBaseOption(dataset.map((item) => item.date)),
+    baseOption: {
+      ...makeBaseOption(dataset.map((item) => item.date))
+    },
     options: dataset.map((item) => {
       return {
         series: [
@@ -215,6 +231,12 @@ function applyCountrySelection(name:string,silent:boolean=false)
 function applyUnselect(name:string,silent:boolean=false)
 {
   chartInstance.dispatchAction({ type: 'unselect', seriesIndex: 0, name: name },{silent:silent})
+}
+function applyUnselectForce(silent:boolean=false)
+{
+  const data = (chartInstance.getOption() as any).series[0].data
+  for(let i=0;i<data.length;i++)
+    chartInstance.dispatchAction({ type: 'unselect', seriesIndex: 0, dataIndex: i },{silent:silent})
 }
 
 /// REGION MODEL

@@ -7,7 +7,7 @@ import Image1 from '@/assets/img/1126952445_16099187127001n.jpeg'
 import Image2 from '@/assets/img/1126952445_16099187127151n.jpeg'
 import Image3 from '@/assets/img/aj4qi-9wdbl.png'
 import Image4 from '@/assets/img/us_covid19_mortality.jpg'
-import type { SelectProps, MenuProps } from 'ant-design-vue';
+import type { SelectProps, MenuProps } from 'ant-design-vue'
 
 const selectOptions = ref<SelectProps['options']>([
   { value: 'jack', label: 'Jack' },
@@ -22,22 +22,22 @@ const selectOptions = ref<SelectProps['options']>([
   { value: 'tom6', label: 'Tom8' },
   { value: 'tom6', label: 'Tom9' },
   { value: 'tom6', label: 'Tom10' },
-  { value: 'tom6', label: 'Tom11' },
-]);
+  { value: 'tom6', label: 'Tom11' }
+])
 const handleChange = (value: string) => {
-  console.log(`selected ${value}`);
-};
+  console.log(`selected ${value}`)
+}
 const handleBlur = () => {
-  console.log('blur');
-};
+  console.log('blur')
+}
 const handleFocus = () => {
-  console.log('focus');
-};
+  console.log('focus')
+}
 const filterOption = (input: string, option: any) => {
-  return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-};
+  return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
+}
 
-const selectValue = ref<string | undefined>(undefined);
+const selectValue = ref<string | undefined>(undefined)
 const dates = ref(keyMoments.map((item) => moment(item.Time, 'yyyy-MM-DD').toDate()))
 
 const selectedIndex = ref(0)
@@ -123,13 +123,19 @@ const footerStyle: CSSProperties = {
 </script>
 
 <template>
-  <a-config-provider :theme="{
-    token: {
-      colorPrimary: '#3271A0',
-      sizeStep: 8
-    }
-  }">
-    <a-carousel style="width: 100%; height: 100%; position: absolute" :autoplay="true" :dots="false">
+  <a-config-provider
+    :theme="{
+      token: {
+        colorPrimary: '#3271A0',
+        sizeStep: 8
+      }
+    }"
+  >
+    <a-carousel
+      style="width: 100%; height: 100%; position: absolute"
+      :autoplay="true"
+      :dots="false"
+    >
       <div v-for="(item, index) in carouseData" :key="index">
         <img :src="item.url" alt="" style="object-fit: initial; height: 100%; width: 100%" />
       </div>
@@ -148,24 +154,33 @@ const footerStyle: CSSProperties = {
     <div id="fullpage">
       <div class="section" style="align-items: center; justify-items: center">
         <a-row>
-          <a-col style="align-items: center; justify-items: center; flex-direction: column" :span="16" :offset="4">
+          <a-col
+            style="align-items: center; justify-items: center; flex-direction: column"
+            :span="16"
+            :offset="4"
+          >
             <div>
-              <h1 style="
+              <h1
+                style="
                   font-weight: bold;
                   margin-bottom: 10px;
                   aspect-ratio: 6/1;
                   font-size: 100px;
                   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
                     'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-                " align="center">
+                "
+                align="center"
+              >
                 The Pandemic
               </h1>
             </div>
             <div>
-              <p style="
+              <p
+                style="
                   font-size: 24px;
                   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-                ">
+                "
+              >
                 The novel coronavirus, cases of which were first reported in
                 <span style="color: #dc143c">December 2019</span>, has escalated into a pandemic
                 affecting <span style="color: #dc143c">at least 200 countries and regions</span> so
@@ -183,11 +198,14 @@ const footerStyle: CSSProperties = {
             <div class="scroll_content">
               <a-row style="max-width: 100vw" :gutter="12">
                 <a-col :span="10" :offset="3">
-                  <p style="
+                  <p
+                    style="
                       color: azure;
                       font-size: 20px;
                       font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-                    " align="left">
+                    "
+                    align="left"
+                  >
                     At the turn of the year, few imagined a virus would rise up that modern medicine
                     couldn't quickly cure. But the coronavirus has now infected over
                     <span style="color: #dc143c">2.4 million</span>
@@ -216,7 +234,9 @@ const footerStyle: CSSProperties = {
                     </a-statistic>
                     <div class="statistic-footer">
                       <div class="footer-item">
-                        <span style="color: #ff9897">Lat update:2 August 2023 at 07:56 pm GMT+8</span>
+                        <span style="color: #ff9897"
+                          >Lat update:2 August 2023 at 07:56 pm GMT+8</span
+                        >
                       </div>
                     </div>
                   </div>
@@ -230,7 +250,9 @@ const footerStyle: CSSProperties = {
                     </a-statistic>
                     <div class="statistic-footer">
                       <div class="footer-item">
-                        <span style="color: #aaaaaa">Lat update:2 August 2023 at 07:56 pm GMT+8</span>
+                        <span style="color: #aaaaaa"
+                          >Lat update:2 August 2023 at 07:56 pm GMT+8</span
+                        >
                       </div>
                     </div>
                   </div>
@@ -257,21 +279,32 @@ const footerStyle: CSSProperties = {
 
       <div class="section" style="padding-top: 60px">
         <a-row>
-          <a-col :span="4" :offset="1" style="align-items: center; max-height: 85vh;">
+          <a-col :span="4" :offset="1" style="align-items: center; max-height: 85vh">
             <div class="scroll_event">
-              <a-config-provider :theme="{
-                token: {
-                  fontSize: 14,
-                  colorPrimary: '#B8B3AA',
-                  colorText: '#EAEBEC',
-                  colorTextTertiary: '#B8B3AA99',
-                  colorTextDisabled: '#B8B3AA99',
-                  colorSplit: '#B8B3AA99',
-                  sizeStep: 6,
-                }
-              }">
-                <a-steps progress-dot @wheel="scrollHandler" direction="vertical" v-model:current="selectedIndex">
-                  <a-step v-for="(item, index) in keyMoments" :key="index" :description="item.Time + ' ' + item.comment">
+              <a-config-provider
+                :theme="{
+                  token: {
+                    fontSize: 14,
+                    colorPrimary: '#B8B3AA',
+                    colorText: '#EAEBEC',
+                    colorTextTertiary: '#B8B3AA99',
+                    colorTextDisabled: '#B8B3AA99',
+                    colorSplit: '#B8B3AA99',
+                    sizeStep: 6
+                  }
+                }"
+              >
+                <a-steps
+                  progress-dot
+                  @wheel="scrollHandler"
+                  direction="vertical"
+                  v-model:current="selectedIndex"
+                >
+                  <a-step
+                    v-for="(item, index) in keyMoments"
+                    :key="index"
+                    :description="item.Time + ' ' + item.comment"
+                  >
                     <template #title>
                       <span class="steptitle">{{ item.event }}</span>
                     </template>
@@ -280,41 +313,77 @@ const footerStyle: CSSProperties = {
               </a-config-provider>
             </div>
           </a-col>
-          <a-col style="
+          <a-col
+            style="
               display: flex;
               flex-direction: column;
               justify-content: space-between;
               height: 75vh;
-            " :span="9">
+            "
+            :span="9"
+          >
             <div>
-              <TrendTimeline :width-height-ratio="0.4" :dates="dates" v-model:selected-index="selectedIndex"
-                v-model:auto-play="autoPlay" />
+              <TrendTimeline
+                :width-height-ratio="0.4"
+                :dates="dates"
+                v-model:selected-index="selectedIndex"
+                v-model:auto-play="autoPlay"
+              />
             </div>
 
             <div>
-              <TrendTimeline :width-height-ratio="0.4" :dates="dates" v-model:selected-index="selectedIndex"
-                v-model:auto-play="autoPlay" />
+              <TrendTimeline
+                :width-height-ratio="0.4"
+                :dates="dates"
+                v-model:selected-index="selectedIndex"
+                v-model:auto-play="autoPlay"
+              />
             </div>
           </a-col>
-          <a-col style="
+          <a-col
+            style="
               display: flex;
               flex-direction: column;
               justify-content: space-between;
               max-height: 85vh;
-            " :span="9">
+            "
+            :span="9"
+          >
             <div style="margin-bottom: 10px; margin-top: 20px">
-              <MapTimeline :width-height-ratio="0.6" :dates="dates" :play-interval="10000"
-                v-model:selected-timeline-index="selectedIndex" v-model:auto-play="autoPlay"
-                v-model:selected-country="selectedCountry" />
+              <MapTimeline
+                :width-height-ratio="0.6"
+                :dates="dates"
+                :play-interval="10000"
+                v-model:selected-timeline-index="selectedIndex"
+                v-model:auto-play="autoPlay"
+                v-model:selected-country="selectedCountry"
+              />
             </div>
             <a-layout id="layoutOutside" style="background-color: transparent">
-              <a-layout-content style="
+              <a-layout-content
+                style="
                   background-color: transparent;
                   align-items: start;
-                  justify-content: start; 
+                  justify-content: start;
                   display: flex;
-                ">
-                <CountrySelect style="aspect-ratio: 5/3;"/>
+                "
+              >
+                <a-config-provider
+                  :theme="{
+                    token: {
+                      colorBgContainer: 'rgba(24, 23, 23, 0.69)',
+                      colorText: 'azure',
+                      colorTextTertiary: 'azure',
+                      colorTextPlaceholder: 'rgba(200,200,200,0.5)',
+                      sizeStep: 8
+                    }
+                  }"
+                >
+                  <CountrySelect
+                    v-model:selected-country="selectedCountry"
+                    style="aspect-ratio: 5/3"
+                  /> </a-config-provider
+                >>
               </a-layout-content>
             </a-layout>
           </a-col>
@@ -322,7 +391,13 @@ const footerStyle: CSSProperties = {
       </div>
       <div class="section" style="padding-top: 60px">
         <div class="chart-map">
-          <MapCharts :dates="dates" v-model:selected-timeline-index="selectedIndex" :width-height-ratio="0.5" :margin-ratio="0.9" />
+          <MapCharts
+            :dates="dates"
+            :selected-country="selectedCountry"
+            v-model:selected-timeline-index="selectedIndex"
+            :width-height-ratio="0.5"
+            :margin-ratio="0.9"
+          />
         </div>
       </div>
     </div>
@@ -392,11 +467,11 @@ const footerStyle: CSSProperties = {
   height: 100%;
   width: 100%;
   overflow-y: auto;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
   aspect-ratio: 2/3;
 }
-.scroll_event::-webkit-scrollbar{
+.scroll_event::-webkit-scrollbar {
   display: none;
 }
 
@@ -416,7 +491,7 @@ const footerStyle: CSSProperties = {
   height: 60px;
 }
 
-#menu>li,
+#menu > li,
 a {
   display: inline-block;
   height: 95%;
@@ -448,7 +523,7 @@ a {
   align-items: center;
   justify-items: center;
 }
-.selectpopup{
+.selectpopup {
   position: relative;
 }
 </style>
