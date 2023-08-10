@@ -231,5 +231,6 @@ function applyAutoplay(play: boolean) {
 </script>
 
 <template>
-  <span ref="chartElement" style="width: 100%;"></span>
+  <span ref="chartElement" style="display: flex;justify-content: center;"></span>
 </template>
+

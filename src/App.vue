@@ -330,8 +330,7 @@ const footerStyle: CSSProperties = {
                 :dates="dates"
                 :selected-country="selectedCountry"
                 v-model:selected-timeline-index="selectedIndex"
-                :width-height-ratio="1.2"
-                :margin-ratio="0.9"
+                :width-height-ratio="1.1"
               />
             </div>
           </a-col>

@@ -273,5 +273,5 @@ async function loadTimeData(dates: Date[]): Promise<DateData[]> {
 </script>
 
 <template>
-  <span ref="chartElement" style="width: 100%;"></span>
+  <span ref="chartElement" style="display: flex;justify-content: center;"></span>
 </template>
