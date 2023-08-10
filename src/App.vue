@@ -299,14 +299,14 @@ const footerStyle: CSSProperties = {
               justify-content: space-between;
               height: 75vh;
             "
-            :span="10"
+            :span="11"
           >
             <div class="chart-map">
               <MapCharts
                 :dates="dates"
                 :selected-country="selectedCountry"
                 v-model:selected-timeline-index="selectedIndex"
-                :width-height-ratio="1.1"
+                :width-height-ratio="1.4"
               />
             </div>
           </a-col>
@@ -317,7 +317,7 @@ const footerStyle: CSSProperties = {
               justify-content: space-between;
               max-height: 85vh;
             "
-            :span="8"
+            :span="7"
           >
             <div style="margin-bottom: 10px; margin-top: 20px">
               <MapTimeline
