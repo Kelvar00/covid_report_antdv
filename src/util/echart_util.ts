@@ -204,6 +204,14 @@ export function useEchartAutoResize(
   onMounted(() => widthObserver.observe(toValue(parentContainerSource)))
   onBeforeUnmount(() => widthObserver.disconnect())
 }
+export function useDisableContextMenuIn(containerSource: WatchSource<Element>) {
+  const handler = function (ev: MouseEvent) {
+    const container = toValue(containerSource)
+    if (container.contains(ev.target as Node)) ev.preventDefault()
+  }
+  onMounted(() => document.addEventListener('contextmenu', handler))
+  onBeforeUnmount(() => document.removeEventListener('contextmenu', handler))
+}
 export type ECOption = ComposeOption<
   | TitleComponentOption
   | TooltipComponentOption

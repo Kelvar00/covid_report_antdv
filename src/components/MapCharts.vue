@@ -8,12 +8,13 @@ import {
   makeGridSettings,
   makeLoadingOptions,
   useEchartAutoResize,
+  useDisableContextMenuIn,
   type ECOption,
   makeLineSeries
 } from '@/util/echart_util'
 import trendJson from '@/assets/multiTimeline.json'
 import moment from 'moment'
-import {$eventBus} from '@/util/mitt_util'
+import { $eventBus } from '@/util/mitt_util'
 
 const startDate = new Date(2019, 11, 1)
 const endDate = new Date(2022, 11, 14)
@@ -40,7 +41,7 @@ const props = defineProps({
     type: Number,
     default: 0
   },
-  timeLineAutoplayed:{
+  timeLineAutoplayed: {
     type: Boolean,
     default: false
   }
@@ -53,23 +54,22 @@ watch(
   }
 )
 watch(
-  ()=>props.selectedTimelineIndex,
-  (newVal)=>{
-    if(!props.timeLineAutoplayed)
-    {
+  () => props.selectedTimelineIndex,
+  (newVal) => {
+    if (!props.timeLineAutoplayed) {
       setDatazoomAround(props.dates[newVal])
     }
   }
 )
 
-$eventBus.on('clickUpdate:selectedIndex',(index)=>{
+$eventBus.on('clickUpdate:selectedIndex', (index) => {
   setDatazoomAround(props.dates[index])
 })
 
 /// REGION SETUP
 const chartElement: Ref<HTMLSpanElement> = ref(null) as any
 let chartInstance: echart.ECharts = null as any
-let isZoomed:boolean = false
+let dateToEventMap = new Map<Date,number>()
 
 /// REGION CORE LOGIC
 function getTrendDataset(tsStart: number, tsStop: number) {
@@ -82,20 +82,21 @@ function getTrendDataset(tsStart: number, tsStop: number) {
   }
 }
 async function showCountryDetails(selectedCountry: string) {
-  let title:string=''
+  let title: string = ''
   let dataList = []
   let data: TotalStatistics[]
   if (selectedCountry) {
     title = 'Covid-19 Statistics of ' + selectedCountry
     data = await getCountryWeekly(selectedCountry, startDate, endDate)
-  }
-  else {
+  } else {
     title = 'Covid-19 Statistics of the World'
     data = await getTotalWeekly(startDate, endDate)
   }
-  for (const item of data) {
+  for (let i=0;i<data.length;i++) {
+    const item = data[i]
+    let itemDate = new Date(item.timestamp * 1000)
     dataList.push({
-      time: new Date(item.timestamp * 1000),
+      time: itemDate,
       confirmed: item.totalConfirmed,
       cured: item.totalCured,
       death: item.totalDeath
@@ -103,6 +104,21 @@ async function showCountryDetails(selectedCountry: string) {
   }
   const newOption: ECOption = {
     title: makeTitle(title),
+    legend: [
+      {
+        orient: 'horizontal',
+        padding: [50, 5],
+        textStyle: { color: '#f2f2f2' },
+        data: ['Confirmed', 'Cured', 'Death']
+      },
+      {
+        orient: 'horizontal',
+        padding: [50, 5],
+        textStyle: { color: '#f2f2f2' },
+        data: ['新型冠狀病毒肺炎', 'CoronaVirus', 'COVID'],
+        top: '45%'
+      }
+    ],
     dataset: [
       getTrendDataset(startDate.valueOf(), endDate.valueOf()),
       { dimensions: ['time', 'confirmed', 'cured', 'death'], source: dataList }
@@ -128,18 +144,18 @@ async function showCountryDetails(selectedCountry: string) {
       },
       {
         ...makeLineSeries('新型冠狀病毒肺炎', 'time', '新型冠狀病毒肺炎', undefined, undefined, 0),
-        xAxisIndex:1,
-        yAxisIndex:1
+        xAxisIndex: 1,
+        yAxisIndex: 1
       },
       {
         ...makeLineSeries('CoronaVirus', 'time', 'CoronaVirus', undefined, undefined, 0),
-        xAxisIndex:1,
-        yAxisIndex:1
+        xAxisIndex: 1,
+        yAxisIndex: 1
       },
       {
         ...makeLineSeries('COVID', 'time', 'COVID', undefined, undefined, 0),
-        xAxisIndex:1,
-        yAxisIndex:1
+        xAxisIndex: 1,
+        yAxisIndex: 1
       }
     ]
   }
@@ -147,17 +163,23 @@ async function showCountryDetails(selectedCountry: string) {
   chartInstance.setOption(newOption)
 }
 function setDatazoomAround(date: Date) {
-  isZoomed = true
   let length = endDate.valueOf() - startDate.valueOf()
   let startValue = moment(date).add(-12, 'week').add(-date.getDay(), 'd').valueOf()
   let start = (startValue - startDate.valueOf()) / length
-  let endValue = moment(date).add(12, 'week').add(7 - date.getDay(), 'd').valueOf()
+  let endValue = moment(date)
+    .add(12, 'week')
+    .add(7 - date.getDay(), 'd')
+    .valueOf()
   let end = (endValue - startDate.valueOf()) / length
-  chartInstance.dispatchAction({ type: 'dataZoom', dataZoomIndex:0, start: start * 100, end: end * 100 })
+  chartInstance.dispatchAction({
+    type: 'dataZoom',
+    dataZoomIndex: 0,
+    start: start * 100,
+    end: end * 100
+  })
 }
 function resumeDatazoom() {
-  isZoomed = false
-  chartInstance.dispatchAction({ type: 'dataZoom', dataZoomIndex:0, start: 0, end: 100 })
+  chartInstance.dispatchAction({ type: 'dataZoom', dataZoomIndex: 0, start: 0, end: 100 })
 }
 
 useEchartAutoResize(
@@ -166,13 +188,13 @@ useEchartAutoResize(
   props.widthHeightRatio,
   props.marginRatio
 )
+useDisableContextMenuIn(chartElement)
 onMounted(() => {
   chartInstance = echart.init(chartElement.value, 'darklow')
   const optionHolder: ECOption = {
-    legend: { orient: 'horizontal', padding: [50, 5], textStyle: { color: '#f2f2f2' } },
     grid: [
-      makeGridSettings('10%', '55%', '10%','5%', false),
-      makeGridSettings('55%', '10%', '10%','5%', false)
+      makeGridSettings('10%', '55%', '10%', '5%', false),
+      makeGridSettings('55%', '10%', '10%', '5%', false)
     ],
     tooltip: {
       trigger: 'axis',
@@ -212,11 +234,17 @@ onMounted(() => {
       { type: 'time', gridIndex: 0 },
       { type: 'time', gridIndex: 1 }
     ],
-    yAxis: [{ gridIndex: 0,axisLabel:{
-      formatter(value:number){
-        return value.toExponential()
-      }
-    } }, { gridIndex: 1 }],
+    yAxis: [
+      {
+        gridIndex: 0,
+        axisLabel: {
+          formatter(value: number) {
+            return value.toExponential()
+          }
+        }
+      },
+      { gridIndex: 1 }
+    ],
     color: ['#ff5b57', '#5f79ff', '#880000', '#ba9d7c', '#7ca694']
   }
   chartInstance.setOption(optionHolder)
@@ -224,36 +252,32 @@ onMounted(() => {
   showCountryDetails(props.selectedCountry)
 
   chartInstance.getZr().on('click', (params) => {
-    let point = [(params as any).offsetX,(params as any).offsetY]
-    let date:Date
-    if(chartInstance.containPixel({gridIndex:0},point))
-    {
+    let point = [(params as any).offsetX, (params as any).offsetY]
+    let date: Date
+    if (chartInstance.containPixel({ gridIndex: 0 }, point)) {
       //bar
-      let ts = chartInstance.convertFromPixel({gridIndex:0},point)[0]
+      let ts = chartInstance.convertFromPixel({ gridIndex: 0 }, point)[0]
       date = new Date(ts)
-    }
-    else if(chartInstance.containPixel({gridIndex:1},point))
-    {
+    } else if (chartInstance.containPixel({ gridIndex: 1 }, point)) {
       //line
-      let ts = chartInstance.convertFromPixel({gridIndex:1},point)[0]
+      let ts = chartInstance.convertFromPixel({ gridIndex: 1 }, point)[0]
       date = new Date(ts)
-    }
-    else{
+    } else {
       return
     }
     let valueList = props.dates.map((item) => Math.abs(item.valueOf() - date.valueOf()))
     let closest = valueList.indexOf(Math.min(...valueList))
 
     emit('update:selectedTimelineIndex', closest)
-    $eventBus.emit('clickUpdate:selectedIndex',closest)
+    $eventBus.emit('clickUpdate:selectedIndex', closest)
   })
-  chartInstance.getZr().on('dblclick', () => {
+  chartInstance.getZr().on('contextmenu', () => {
     resumeDatazoom()
   })
 })
 </script>
 <template>
-  <span ref="chartElement" style="display: flex;justify-content: center;"></span>
+  <span ref="chartElement" style="display: flex; justify-content: center"></span>
 </template>
 <style scoped>
 .container {

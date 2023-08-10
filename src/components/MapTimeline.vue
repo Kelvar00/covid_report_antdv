@@ -253,7 +253,8 @@ async function loadTimeData(dates: Date[]): Promise<DateData[]> {
   async function queryData(date: Date) {
     let raw = await getWorldAtTime(date)
     let seriesData = []
-    for (const data of raw) {
+    for (let i=0;i< raw.length;i++) {
+      const data = raw[i]
       seriesData.push({
         name: data.countryName,
         value: data.totalConfirmed == 0? NaN:data.totalConfirmed

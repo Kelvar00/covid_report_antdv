@@ -2,7 +2,17 @@ import './assets/main.css'
 
 
 import { createApp } from 'vue'
-import { Row, Col, Statistic, Menu, Input, Layout, ConfigProvider, Steps } from 'ant-design-vue'
+import {
+  Row,
+  Col,
+  Statistic,
+  Menu,
+  Input,
+  Layout,
+  ConfigProvider,
+  Steps,
+  Carousel
+} from 'ant-design-vue'
 import EChartUtils from './util/echart_util'
 import Mitt from './util/mitt_util'
 import 'ant-design-vue/dist/reset.css'
@@ -20,6 +30,7 @@ app
   .use(Layout)
   .use(ConfigProvider)
   .use(Steps)
+  .use(Carousel)
   .use(EChartUtils)
   .use(Mitt)
   .mount('#app')

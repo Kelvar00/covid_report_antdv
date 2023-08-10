@@ -43,7 +43,6 @@ const dates = ref(keyMoments.map((item) => moment(item.Time, 'yyyy-MM-DD').toDat
 const selectedIndex = ref(0)
 const autoPlay = ref(false)
 const selectedCountry = ref('')
-const selectContainer = ref(null)
 
 const carouseData = [{ url: Image1 }, { url: Image2 }, { url: Image3 }, { url: Image4 }]
 onMounted(() => {
@@ -68,6 +67,13 @@ onMounted(() => {
   })
 })
 
+watch(selectedIndex,(newVal)=>{
+  const listContainer = document.querySelector('.scroll_event')!
+  const stepList = listContainer.children[0] as HTMLElement
+  const stepItem = stepList.children[newVal] as HTMLElement
+  const offset = stepItem.getBoundingClientRect().top-listContainer.getBoundingClientRect().top
+  listContainer.scrollBy({top:offset,behavior:'smooth'})
+})
 const scrollHandler = (event: WheelEvent) => {
   event.stopPropagation()
 }
@@ -77,6 +83,7 @@ import MapTimeline from './components/MapTimeline.vue'
 import TrendTimeline from './components/TrendTimeline.vue'
 import CountrySelect from './components/CountrySelect.vue'
 import moment from 'moment'
+import { watch } from 'vue'
 //import { requiredNumber } from 'element-plus/es/components/table-v2/src/common.js';
 const transparentStyle: CSSProperties = {
   color: 'transparent',
@@ -299,7 +306,6 @@ const footerStyle: CSSProperties = {
                 <a-steps
                   progress-dot
                   @wheel="scrollHandler"
-                  @change="scrollToIndex"
                   direction="vertical"
                   v-model:current="selectedIndex"
                 >
