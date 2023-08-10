@@ -245,7 +245,8 @@ onMounted(() => {
 
   chartInstance.getZr().on('click', (params) => {
     //return when clicked on control
-    if((params as any).target) return
+    //console.log((params as any))
+    if((params as any).target&&(params as any).target.type!='ec-polyline') return
     let point = [(params as any).offsetX, (params as any).offsetY]
     let date: Date
     if (chartInstance.containPixel({ gridIndex: 0 }, point)) {

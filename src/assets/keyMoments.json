@@ -1,43 +1,43 @@
 [
     {
         "Time": "2019.12.01",
-        "event": "the first case",
+        "event": "The first case",
         "comment": "the first case occurred in Wuhan",
         "link": "https://www.thelancet.com/pb-assets/Lancet/Hubs/coronavirus/translations/S2468125320301217-1592304052007.pdf"
     },
     {
         "Time": "2019.12.31",
-        "event": "the first official statement",
+        "event": "The first official statement",
         "comment": "Hubei govenment annouces the COVID event",
         "link": "http://wjw.hubei.gov.cn/bmdt/dtyw/201912/t20191231_1822343.shtml"
     },
     {
         "Time": "2020.01.09",
-        "event": "the first death",
+        "event": "The first death",
         "comment": "the first death reported in event",
         "link": "https://www.gov.cn/xinwen/2020-01/23/content_5471771.htm"
     },
     {
         "Time": "2020.01.13",
-        "event": "the first case outside China",
+        "event": "The first case outside China",
         "comment": "Thailand found the first case outside China",
         "link": "https://www.who.int/zh/news/item/13-01-2020-who-statement-on-novel-coronavirus-in-thailand"
     },
     {
         "Time": "2020.01.23",
-        "event": "the lockdown on Wuhan",
+        "event": "The lockdown on Wuhan",
         "comment": "China govenment lockdown Wuhan",
         "link": "https://www.gov.cn/xinwen/2020-01/23/content_5471751.htm"
     },
     {
         "Time": "2020.01.30",
-        "event": "declared a PHEIC",
+        "event": "Declared a PHEIC",
         "comment": "WHO declares public health emergency on novel coronavirus",
         "link": "https://www.paho.org/en/news/30-1-2020-who-declares-public-health-emergency-novel-coronavirus"
     },
     {
         "Time": "2020.02.02",
-        "event": "first death outside China",
+        "event": "First death outside China",
         "comment": "Philippine reported the first death outside China",
         "link": "https://www.benarnews.org/english/news/philippine/virus-death-02022020101307.html"
     },
@@ -49,49 +49,49 @@
     },
     {
         "Time": "2020.02.15",
-        "event": "first death outside Asia",
+        "event": "First death outside Asia",
         "comment": "France announced the first death outside Asia",
         "link": "https://www.dw.com/en/coronavirus-france-announces-first-covid-19-death-in-europe/a-52386140"
     },
     {
         "Time": "2020.02.18",
-        "event": "super spreader",
+        "event": "Super spreader",
         "comment": "Korea government reported the first super spreader",
         "link": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7118661/"
     },
     {
         "Time": "2020.02.28",
-        "event": "risk level raised to very high",
+        "event": "Risk level raised to very high",
         "comment": "WHO raised the risk of COVID-19 to very high",
         "link": "https://www.who.int/director-general/speeches/detail/who-director-general-s-opening-remarks-at-the-media-briefing-on-covid-19---28-february-2020"
     },
     {
         "Time": "2020.03.10",
-        "event": "the lockdown on Italy",
+        "event": "The lockdown on Italy",
         "comment": "Italy get lockdowned for coronavirus",
         "link": "https://www.washingtonpost.com/world/italy-coronavirus-lockdown/2020/03/10/f7ed95c4-5ff6-11ea-ac50-18701e14e06d_story.html"
     },
     {
         "Time": "2020.03.24",
-        "event": "postponement of Tokyo Olympics",
+        "event": "Postponement of Tokyo Olympics",
         "comment": "tokyo olympics becomes biggest sporting event halted by coronavirus",
         "link": "https://www.latimes.com/sports/story/2020-03-24/tokyo-olympics-becomes-biggest-sporting-event-halted-by-coronavirus"
     },
     {
         "Time": "2020.04.03",
-        "event": "one million cases",
+        "event": "One million cases",
         "comment": "1",
         "link": "000"
     },
     {
         "Time": "2020.04.08",
-        "event": "the lifting day of Wuhan",
+        "event": "The lifting day of Wuhan",
         "comment": "China stopped the lockdown on Wuhan",
         "link": "https://news.un.org/zh/story/2020/04/1054532"
     },
     {
         "Time": "2020.05.01",
-        "event": "remdesivir approved by FDA",
+        "event": "Remdesivir approved by FDA",
         "comment": "redesivir comes the first kind of drug approved by FDA",
         "link": "https://www.cnn.com/2020/05/01/health/remdesivir-fda-authorization/index.html"
     },
@@ -103,7 +103,7 @@
     },
     {
         "Time": "2020.06.30",
-        "event": "ten million cases",
+        "event": "Ten million cases",
         "comment": "10",
         "link": "000"
     },
@@ -115,7 +115,7 @@
     },
     {
         "Time": "2020.09.29",
-        "event": "one million deaths",
+        "event": "One million deaths",
         "comment": "1",
         "link": "000"
     },
@@ -139,7 +139,7 @@
     },
     {
         "Time": "2020.12.23",
-        "event": "million vaccinations",
+        "event": "Million vaccinations",
         "comment": "one million vaccines were adminstered",
         "link": "https://www.cnbc.com/2020/12/23/covid-vaccine-us-has-vaccinated-1-million-people-out-of-goal-of-20-million-for-december.html"
     },
@@ -151,7 +151,7 @@
     },
     {
         "Time": "2021.01.27",
-        "event": "hundred million cases",
+        "event": "Hundred million cases",
         "comment": "100",
         "link": "000"
     },
@@ -175,7 +175,7 @@
     },
     {
         "Time": "2022.01.03",
-        "event": "one million infections one day",
+        "event": "One million infections one day",
         "comment": "one million infections happened on this day",
         "link": "https://www.ctd.uscourts.gov/sites/default/files/22-1_COVID-19-Order-Re-Jury-Selections-Trials.pdf"
     },
@@ -187,19 +187,19 @@
     },
     {
         "Time": "2022.03.04",
-        "event": "ten billion vaccines administered",
+        "event": "Ten billion vaccines administered",
         "comment": "10",
         "link": "000"
     },
     {
         "Time": "2022.03.14",
-        "event": "lockdown for COVID-Zero",
+        "event": "Lockdown for COVID-Zero",
         "comment": "China lock some city for COVID-Zero policy",
         "link": "https://en.wikipedia.org/wiki/Zero-COVID"
     },
     {
         "Time": "2022.12.07",
-        "event": "principle ten",
+        "event": "Principle ten",
         "comment": "China announced principle ten",
         "link": "https://observatoriop10.cepal.org/en/newsletter/newsletter-october-december-2022"
     }
