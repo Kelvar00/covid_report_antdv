@@ -39,6 +39,10 @@ const props = defineProps({
   selectedTimelineIndex: {
     type: Number,
     default: 0
+  },
+  timeLineAutoplayed:{
+    type: Boolean,
+    default: false
   }
 })
 const emit = defineEmits(['update:selectedTimelineIndex'])
@@ -46,6 +50,15 @@ watch(
   () => props.selectedCountry,
   (newVal) => {
     showCountryDetails(newVal)
+  }
+)
+watch(
+  ()=>props.selectedTimelineIndex,
+  (newVal)=>{
+    if(!props.timeLineAutoplayed)
+    {
+      setDatazoomAround(props.dates[newVal])
+    }
   }
 )
 
@@ -69,10 +82,17 @@ function getTrendDataset(tsStart: number, tsStop: number) {
   }
 }
 async function showCountryDetails(selectedCountry: string) {
+  let title:string=''
   let dataList = []
   let data: TotalStatistics[]
-  if (selectedCountry) data = await getCountryWeekly(selectedCountry, startDate, endDate)
-  else data = await getTotalWeekly(startDate, endDate)
+  if (selectedCountry) {
+    title = 'Covid-19 Statistics of ' + selectedCountry
+    data = await getCountryWeekly(selectedCountry, startDate, endDate)
+  }
+  else {
+    title = 'Covid-19 Statistics of the World'
+    data = await getTotalWeekly(startDate, endDate)
+  }
   for (const item of data) {
     dataList.push({
       time: new Date(item.timestamp * 1000),
@@ -82,35 +102,44 @@ async function showCountryDetails(selectedCountry: string) {
     })
   }
   const newOption: ECOption = {
-    title: makeTitle('Covid-19 Statistics of ' + selectedCountry),
+    title: makeTitle(title),
     dataset: [
       getTrendDataset(startDate.valueOf(), endDate.valueOf()),
       { dimensions: ['time', 'confirmed', 'cured', 'death'], source: dataList }
     ],
     series: [
-      makeLineSeries('新型冠狀病毒肺炎', 'time', '新型冠狀病毒肺炎', undefined, undefined, 0),
-      makeLineSeries('CoronaVirus', 'time', 'CoronaVirus', undefined, undefined, 0),
-      makeLineSeries('COVID', 'time', 'COVID', undefined, undefined, 0),
       {
         ...makeBarSeries('Confirmed', 'time', 'confirmed'),
-        stack: 'total',
-        xAxisIndex: 1,
-        yAxisIndex: 1,
+        xAxisIndex: 0,
+        yAxisIndex: 0,
         datasetIndex: 1
       },
       {
         ...makeBarSeries('Cured', 'time', 'cured'),
-        stack: 'total',
-        xAxisIndex: 1,
-        yAxisIndex: 1,
+        xAxisIndex: 0,
+        yAxisIndex: 0,
         datasetIndex: 1
       },
       {
         ...makeBarSeries('Death', 'time', 'death'),
-        stack: 'total',
-        xAxisIndex: 1,
-        yAxisIndex: 1,
+        xAxisIndex: 0,
+        yAxisIndex: 0,
         datasetIndex: 1
+      },
+      {
+        ...makeLineSeries('新型冠狀病毒肺炎', 'time', '新型冠狀病毒肺炎', undefined, undefined, 0),
+        xAxisIndex:1,
+        yAxisIndex:1
+      },
+      {
+        ...makeLineSeries('CoronaVirus', 'time', 'CoronaVirus', undefined, undefined, 0),
+        xAxisIndex:1,
+        yAxisIndex:1
+      },
+      {
+        ...makeLineSeries('COVID', 'time', 'COVID', undefined, undefined, 0),
+        xAxisIndex:1,
+        yAxisIndex:1
       }
     ]
   }
@@ -176,7 +205,7 @@ onMounted(() => {
       {
         type: 'inside',
         yAxisIndex: [0, 1],
-        filterMode: 'empty'
+        filterMode: 'none'
       }
     ],
     xAxis: [
@@ -190,15 +219,23 @@ onMounted(() => {
   chartInstance.showLoading(makeLoadingOptions())
   showCountryDetails(props.selectedCountry)
 
-  chartInstance.on('click', (params) => {
-    let seriesType = (params as any).seriesType
-    let data = (params as any).data
-    let date: Date
-    if (seriesType == 'line') {
-      // trend chart
-      date = moment((data as any).Time, 'yyyy-MM-DD').toDate()
-    } else {
-      date = (data as any).time
+  chartInstance.getZr().on('click', (params) => {
+    let point = [(params as any).offsetX,(params as any).offsetY]
+    let date:Date
+    if(chartInstance.containPixel({gridIndex:0},point))
+    {
+      //bar
+      let ts = chartInstance.convertFromPixel({gridIndex:0},point)[0]
+      date = new Date(ts)
+    }
+    else if(chartInstance.containPixel({gridIndex:1},point))
+    {
+      //line
+      let ts = chartInstance.convertFromPixel({gridIndex:1},point)[0]
+      date = new Date(ts)
+    }
+    else{
+      return
     }
     let valueList = props.dates.map((item) => Math.abs(item.valueOf() - date.valueOf()))
     let closest = valueList.indexOf(Math.min(...valueList))
@@ -206,14 +243,8 @@ onMounted(() => {
     emit('update:selectedTimelineIndex', closest)
     $eventBus.emit('clickUpdate:selectedIndex',closest)
   })
-  chartInstance.getZr().on('dblclick', (event) => {
-    if (!event.target) {
-      resumeDatazoom()
-    }
-  })
-  chartInstance.on('datazoom', (params) => {
-    console.log(params)
-    const { startValue, endValue } = (chartInstance.getOption() as any).dataZoom[0]
+  chartInstance.getZr().on('dblclick', () => {
+    resumeDatazoom()
   })
 })
 </script>

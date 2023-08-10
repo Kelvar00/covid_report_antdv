@@ -33,6 +33,14 @@ watch(
     if (selectedCountries.value[0] != newVal) selectedCountries.value = [newVal]
   }
 )
+function onClick(params:any)
+{
+  if(selectedCountries.value[0]==params.key)
+  {
+    selectedCountries.value=['']
+    emits('update:selectedCountry', '')
+  }
+}
 function emitSelect() {
   emits('update:selectedCountry', selectedCountries.value[0])
 }
@@ -56,6 +64,7 @@ function onSearch() {
       :items="filteredItems"
       style="overflow-y: auto; flex: 1;border-radius: 4px;"
       @wheel.stop="() => {}"
+      @click="onClick"
       @select="emitSelect"
     >
     </a-menu>

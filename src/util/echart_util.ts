@@ -35,10 +35,14 @@ import { CanvasRenderer } from 'echarts/renderers'
 import { toValue, type App, type WatchSource, onMounted, onBeforeUnmount } from 'vue'
 import darklow from '@/assets/theme/darklow.json'
 
-export function makeTitle(text: string): TitleComponentOption {
+export function makeTitle(
+  text: string,
+  paddingTop: string | number = 'auto'
+): TitleComponentOption {
   return {
     text: text,
     padding: 20,
+    top: paddingTop,
     left: 'center',
     textStyle: { color: darklow.theme.titleColor, fontWeight: 'bolder' }
   }

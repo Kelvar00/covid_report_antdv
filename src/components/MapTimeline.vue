@@ -107,9 +107,10 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
       playInterval: props.playInterval,
       data: timelineDots.map((item) => moment(item).format('yyyy-MM-DD')),
       realtime: true,
-      ...makeTimelineStyle()
+      ...makeTimelineStyle(),
+      top: 0
     },
-    title: makeTitle('Covid-19 Confirmed Map Timeline'),
+    //title: makeTitle('Covid-19 Confirmed Map Timeline',60),
     tooltip: {
       trigger: 'item',
       valueFormatter(value) {
@@ -122,6 +123,7 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
       min: 0,
       max: 10000000,
       text: ['High', 'Low'],
+      textStyle: { color: '#ff0000' },
       realtime: false,
       calculable: true,
       inRange: {
