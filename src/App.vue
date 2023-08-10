@@ -120,12 +120,11 @@ const footerStyle: CSSProperties = {
     <div>
       <ul id="menu">
         <li>
-          <h2 class="icontitle">Title Here</h2>
+          <h2 class="icontitle">Covid-19 Statistics</h2>
         </li>
         <li><a href="#page0" class="hreftitle">Index</a></li>
-        <li><a href="#page1" class="hreftitle">Statistics</a></li>
-        <li><a href="#page2" class="hreftitle">News Trend</a></li>
-        <li><a href="#page3" class="hreftitle">Map</a></li>
+        <li><a href="#page1" class="hreftitle">Number</a></li>
+        <li><a href="#page2" class="hreftitle">Trend</a></li>
       </ul>
     </div>
     <div id="fullpage">
@@ -481,6 +480,7 @@ a {
   align-content: center;
   align-items: center;
   justify-items: center;
+  margin-top: 5px;
 }
 .selectpopup {
   position: relative;
