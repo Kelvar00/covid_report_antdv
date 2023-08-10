@@ -53,13 +53,14 @@ export function makeStateOption(showLabel: boolean, areaColor?: echart.Color) {
 export function makeGridSettings(
   paddingTop: string,
   paddingBottom?: string,
-  paddingHorizonal: string = '5%',
+  paddingLeft: string = '5%',
+  paddingRight?: string,
   containLabel: boolean = true
 ): GridComponentOption {
   return {
     containLabel: containLabel,
-    left: paddingHorizonal,
-    right: paddingHorizonal,
+    left: paddingLeft,
+    right: paddingRight ? paddingRight : paddingLeft,
     top: paddingTop,
     bottom: paddingBottom ? paddingBottom : paddingTop
   }

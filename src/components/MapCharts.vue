@@ -171,8 +171,8 @@ onMounted(() => {
   const optionHolder: ECOption = {
     legend: { orient: 'horizontal', padding: [50, 5], textStyle: { color: '#f2f2f2' } },
     grid: [
-      makeGridSettings('10%', '50%', '10%', false),
-      makeGridSettings('50%', '10%', '10%', false)
+      makeGridSettings('10%', '55%', '10%','5%', false),
+      makeGridSettings('55%', '10%', '10%','5%', false)
     ],
     tooltip: {
       trigger: 'axis',
