@@ -185,7 +185,6 @@ export function useEchartAutoResize(
   echartInstances: WatchSource<echart.ECharts>[],
   heightParameter: number | string,
   marginRatio: number = 0.9,
-  useAsStaticHeight: boolean = false,
   resizedCallback?: (instance: echart.ECharts) => void
 ) {
   const widthObserver = new ResizeObserver((entries) => {
@@ -195,8 +194,7 @@ export function useEchartAutoResize(
       const width = preMarginWidth * marginRatio
       let height: number
       if (typeof heightParameter == 'number') {
-        if (!useAsStaticHeight) height = width * heightParameter
-        else height = heightParameter
+        height = width * heightParameter
       } else {
         if (heightParameter.endsWith('px')) {
           height = Number.parseFloat(heightParameter.slice(0, -2))

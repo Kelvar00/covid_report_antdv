@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SupportedCountries from '@/assets/countries.json'
-import { computed, type CSSProperties } from 'vue'
+import { computed } from 'vue'
 import { ref } from 'vue'
 import { debounce } from 'lodash'
 import { watch } from 'vue'

@@ -72,7 +72,6 @@ function setAutoPlay(arg: boolean,silent:boolean = false) {
 /// REGION VIEW
 import * as echart from 'echarts/core'
 import {
-  makeTitle,
   makeStateOption,
   makeLoadingOptions,
   useEchartAutoResize,
@@ -141,7 +140,6 @@ useEchartAutoResize(
   [() => chartInstance],
   props.heightParameter,
   props.marginRatio,
-  false,
   onResized
 )
 useDisableContextMenuIn(chartElement)
@@ -232,6 +230,8 @@ function applyUnselect(name:string,silent:boolean=false)
 {
   chartInstance.dispatchAction({ type: 'unselect', seriesIndex: 0, name: name },{silent:silent})
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function applyUnselectForce(silent:boolean=false)
 {
   const data = (chartInstance.getOption() as any).series[0].data

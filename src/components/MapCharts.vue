@@ -60,7 +60,6 @@ $eventBus.on('clickUpdate:selectedIndex', (index) => {
 /// REGION SETUP
 const chartElement: Ref<HTMLSpanElement> = ref(null) as any
 let chartInstance: echart.ECharts = null as any
-let dateToEventMap = new Map<Date,number>()
 
 /// REGION CORE LOGIC
 function getTrendDataset(tsStart: number, tsStop: number) {
@@ -213,6 +212,8 @@ onMounted(() => {
         type: 'slider',
         xAxisIndex: [0, 1],
         filterMode: 'filter',
+        top:'95%',
+        height:'3%',
         minSpan: 5
       },
       {

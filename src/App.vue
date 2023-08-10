@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import keyMoments from '@/assets/keyMoments.json'
-import { h, ref, onMounted, type Ref,type CSSProperties } from 'vue'
+import { ref, onMounted, type Ref,type CSSProperties } from 'vue'
 //@ts-ignore(2306)
 import fullpage from 'fullpage.js'
 import Image1 from '@/assets/img/1126952445_16099187127001n.jpeg'
 import Image2 from '@/assets/img/1126952445_16099187127151n.jpeg'
 import Image3 from '@/assets/img/aj4qi-9wdbl.png'
 import Image4 from '@/assets/img/us_covid19_mortality.jpg'
-import type { SelectProps, MenuProps } from 'ant-design-vue'
 
-const selectValue = ref<string | undefined>(undefined)
 const dates = ref(keyMoments.map((item) => moment(item.Time, 'yyyy-MM-DD').toDate()))
 const selectedIndex = ref(0)
 const autoPlay = ref(false)
