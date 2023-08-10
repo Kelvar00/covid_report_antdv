@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import keyMoments from '@/assets/keyMoments.json'
-import { h, ref, onMounted, type CSSProperties } from 'vue'
+import { h, ref, onMounted, type Ref,type CSSProperties } from 'vue'
 //@ts-ignore(2306)
 import fullpage from 'fullpage.js'
 import Image1 from '@/assets/img/1126952445_16099187127001n.jpeg'
@@ -9,41 +9,11 @@ import Image3 from '@/assets/img/aj4qi-9wdbl.png'
 import Image4 from '@/assets/img/us_covid19_mortality.jpg'
 import type { SelectProps, MenuProps } from 'ant-design-vue'
 
-const selectOptions = ref<SelectProps['options']>([
-  { value: 'jack', label: 'Jack' },
-  { value: 'lucy', label: 'Lucy' },
-  { value: 'tom1', label: 'Tom0' },
-  { value: 'tom2', label: 'Tom1' },
-  { value: 'tom3', label: 'Tom2' },
-  { value: 'tom4', label: 'Tom3' },
-  { value: 'tom5', label: 'Tom4' },
-  { value: 'tom6', label: 'Tom6' },
-  { value: 'tom6', label: 'Tom7' },
-  { value: 'tom6', label: 'Tom8' },
-  { value: 'tom6', label: 'Tom9' },
-  { value: 'tom6', label: 'Tom10' },
-  { value: 'tom6', label: 'Tom11' }
-])
-const handleChange = (value: string) => {
-  console.log(`selected ${value}`)
-}
-const handleBlur = () => {
-  console.log('blur')
-}
-const handleFocus = () => {
-  console.log('focus')
-}
-const filterOption = (input: string, option: any) => {
-  return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
-}
-
 const selectValue = ref<string | undefined>(undefined)
 const dates = ref(keyMoments.map((item) => moment(item.Time, 'yyyy-MM-DD').toDate()))
-
 const selectedIndex = ref(0)
 const autoPlay = ref(false)
 const selectedCountry = ref('')
-
 const carouseData = [{ url: Image1 }, { url: Image2 }, { url: Image3 }, { url: Image4 }]
 onMounted(() => {
   let fullPageInstance = new fullpage('#fullpage', {
@@ -66,9 +36,9 @@ onMounted(() => {
     anchors: ['page0', 'page1', 'page2', 'page3']
   })
 })
-
+const listContainerRef:Ref<HTMLDivElement>=ref(null) as any
 watch(selectedIndex,(newVal)=>{
-  const listContainer = document.querySelector('.scroll_event')!
+  const listContainer = listContainerRef.value
   const stepList = listContainer.children[0] as HTMLElement
   const stepItem = stepList.children[newVal] as HTMLElement
   const offset = stepItem.getBoundingClientRect().top-listContainer.getBoundingClientRect().top
@@ -289,7 +259,7 @@ const footerStyle: CSSProperties = {
       <div class="section" style="padding-top: 60px">
         <a-row>
           <a-col :span="4" :offset="1" style="align-items: center; max-height: 85vh">
-            <div class="scroll_event">
+            <div class="scroll_event" ref="listContainerRef">
               <a-config-provider
                 :theme="{
                   token: {
@@ -383,7 +353,7 @@ const footerStyle: CSSProperties = {
                     v-model:selected-country="selectedCountry"
                     style="aspect-ratio: 5/3"
                   /> </a-config-provider
-                >>
+                >
               </a-layout-content>
             </a-layout>
           </a-col>

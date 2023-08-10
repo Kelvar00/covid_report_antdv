@@ -127,7 +127,7 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
       realtime: false,
       calculable: true,
       inRange: {
-        color: ['#ff6666', '#ff0000', '#990000'] // YOU CAN MODIFY THIS
+        color: ['#F59F9F',  '#DE1E1D', '#B31312'] // YOU CAN MODIFY THIS
       }
     },
     series: [

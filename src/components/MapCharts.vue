@@ -245,7 +245,7 @@ onMounted(() => {
       },
       { gridIndex: 1 }
     ],
-    color: ['#ff5b57', '#5f79ff', '#880000', '#ba9d7c', '#7ca694']
+    color: ['#B31312', '#EA906C', '#EEE2DE', '#E8D5B7', '#D9534F','#FFAD60']
   }
   chartInstance.setOption(optionHolder)
   chartInstance.showLoading(makeLoadingOptions())
