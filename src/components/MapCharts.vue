@@ -22,14 +22,14 @@ const endDate = new Date(2022, 11, 14)
 
 /// REGION COMPONENT INTERACTION
 interface Props{
-  heightParameter:number|string
-  marginRatio:number
-  selectedCountry:string
+  heightParameter?:number|string
+  marginRatio?:number
+  selectedCountry?:string
   dates:Date[]
-  selectedTimelineIndex:number
-  timeLineAutoplayed:boolean
+  selectedTimelineIndex?:number
+  timeLineAutoplayed?:boolean
 }
-const props = withDefaults( defineProps<Props>(),{
+const props = withDefaults(defineProps<Props>(),{
   heightParameter:0.72,
   marginRatio:0.9,
   selectedCountry:'',
@@ -244,6 +244,8 @@ onMounted(() => {
   showCountryDetails(props.selectedCountry)
 
   chartInstance.getZr().on('click', (params) => {
+    //return when clicked on control
+    if((params as any).target) return
     let point = [(params as any).offsetX, (params as any).offsetY]
     let date: Date
     if (chartInstance.containPixel({ gridIndex: 0 }, point)) {
@@ -262,6 +264,22 @@ onMounted(() => {
 
     emit('update:selectedTimelineIndex', closest)
     $eventBus.emit('clickUpdate:selectedIndex', closest)
+  })
+  chartInstance.on('click', (params) => {
+    let seriesType = (params as any).seriesType
+    let data = (params as any).data
+    let date: Date
+    if (seriesType == 'line') {
+      // trend chart
+      date = moment((data as any).Time, 'yyyy-MM-DD').toDate()
+    } else {
+      date = (data as any).time
+    }
+    let valueList = props.dates.map((item) => Math.abs(item.valueOf() - date.valueOf()))
+    let closest = valueList.indexOf(Math.min(...valueList))
+
+    emit('update:selectedTimelineIndex', closest)
+    $eventBus.emit('clickUpdate:selectedIndex',closest)
   })
   chartInstance.getZr().on('contextmenu', () => {
     resumeDatazoom()

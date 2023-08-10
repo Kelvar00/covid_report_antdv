@@ -109,7 +109,7 @@ function makeBaseOption(timelineDots: Date[]): ECOption {
       min: 0,
       max: 10000000,
       text: ['High', 'Low'],
-      textStyle: { color: '#ff0000' },
+      textStyle: { color: '#efecec' },
       realtime: false,
       calculable: true,
       inRange: {
